@@ -11,10 +11,20 @@ import java.util.List;
 public class Item {
     private URI href;
     private List<DataEntry> data = new ArrayList<DataEntry>();
+    private List<Link> links = new ArrayList<Link>();
+
+    public Item(URI href) {
+        this(href, null);
+    }
 
     @JsonCreator
-    public Item(@JsonProperty("href") URI href) {
+    public Item(@JsonProperty("href") URI href, @JsonProperty("links") List<Link> links) {
         this.href = href;
+        this.links = links;
+    }
+
+    public void setLinks(List<Link> links) {
+        links = new ArrayList<Link>(links);
     }
 
     public URI getHref() {
@@ -28,5 +38,9 @@ public class Item {
 
     public List<DataEntry> getData() {
         return new ArrayList<DataEntry>(data);
+    }
+
+    public List<Link> getLinks() {
+        return links;
     }
 }

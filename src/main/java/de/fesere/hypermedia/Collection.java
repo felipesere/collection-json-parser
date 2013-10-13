@@ -14,6 +14,8 @@ public class Collection {
 
     private URI href;
     private List<Item> items = new ArrayList<Item>();
+    private List<Link> links = new ArrayList<Link>();
+    private List<Query> queries = new ArrayList<Query>();
 
     @JsonCreator()
     public Collection(@JsonProperty("href") URI href) {
@@ -34,5 +36,18 @@ public class Collection {
 
     public ArrayList<Item> getItems() {
         return new ArrayList<Item>(items);
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = new ArrayList<Link>(links);
+    }
+
+
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public List<Query> getQueries() {
+        return queries;
     }
 }
