@@ -1,20 +1,19 @@
 package de.fesere.hypermedia;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.net.URI;
 
-public class CollectionSerializationTest {
+public class CollectionSerializationTest extends SerializationTestBase{
+
+    public static final URI TEST_COM = URI.create("http://test.com");
 
     @Test
     public void testPOJOtoJSON() {
 
 
-        Collection collection = new Collection(URI.create("http://test.com"));
+        Collection collection = new Collection(TEST_COM);
 
         assertSerialization("{\"collection\":{\"href\":\"http://test.com\",\"version\":\"1.0\"}}", collection );
 
@@ -25,37 +24,43 @@ public class CollectionSerializationTest {
     public void testJSONtoPOJO() {
         String givenJson = "{\"collection\":{\"href\":\"http://test.com\",\"version\":\"1.0\"}}";
 
-        Collection collection = deserialize(givenJson);
+        Collection collection = deserialize(givenJson, Collection.class);
 
         Assert.assertEquals("1.0", collection.getVersion());
-        Assert.assertEquals(URI.create("http://test.com"), collection.getHref());
+        Assert.assertEquals(TEST_COM, collection.getHref());
 
     }
 
-    private Collection deserialize(String givenJson) {
-        ObjectMapper mapper = new ObjectMapper();
+    @Test
+      public void serializeCollectionWithSingleItem()     {
+        Collection collection = new Collection(TEST_COM);
 
-        try {
-            return mapper.readValue(givenJson, Collection.class);
-        } catch (IOException e) {
-            Assert.fail("Failed to deserialize given Json: " + e.getMessage());
-            return null; // fail(..) will throw an assertionError here
-        }
+        collection.addItem(new Item(URI.create("http://test.com/items/1")));
+
+        assertSerialization("{\"collection\":{\"href\":\"http://test.com\",\"version\":\"1.0\",\"items\":[{\"href\":\"http://test.com/items/1\"}]}}", collection);
     }
 
+    @Test
+    public void serializeCollectionWithSingleItemWithData()     {
+        Collection collection = new Collection(TEST_COM);
+        Item item = new Item(URI.create("http://test.com/items/1"));
+        item.addData(new DataEntry("foo", "bar"));
 
-    private void assertSerialization(String expected, Object actual) {
-        ObjectMapper mapper = new ObjectMapper();
 
-        StringWriter sw = new StringWriter();
+        collection.addItem(item);
 
-        try {
-            mapper.writeValue(sw, actual);
-        } catch (IOException e) {
-            Assert.fail("Exception during serialization: " + e.getMessage());
-        }
-
-        Assert.assertEquals(expected.trim(), sw.toString().trim());
-        System.out.println(sw);
+        assertSerialization("{\"collection\":{" +
+                                "\"href\":\"http://test.com\"," +
+                                "\"version\":\"1.0\"," +
+                                "\"items\":[" +
+                                    "{\"href\":\"http://test.com/items/1\"," +
+                                     "\"data\":[" +
+                                            "{\"name\":\"foo\", \"value\":\"bar\"}" +
+                                        "]" +
+                                     "}" +
+                                  "]" +
+                                "}" +
+                              "}", collection);
     }
+
 }
