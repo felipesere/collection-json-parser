@@ -13,9 +13,10 @@ import java.util.List;
 public class Collection {
 
     private URI href;
-    private List<Item> items = new ArrayList<Item>();
-    private List<Link> links = new ArrayList<Link>();
+    private List<Item>  items   = new ArrayList<Item>();
+    private List<Link>  links   = new ArrayList<Link>();
     private List<Query> queries = new ArrayList<Query>();
+    private Template template;
 
     @JsonCreator()
     public Collection(@JsonProperty("href") URI href) {
@@ -38,16 +39,27 @@ public class Collection {
         return new ArrayList<Item>(items);
     }
 
-    public void setLinks(List<Link> links) {
-        this.links = new ArrayList<Link>(links);
-    }
-
-
     public List<Link> getLinks() {
         return links;
     }
 
+    public void setLinks(List<Link> links) {
+        this.links = new ArrayList<Link>(links);
+    }
+
     public List<Query> getQueries() {
         return queries;
+    }
+
+    public void setQueries(List<Query> queries) {
+        this.queries = queries;
+    }
+
+    public void setTemplate(Template template) {
+        this.template = template;
+    }
+
+    public Template getTemplate() {
+        return template;
     }
 }
