@@ -17,6 +17,7 @@ public class Collection {
     private List<Link>  links   = new ArrayList<Link>();
     private List<Query> queries = new ArrayList<Query>();
     private Template template;
+    private Error error;
 
     @JsonCreator()
     public Collection(@JsonProperty("href") URI href) {
@@ -59,7 +60,36 @@ public class Collection {
         this.template = template;
     }
 
+    public void setError(Error error) {
+        this.error = error;
+    }
+
     public Template getTemplate() {
         return template;
+    }
+
+    public Item getItem(int index) {
+        return items.get(index);
+    }
+
+    public <T> List<T> convert(Transformation<T> transformer) {
+        List<T> result = new ArrayList<T>(items.size());
+
+        for(Item item : items) {
+            T convertedItem = transformer.convert(item);
+            if(convertedItem != null) {
+                result.add(convertedItem);
+            }
+        }
+
+        return result;
+    }
+
+    public boolean hasError() {
+        return error != null;
+    }
+
+    public Error getError() {
+        return error;
     }
 }

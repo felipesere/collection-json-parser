@@ -18,6 +18,22 @@ public class Link {
         this.href = href;
     }
 
+    public String getRel() {
+        return this.rel;
+    }
+
+    public URI getHref() {
+        return href;
+    }
+
+    public String getPrompt() {
+        return prompt;
+    }
+
+    public String getRender() {
+        return render;
+    }
+
     public void setPrompt(String prompt) {
         this.prompt = prompt;
     }
@@ -25,18 +41,4 @@ public class Link {
     public void setRender(String render) {
         this.render = render;
     }
-
-
-   public String toString() {
-       StringBuilder builder = new StringBuilder();
-       builder.append("Link [").append("rel=").append(rel).append(", href=").append(href);
-       if(prompt != null) {
-           builder.append(", prompt=").append(prompt);
-       }
-       if(render != null) {
-           builder.append(", render=").append(render);
-       }
-       builder.append("]");
-       return builder.toString();
-   }
 }

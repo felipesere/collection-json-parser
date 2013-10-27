@@ -1,11 +1,12 @@
 package de.fesere.hypermedia;
 
 import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class DataEntry {
     private final String name;
-    private final String value;
+    private String value;
     private final String prompt;
 
     public DataEntry(String name, String value) {
@@ -20,12 +21,19 @@ public class DataEntry {
     }
 
 
+    @JsonProperty
     public String getName() {
         return name;
     }
 
+    @JsonProperty
     public String getValue() {
         return value;
+    }
+
+    @JsonProperty
+    public String getPrompt() {
+        return prompt;
     }
 
     public String toString() {
@@ -33,4 +41,16 @@ public class DataEntry {
     }
 
 
+    public void set(String s) {
+        this.value = s;
+    }
+
+    @JsonIgnore
+    public String getQueryRepresentation() {
+
+        if(value != null && value.length() > 0) {
+            return name + "=" + value;
+        }
+        return "";
+    }
 }

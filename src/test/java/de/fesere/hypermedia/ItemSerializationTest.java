@@ -1,10 +1,7 @@
 package de.fesere.hypermedia;
 
 import junit.framework.Assert;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.Test;
-import org.junit.internal.matchers.TypeSafeMatcher;
 
 import java.net.URI;
 
@@ -49,29 +46,6 @@ public class ItemSerializationTest extends SerializationTestBase {
         Item item = deserialize(givenJSON, Item.class);
 
         Assert.assertEquals(TEST_COM_ITEM, item.getHref());
-        assertThat(item.getData(), contains(data("foo", "bar")));
+        assertThat(item.getData(), contains(name("foo")));
     }
-
-
-
-    private Matcher<DataEntry> data(final String name, final String value) {
-        return new TypeSafeMatcher<DataEntry>() {
-            @Override
-            public boolean matchesSafely(DataEntry dataEntry) {
-               boolean nameMatches = name.equals(dataEntry.getName());
-               if(value == null) {
-                   return nameMatches && dataEntry.getValue() == null;
-               }
-               return nameMatches && dataEntry.getValue().equals(value);
-
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("a DataEntry with name="+name + " and value="+value);
-            }
-        };
-    }
-
-
 }

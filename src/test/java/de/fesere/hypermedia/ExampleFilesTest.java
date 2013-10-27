@@ -1,18 +1,12 @@
 package de.fesere.hypermedia;
 
-import junit.framework.Assert;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.Test;
-import org.junit.internal.matchers.TypeSafeMatcher;
 
-import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 
-import static java.nio.charset.Charset.defaultCharset;
-import static java.nio.file.FileSystems.getDefault;
-import static java.nio.file.Files.readAllLines;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
@@ -28,8 +22,8 @@ public class ExampleFilesTest extends SerializationTestBase {
 
         Collection result = deserialize(exampleJson, Collection.class);
 
-        Assert.assertEquals(URI.create("http://example.org/friends/"), result.getHref());
-        Assert.assertEquals("1.0", result.getVersion());
+        assertEquals(URI.create("http://example.org/friends/"), result.getHref());
+        assertEquals("1.0", result.getVersion());
     }
 
     @Test
@@ -62,10 +56,10 @@ public class ExampleFilesTest extends SerializationTestBase {
 
         assertThat(result.getTemplate().getData(), hasSize(4));
         assertThat(result.getTemplate().getData(), hasItems(
-                data("full-name", ""),
-                data("email", ""),
-                data("blog", ""),
-                data("avatar", ""))
+                name("full-name"),
+                name("email"),
+                name("blog"),
+                name("avatar"))
         );
     }
 
@@ -75,8 +69,9 @@ public class ExampleFilesTest extends SerializationTestBase {
 
         Collection result = deserialize(givenJson, Collection.class);
 
-        Assert.assertEquals(URI.create("http://example.org/friends/"), result.getHref());
-        Assert.assertEquals("1.0", result.getVersion());
+        assertEquals(URI.create("http://example.org/friends/"), result.getHref());
+        assertEquals("1.0", result.getVersion());
+        assertFalse(result.hasError());
 
         assertThat("Incorrect number of links ", result.getLinks(), hasSize(3));
         assertThat("Incorrect number of items ", result.getItems(), hasSize(3));
@@ -84,53 +79,23 @@ public class ExampleFilesTest extends SerializationTestBase {
         assertThat("Temaplte not found ", result.getTemplate(), is(notNullValue()));
 
         assertThat(result.getTemplate().getData(), hasItems(
-                data("full-name", ""),
-                data("email", ""),
-                data("blog", ""),
-                data("avatar", ""))
+                name("full-name"),
+                name("email"),
+                name("blog"),
+                name("avatar"))
         );
     }
 
+    @Test
+    public void testCollectionWithError() {
+        String givenJson = readFile("examples/collection-with-error.json");
 
+        Collection result = deserialize(givenJson, Collection.class);
 
-    private String readFile(String filename) {
-        String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-        try {
-           List<String> lines =  readAllLines(getDefault().getPath(path, filename), defaultCharset());
+        assertTrue("no error was set", result.hasError());
+        assertEquals("Server Error", result.getError().getTitle());
+        assertEquals("X1C2", result.getError().getCode());
+        assertFalse(result.getError().getMessage().isEmpty());
 
-           return mergeLines(lines);
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-
-            return null;
-        }
-
-    }
-
-    private String mergeLines(List<String> lines) {
-        StringBuilder builder = new StringBuilder();
-        for(String line : lines) {
-            builder.append(line.trim());
-        }
-
-        return builder.toString();
-    }
-
-    private Matcher<DataEntry> data(final String name, final String value) {
-        return new TypeSafeMatcher<DataEntry>() {
-            @Override
-            public boolean matchesSafely(DataEntry dataEntry) {
-                boolean nameMatches = name.equals(dataEntry.getName());
-                boolean valueMatches = value != null ? dataEntry.getValue().equals(value) : dataEntry.getValue() == null;
-
-                return nameMatches && valueMatches;
-
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("a DataEntry with name="+name + " and value="+value);
-            }
-        };
     }
 }

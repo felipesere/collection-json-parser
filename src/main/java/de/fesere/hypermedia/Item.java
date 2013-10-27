@@ -35,6 +35,16 @@ public class Item {
         data.add(dataEntry);
     }
 
+    public String getString(String name) {
+        for(DataEntry entry : data) {
+            if(entry.getName().equals(name)){
+                return entry.getValue();
+            }
+        }
+
+        return null;
+    }
+
 
     public List<DataEntry> getData() {
         return new ArrayList<DataEntry>(data);
