@@ -4,17 +4,17 @@ import junit.framework.Assert;
 
 import java.net.URI;
 
-public class DummyHttpClient implements HttpClient {
+public class DummyHTTPClient implements HTTPClient {
 
     private URI expectedURI = null;
     private String getLinkResponse = "";
 
-    public DummyHttpClient expectGetLinkWith(URI uri) {
+    public DummyHTTPClient expectGetLinkWith(URI uri) {
         expectedURI = uri;
         return this;
     }
 
-    public DummyHttpClient returnStringOnGetLink(String s) {
+    public DummyHTTPClient returnStringOnGetLink(String s) {
         getLinkResponse = s;
         return this;
     }

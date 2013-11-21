@@ -1,6 +1,6 @@
 package de.fesere.hypermedia;
 
-import de.fesere.hypermedia.http.DummyHttpClient;
+import de.fesere.hypermedia.http.DummyHTTPClient;
 import junit.framework.Assert;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class ClientTests {
     public void parserCreatesQuery() {
         Collection collection = simpleCollection();
 
-        DummyHttpClient httpClient = new DummyHttpClient();
+        DummyHTTPClient httpClient = new DummyHTTPClient();
         httpClient
                 .expectGetLinkWith(URI.create("http://test.com/search?name=Max"))
                 .returnStringOnGetLink(collectionToString(collection()));
@@ -65,7 +65,7 @@ public class ClientTests {
 
     private Collection simpleCollection() {
         Collection collection = new Collection(URI.create("http://test.com"));
-        Query query = new Query(URI.create("http://test.com/search"), "search", Arrays.asList(new DataEntry("name", ""), new DataEntry("surname", "")));
+        Query query = new Query(URI.create("http://test.com/search"), "search", "search-query",  Arrays.asList(new DataEntry("name", ""), new DataEntry("surname", "")));
         collection.setQueries(Arrays.asList(query));
         return collection;
     }

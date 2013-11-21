@@ -1,5 +1,6 @@
 package de.fesere.hypermedia;
 
+import de.fesere.hypermedia.exceptions.CollectionHasErrorsException;
 import org.junit.Test;
 
 import java.net.URI;
@@ -96,6 +97,14 @@ public class ExampleFilesTest extends SerializationTestBase {
         assertEquals("Server Error", result.getError().getTitle());
         assertEquals("X1C2", result.getError().getCode());
         assertFalse(result.getError().getMessage().isEmpty());
+    }
 
+    @Test(expected = CollectionHasErrorsException.class)
+    public void testCollectionWithErrorThrowsExceptionOnOtherAccessors() {
+        String givenJson = readFile("examples/collection-with-error.json");
+
+        Collection result = deserialize(givenJson, Collection.class);
+
+        result.getLinks();
     }
 }

@@ -1,10 +1,14 @@
 package de.fesere.hypermedia;
 
 
+import de.fesere.hypermedia.exceptions.CollectionHasErrorsException;
 import org.codehaus.jackson.annotate.*;
+import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @JsonTypeName("collection")
@@ -36,20 +40,28 @@ public class Collection {
         items.add(item);
     }
 
-    public ArrayList<Item> getItems() {
+    public List<Item> getItems() {
+        throwExceptionOnError();
+
         return new ArrayList<Item>(items);
     }
 
     public List<Link> getLinks() {
-        return links;
+        throwExceptionOnError();
+
+        return new ArrayList<Link>(links);
     }
 
-    public void setLinks(List<Link> links) {
-        this.links = new ArrayList<Link>(links);
+    private void throwExceptionOnError() {
+        if(hasError()) {
+            throw new CollectionHasErrorsException(getError());
+        }
     }
 
     public List<Query> getQueries() {
-        return queries;
+        throwExceptionOnError();
+
+        return new ArrayList<Query>(queries);
     }
 
     public void setQueries(List<Query> queries) {
@@ -64,15 +76,15 @@ public class Collection {
         this.error = error;
     }
 
+
     public Template getTemplate() {
+        throwExceptionOnError();
         return template;
     }
 
-    public Item getItem(int index) {
-        return items.get(index);
-    }
-
     public <T> List<T> convert(Transformation<T> transformer) {
+        throwExceptionOnError();
+
         List<T> result = new ArrayList<T>(items.size());
 
         for(Item item : items) {
@@ -91,5 +103,81 @@ public class Collection {
 
     public Error getError() {
         return error;
+    }
+
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+
+        }
+    }
+
+    public Link getLink(String rel) {
+        throwExceptionOnError();
+
+        for(Link link : links) {
+            if(link.getRel().equalsIgnoreCase(rel)) {
+                return link;
+            }
+        }
+
+        return null;
+    }
+
+    public Query getQuery(String rel) {
+        throwExceptionOnError();
+
+        for(Query query :queries) {
+            if(query.getRel().equalsIgnoreCase(rel)) {
+                return query;
+            }
+        }
+
+        return null;
+    }
+
+    public void addItems(List<Item> items) {
+        this.items.addAll(items);
+    }
+
+    public Iterator<Collection> getIterator(Client client) {
+       throwExceptionOnError();
+
+       return new CollectionIterator(this, client);
+
+    }
+
+    private class CollectionIterator implements Iterator<Collection> {
+
+        private Collection context;
+        private Client client;
+
+        public CollectionIterator(Collection context, Client client) {
+            this.context = context;
+            this.client = client;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return context != null && context.getLink("next") != null;
+        }
+
+        @Override
+        public Collection next() {
+
+            URI nextUri = context.getLink("next").getHref();
+
+            Collection next = client.read(nextUri);
+            context = next;
+
+            return next;
+        }
+
+        @Override
+        public void remove() {
+        }
     }
 }

@@ -12,22 +12,24 @@ public class Query {
 
     private final URI href;
     private final String rel;
+    private String name;
     private final List<DataEntry> data;
     private String prompt = null;
 
     @JsonCreator
-    public Query(@JsonProperty("href") URI href, @JsonProperty("rel") String rel, @JsonProperty("data")List<DataEntry> data) {
+    public Query(@JsonProperty("href") URI href, @JsonProperty("rel") String rel,@JsonProperty("name") String name, @JsonProperty("data")List<DataEntry> data) {
         this.href = href;
         this.rel = rel;
+        this.name = name;
         this.data = data;
-    }
-
-    public void setPrompt(String prompt) {
-        this.prompt = prompt;
     }
 
     public URI getHref() {
         return href;
+    }
+
+    public void setPrompt(String prompt) {
+        this.prompt = prompt;
     }
 
     public String getRel() {
@@ -38,6 +40,7 @@ public class Query {
         return data;
     }
 
+    @JsonProperty("prompt")
     public String getPrompt() {
         return prompt;
     }

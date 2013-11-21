@@ -1,7 +1,7 @@
 package de.fesere.hypermedia;
 
 import de.fesere.hypermedia.exceptions.ElementNotFoundException;
-import de.fesere.hypermedia.http.HttpClient;
+import de.fesere.hypermedia.http.HTTPClient;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -13,10 +13,10 @@ import java.net.URISyntaxException;
 public class Client {
 
     private Collection collection;
-    private HttpClient httpClient;
+    private HTTPClient httpClient;
 
 
-    public Client(HttpClient httpClient) {
+    public Client(HTTPClient httpClient) {
         this.httpClient = httpClient;
     }
 
@@ -54,5 +54,17 @@ public class Client {
         }
 
         throw new ElementNotFoundException("Query '"+search+"' not found" );
+    }
+
+    public Collection read(URI uri) {
+        String collectionJson = httpClient.getLink(uri);
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(collectionJson, Collection.class);
+        } catch (IOException e) {
+            System.out.println(collectionJson);
+            throw new RuntimeException(e);
+        }
     }
 }

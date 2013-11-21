@@ -41,8 +41,20 @@ public class Item {
                 return entry.getValue();
             }
         }
-
         return null;
+    }
+
+    public int getInt(String name) {
+        for(DataEntry entry : data) {
+            if(entry.getName().equals(name)) {
+                try {
+                    return Integer.parseInt(entry.getValue());
+                } catch (NumberFormatException nfe) {
+                    return 0;
+                }
+            }
+        }
+        return 0;
     }
 
 
