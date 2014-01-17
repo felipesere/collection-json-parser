@@ -20,12 +20,12 @@ public class EmployeeDB {
 
 
     public EmployeeDB() {
-        Collection landingCollection = httpClient.read(START);
+        Collection rootCollection = httpClient.read(START);
 
-        handlePossibleErrors(landingCollection);
+        handlePossibleErrors(rootCollection);
 
-        departmentsURI = landingCollection.getLink("departments").getHref();
-        employeesURI = landingCollection.getLink("employees").getHref();
+        departmentsURI = rootCollection.getLink("departments").getHref();
+        employeesURI = rootCollection.getLink("employees").getHref();
     }
 
     public void handlePossibleErrors(Collection collection) {
@@ -74,6 +74,7 @@ public class EmployeeDB {
 
         Iterator<Collection> iterator = departments.getIterator(httpClient);
         while(iterator.hasNext()) {
+            System.out.println("itearion!");
             departments.addItems(iterator.next().getItems());
         }
 
@@ -90,7 +91,7 @@ public class EmployeeDB {
         return employees.convert(new EmployeeTransformer());
     }
 
-    public List<Employee> findEmploy(String name) {
+    public List<Employee> findEmployeeByName(String name) {
         Collection employees = httpClient.read(employeesURI);
         Query searchQuery = employees.getQuery("search");
 
