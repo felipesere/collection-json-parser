@@ -1,5 +1,6 @@
 package de.fesere.hypermedia.cj.model;
 
+import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -40,7 +41,7 @@ public class Item {
                 return entry.getValue();
             }
         }
-        return null;
+        throw new ElementNotFoundException("Did not find property '"+name+"' in '"+href+"'");
     }
 
     public int getInt(String name) {
@@ -49,13 +50,13 @@ public class Item {
                 try {
                     return Integer.parseInt(entry.getValue());
                 } catch (NumberFormatException nfe) {
-                    return 0;
+                    throw new ElementNotFoundException("Did not find property '"+name+"' in '"+href+"'");
                 }
             }
         }
-        return 0;
-    }
+        throw new ElementNotFoundException("Did not find property '"+name+"' in '"+href+"'");
 
+    }
 
     public List<DataEntry> getData() {
         return new ArrayList<>(data);

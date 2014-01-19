@@ -44,11 +44,6 @@ public class DataEntry {
         return prompt;
     }
 
-    public String toString() {
-        return "DataEntry [name="+name + ", value="+value+"]";
-    }
-
-
     public void set(String s) {
         this.value = s;
     }

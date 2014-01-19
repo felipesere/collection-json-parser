@@ -38,7 +38,7 @@ public abstract class SerializationTestBase {
         }
     }
 
-    <T> T deserialize(String givenJson, Class<T> clazz) {
+    public final <T> T deserialize(String givenJson, Class<T> clazz) {
         ObjectMapper mapper = new ObjectMapper();
 
         try {
@@ -49,21 +49,21 @@ public abstract class SerializationTestBase {
         }
     }
 
-    String readFile(String filename) {
+    public final String readFile(String filename) {
         String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         try {
             List<String> lines =  readAllLines(getDefault().getPath(path, filename), defaultCharset());
 
             return mergeLines(lines);
         } catch (IOException e) {
-            junit.framework.Assert.fail(e.getMessage());
+            Assert.fail(e.getMessage());
 
             return null;
         }
 
     }
 
-    String mergeLines(List<String> lines) {
+    private String mergeLines(List<String> lines) {
         StringBuilder builder = new StringBuilder();
         for(String line : lines) {
             builder.append(line.trim());
