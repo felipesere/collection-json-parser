@@ -2,6 +2,7 @@ package de.fesere.hypermedia.cj.model;
 
 
 import de.fesere.hypermedia.cj.exceptions.CollectionHasErrorsException;
+import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import org.codehaus.jackson.annotate.*;
 
 import java.net.URI;
@@ -114,7 +115,7 @@ public class Collection {
             }
         }
 
-        return null;
+        throw new ElementNotFoundException("Did not find link '"+rel+"' in collection " + href );
     }
 
     public Query getQuery(String rel) {
@@ -126,7 +127,7 @@ public class Collection {
             }
         }
 
-        return null;
+        throw new ElementNotFoundException("Did not find query '"+rel+"' in collection " + href );
     }
 
     public void addItems(List<Item> items) {

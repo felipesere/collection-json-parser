@@ -77,7 +77,7 @@ public class ExampleFilesTest extends SerializationTestBase {
         assertThat("Incorrect number of links ", result.getLinks(), hasSize(3));
         assertThat("Incorrect number of items ", result.getItems(), hasSize(3));
         assertThat("Incorrect number of queries ", result.getQueries(),hasSize(1));
-        assertThat("Temaplte not found ", result.getTemplate(), is(notNullValue()));
+        assertThat("Template not found ", result.getTemplate(), is(notNullValue()));
 
         assertThat(result.getTemplate().getData(), hasItems(
                 name("full-name"),
@@ -85,6 +85,14 @@ public class ExampleFilesTest extends SerializationTestBase {
                 name("blog"),
                 name("avatar"))
         );
+
+        assertThat(result.getLinks(), hasSize(3));
+        assertThat(result.getLink("feed").getRel(), is("feed"));
+        assertThat(result.getLink("feed").getHref(), is(URI.create("http://example.org/friends/rss")));
+
+        assertThat(result.getQueries(), hasSize(1));
+        assertThat(result.getQuery("search").getData(),hasSize(1) );
+
     }
 
     @Test
@@ -102,7 +110,6 @@ public class ExampleFilesTest extends SerializationTestBase {
     @Test(expected = CollectionHasErrorsException.class)
     public void testCollectionWithErrorThrowsExceptionOnOtherAccessors() {
         String givenJson = readFile("examples/collection-with-error.json");
-
         Collection result = deserialize(givenJson, Collection.class);
 
         result.getLinks();
