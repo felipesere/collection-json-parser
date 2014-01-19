@@ -24,38 +24,36 @@ public class CjClient {
 
     public Collection follow(Query query) {
 
-        try {
+        URI queryURI = query.buildURI();
+        String json = httpClient.getLink(queryURI);
 
-            URI queryURI = query.buildURI();
-            String json = httpClient.getLink(queryURI);
-
-            ObjectMapper mapper = new ObjectMapper();
-
-            return mapper.readValue(json, Collection.class);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        return deserialize(json, Collection.class);
     }
+
     public Query selectQuery(String search) {
-        for(Query query : collection.getQueries()) {
-            if(query.getRel().equals(search)) {
+        for (Query query : collection.getQueries()) {
+            if (query.getRel().equals(search)) {
                 return query;
             }
         }
 
-        throw new ElementNotFoundException("Query '"+search+"' not found" );
+        throw new ElementNotFoundException("Query '" + search + "' not found");
     }
 
     public Collection read(URI uri) {
         String collectionJson = httpClient.getLink(uri);
 
+        return deserialize(collectionJson, Collection.class);
+    }
+
+    private <T> T deserialize(String input, Class<T> responseClass) {
+
         ObjectMapper mapper = new ObjectMapper();
+
         try {
-            return mapper.readValue(collectionJson, Collection.class);
+            return mapper.readValue(input, responseClass);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not deseriliaze inout to " + responseClass.getName(),e);
         }
     }
 }
