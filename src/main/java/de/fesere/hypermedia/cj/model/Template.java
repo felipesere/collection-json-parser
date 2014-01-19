@@ -1,13 +1,15 @@
 package de.fesere.hypermedia.cj.model;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.LinkedList;
 import java.util.List;
 
-@JsonSerialize
+@JsonTypeName("template")
+//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Template {
 
@@ -19,5 +21,13 @@ public class Template {
 
     public List<DataEntry> getData() {
         return new LinkedList<>(data);
+    }
+
+    public void fill(Item item) {
+        for(DataEntry entry : data) {
+            String entryName = entry.getName();
+            String value = item.getString(entryName);
+            entry.set(value);
+        }
     }
 }

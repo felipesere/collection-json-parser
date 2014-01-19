@@ -1,8 +1,10 @@
 package de.fesere.hypermedia.cj.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import de.fesere.hypermedia.cj.http.HTTPClient;
-import org.codehaus.jackson.map.ObjectMapper;
+import de.fesere.hypermedia.cj.model.serialization.ObjectMapperConfig;
+import de.fesere.hypermedia.cj.model.serialization.Wrapper;
 
 import java.io.IOException;
 import java.net.URI;
@@ -11,10 +13,13 @@ public class CjClient {
 
     private Collection collection;
     private final HTTPClient httpClient;
+    private final ObjectMapper mapper;
 
 
     public CjClient(HTTPClient httpClient) {
         this.httpClient = httpClient;
+        mapper = (new ObjectMapperConfig()).getConfiguredObjectMapper();
+
     }
 
     public CjClient use(Collection collection) {
@@ -27,7 +32,7 @@ public class CjClient {
         URI queryURI = query.buildURI();
         String json = httpClient.getLink(queryURI);
 
-        return deserialize(json, Collection.class);
+        return (Collection) deserialize(json, Wrapper.class).element;
     }
 
     public Query selectQuery(String search) {
@@ -43,17 +48,33 @@ public class CjClient {
     public Collection read(URI uri) {
         String collectionJson = httpClient.getLink(uri);
 
-        return deserialize(collectionJson, Collection.class);
+        return (Collection) deserialize(collectionJson, Wrapper.class).element;
+    }
+
+    public Collection addItem(Template template) {
+        String body = serialize(template);
+
+        URI result = httpClient.post(collection.getHref(), body);
+
+        return read(result);
     }
 
     private <T> T deserialize(String input, Class<T> responseClass) {
 
-        ObjectMapper mapper = new ObjectMapper();
-
         try {
             return mapper.readValue(input, responseClass);
         } catch (IOException e) {
-            throw new RuntimeException("Could not deseriliaze inout to " + responseClass.getName(),e);
+            throw new RuntimeException("Could not deseriliaze input to " + responseClass.getName(),e);
         }
+    }
+
+    private String serialize(Object obj) {
+
+        try {
+            return mapper.writeValueAsString(obj);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not serilize " + obj.getClass().getName() + " to string",e );
+        }
+
     }
 }

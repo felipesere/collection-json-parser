@@ -27,4 +27,9 @@ public class DummyHTTPClient implements HTTPClient {
         }
         return getLinkResponse;
     }
+
+    @Override
+    public URI post(URI href, String body) {
+        return null;
+    }
 }

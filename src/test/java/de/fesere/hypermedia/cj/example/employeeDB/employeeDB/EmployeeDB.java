@@ -2,10 +2,7 @@ package de.fesere.hypermedia.cj.example.employeeDB.employeeDB;
 
 import de.fesere.hypermedia.cj.example.employeeDB.employeeDB.transformations.DepratmentTransformer;
 import de.fesere.hypermedia.cj.example.employeeDB.employeeDB.transformations.EmployeeTransformer;
-import de.fesere.hypermedia.cj.model.CjClient;
-import de.fesere.hypermedia.cj.model.Collection;
-import de.fesere.hypermedia.cj.model.Item;
-import de.fesere.hypermedia.cj.model.Query;
+import de.fesere.hypermedia.cj.model.*;
 
 import java.net.URI;
 import java.util.Collections;
@@ -34,6 +31,15 @@ public class EmployeeDB {
         if(collection.hasError()) {
             throw new RuntimeException(collection.getError().getMessage());
         }
+    }
+
+    public void addNewEmployee(Employee employee) {
+        Collection employees = httpCjClient.read(employeesURI);
+
+        Template template = employees.getTemplate();
+        template.fill(new EmployeeTransformer().convert(employee));
+
+        httpCjClient.addItem(template);
     }
 
     public List<Employee> getEmployeesOfDepartment(String departmentName) {

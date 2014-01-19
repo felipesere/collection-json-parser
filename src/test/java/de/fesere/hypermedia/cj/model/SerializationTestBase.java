@@ -1,6 +1,8 @@
 package de.fesere.hypermedia.cj.model;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.fesere.hypermedia.cj.model.serialization.ObjectMapperConfig;
+import de.fesere.hypermedia.cj.model.serialization.Wrapper;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.json.JSONException;
@@ -18,8 +20,21 @@ import static java.nio.file.Files.readAllLines;
 
 public abstract class SerializationTestBase {
 
+    private final ObjectMapper mapper;
+
+    public SerializationTestBase() {
+        mapper = (new ObjectMapperConfig()).getConfiguredObjectMapper();
+    }
+
+    public ObjectMapper getMapper() {
+        return mapper;
+    }
+
+    void assertCollectionSerialization(String expected, Collection actual) {
+        assertSerialization(expected, new Wrapper<>(actual));
+    }
+
     void assertSerialization(String expected, Object actual) {
-        ObjectMapper mapper = new ObjectMapper();
 
         StringWriter sw = new StringWriter();
 
@@ -38,8 +53,9 @@ public abstract class SerializationTestBase {
         }
     }
 
+
     public final <T> T deserialize(String givenJson, Class<T> clazz) {
-        ObjectMapper mapper = new ObjectMapper();
+        System.out.println(givenJson);
 
         try {
             return mapper.readValue(givenJson, clazz);
@@ -47,6 +63,10 @@ public abstract class SerializationTestBase {
             Assert.fail("Failed to deserialize given Json: " + e.getMessage());
             return null; // fail(..) will throw an assertionError here
         }
+    }
+
+    public final Collection deserializeCollection(String giveJson) {
+        return (Collection) deserialize(giveJson, Wrapper.class).element;
     }
 
     public final String readFile(String filename) {

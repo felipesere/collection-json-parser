@@ -1,13 +1,12 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.exceptions.CollectionHasErrorsException;
+import de.fesere.hypermedia.cj.model.serialization.Wrapper;
 import org.junit.Test;
 
 import java.net.URI;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
@@ -21,7 +20,7 @@ public class ExampleFilesTest extends SerializationTestBase {
         String exampleJson = readFile("examples/minimal-collection.json");
 
 
-        Collection result = deserialize(exampleJson, Collection.class);
+        Collection result = (Collection) deserialize(exampleJson, Wrapper.class).element;
 
         assertEquals(URI.create("http://example.org/friends/"), result.getHref());
         assertEquals("1.0", result.getVersion());
@@ -31,7 +30,7 @@ public class ExampleFilesTest extends SerializationTestBase {
     public void testCollectionWithSingleItem() {
         String givenJson = readFile("examples/item-collection.json");
 
-        Collection result = deserialize(givenJson, Collection.class);
+        Collection result = deserializeCollection(givenJson);
 
         assertThat(result.getLinks(), hasSize(3));
         assertThat(result.getItems(), hasSize(1));
@@ -43,32 +42,17 @@ public class ExampleFilesTest extends SerializationTestBase {
     public void testCollectionWithOnlyQuery() {
         String givenJson = readFile("examples/query-collection.json");
 
-        Collection result = deserialize(givenJson, Collection.class);
+        Collection result = deserializeCollection(givenJson);
 
         assertThat(result.getQueries(), hasSize(1));
         assertThat(result.getQueries().get(0).getData(),hasSize(1) );
     }
 
     @Test
-    public void testCollectionWithTemplate() {
-        String givenJson = readFile("examples/template-collection.json");
-
-        Collection result = deserialize(givenJson, Collection.class);
-
-        assertThat(result.getTemplate().getData(), hasSize(4));
-        assertThat(result.getTemplate().getData(), hasItems(
-                name("full-name"),
-                name("email"),
-                name("blog"),
-                name("avatar"))
-        );
-    }
-
-    @Test
     public void testCollectionWithFullExample() {
         String givenJson = readFile("examples/full-collection.json");
 
-        Collection result = deserialize(givenJson, Collection.class);
+        Collection result = deserializeCollection(givenJson);
 
         assertEquals(URI.create("http://example.org/friends/"), result.getHref());
         assertEquals("1.0", result.getVersion());
@@ -99,7 +83,7 @@ public class ExampleFilesTest extends SerializationTestBase {
     public void testCollectionWithError() {
         String givenJson = readFile("examples/collection-with-error.json");
 
-        Collection result = deserialize(givenJson, Collection.class);
+        Collection result = deserializeCollection(givenJson);
 
         assertTrue("no error was set", result.hasError());
         assertEquals("Server Error", result.getError().getTitle());
@@ -110,7 +94,7 @@ public class ExampleFilesTest extends SerializationTestBase {
     @Test(expected = CollectionHasErrorsException.class)
     public void testCollectionWithErrorThrowsExceptionOnOtherAccessors() {
         String givenJson = readFile("examples/collection-with-error.json");
-        Collection result = deserialize(givenJson, Collection.class);
+        Collection result = deserializeCollection(givenJson);
 
         result.getLinks();
     }

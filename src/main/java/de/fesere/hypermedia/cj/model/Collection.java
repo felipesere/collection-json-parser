@@ -1,16 +1,17 @@
 package de.fesere.hypermedia.cj.model;
 
 
+import com.fasterxml.jackson.annotation.*;
 import de.fesere.hypermedia.cj.exceptions.CollectionHasErrorsException;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
-import org.codehaus.jackson.annotate.*;
+import de.fesere.hypermedia.cj.model.transformer.ReadTransformation;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonTypeName("collection")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Collection {
 
@@ -83,7 +84,7 @@ public class Collection {
         return template;
     }
 
-    public <T> List<T> convert(Transformation<T> transformer) {
+    public <T> List<T> convert(ReadTransformation<T> transformer) {
         throwExceptionOnError();
 
         List<T> result = new ArrayList<>(items.size());
@@ -101,6 +102,10 @@ public class Collection {
     public boolean hasError() {
         return error != null;
     }
+
+
+
+
 
     public Error getError() {
         return error;
@@ -132,5 +137,9 @@ public class Collection {
 
     public void addItems(List<Item> items) {
         this.items.addAll(items);
+    }
+
+    public void setTemplate(Template template) {
+        this.template = template;
     }
 }

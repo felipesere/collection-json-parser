@@ -1,13 +1,14 @@
 package de.fesere.hypermedia.cj.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
-import org.codehaus.jackson.annotate.JsonCreator;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @JsonSerialize
@@ -17,8 +18,20 @@ public class Item {
     private final List<DataEntry> data = new ArrayList<>();
     private List<Link> links = new ArrayList<>();
 
+
+    public Item() {
+        this(Collections.<DataEntry>emptyList());
+    }
+
+    public Item(List<DataEntry> data) {
+        this((URI) null);
+        if(data != null) {
+            this.data.addAll(data);
+        }
+    }
+
     public Item(URI href) {
-        this(href, null);
+        this(href, Collections.<Link>emptyList());
     }
 
     @JsonCreator

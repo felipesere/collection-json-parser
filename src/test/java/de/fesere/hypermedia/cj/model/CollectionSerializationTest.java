@@ -1,6 +1,7 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
+import de.fesere.hypermedia.cj.model.serialization.Wrapper;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ public class CollectionSerializationTest extends SerializationTestBase {
     public void testPOJOtoJSON() {
         Collection collection = new Collection(TEST_COM);
 
-        assertSerialization("{\"collection\":{\"href\":\"http://test.com\",\"version\":\"1.0\"}}", collection);
+        assertSerialization("{\"collection\":{\"href\":\"http://test.com\",\"version\":\"1.0\"}}", new Wrapper<>(collection));
 
     }
 
@@ -23,7 +24,7 @@ public class CollectionSerializationTest extends SerializationTestBase {
     public void testJSONtoPOJO() {
         String givenJson = "{\"collection\":{\"href\":\"http://test.com\",\"version\":\"1.0\"}}";
 
-        Collection collection = deserialize(givenJson, Collection.class);
+        Collection collection = deserializeCollection(givenJson);
 
         Assert.assertEquals("1.0", collection.getVersion());
         Assert.assertEquals(TEST_COM, collection.getHref());
@@ -36,7 +37,7 @@ public class CollectionSerializationTest extends SerializationTestBase {
 
         collection.addItem(new Item(URI.create("http://test.com/items/1")));
 
-        assertSerialization("{\"collection\":{\"href\":\"http://test.com\",\"version\":\"1.0\",\"items\":[{\"href\":\"http://test.com/items/1\"}]}}", collection);
+        assertCollectionSerialization("{\"collection\":{\"href\":\"http://test.com\",\"version\":\"1.0\",\"items\":[{\"href\":\"http://test.com/items/1\"}]}}", collection);
     }
 
     @Test
@@ -48,7 +49,7 @@ public class CollectionSerializationTest extends SerializationTestBase {
 
         collection.addItem(item);
 
-        assertSerialization("{\"collection\":{" +
+        assertCollectionSerialization("{\"collection\":{" +
                 "\"href\":\"http://test.com\"," +
                 "\"version\":\"1.0\"," +
                 "\"items\":[" +
