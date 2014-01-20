@@ -7,16 +7,16 @@ import org.apache.commons.httpclient.methods.PostMethod;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Map;
 
 public class ApacheClient implements HTTPClient {
-    private String collectionJson =  "application/vnd.collection+json";
 
     @Override
     public String getLink(URI uri) {
 
         HttpClient client = new HttpClient();
         GetMethod get = new GetMethod(uri.toString());
-        get.addRequestHeader("Accept", collectionJson);
+        get.addRequestHeader("Accept", "application/vnd.collection+json");
 
         try {
             client.executeMethod(get);
@@ -28,10 +28,13 @@ public class ApacheClient implements HTTPClient {
     }
 
     @Override
-    public URI post(URI uri, String body) {
+    public URI post(URI uri, String body, Map<String, String> header) {
         HttpClient client = new HttpClient();
         PostMethod post = new PostMethod(uri.toString());
-        post.addRequestHeader("Content-Type", collectionJson);
+
+        for(Map.Entry<String,String> entry : header.entrySet()) {
+            post.addRequestHeader(entry.getKey(), entry.getValue());
+        }
 
         try {
             client.executeMethod(post);

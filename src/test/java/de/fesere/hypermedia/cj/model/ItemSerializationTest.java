@@ -42,13 +42,10 @@ public class ItemSerializationTest extends SerializationTestBase {
         assertThat(dataEntry.getPrompt(), is("foos prompt"));
         assertThat(dataEntry.getName(), is("foo"));
         assertThat(dataEntry.getValue(), is("bar"));
-
-
     }
 
     @Test
     public void testSerializeItemWithSingleDataEntry() {
-
         Item item = new Item(TEST_COM_ITEM);
         item.addData(new DataEntry("foo", "bar"));
 
@@ -57,7 +54,6 @@ public class ItemSerializationTest extends SerializationTestBase {
 
     @Test
     public void testDeserializeItemWithSingleDataEntry() {
-
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"foo\", \"value\":\"bar\"}]}";
 
         Item item = deserialize(givenJSON, Item.class);
@@ -68,27 +64,23 @@ public class ItemSerializationTest extends SerializationTestBase {
 
     @Test(expected = ElementNotFoundException.class)
     public void testDeserializeItemWithSingleDataEntryMissingString() {
-
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"age\", \"value\":\"24\"}]}";
 
         Item item = deserialize(givenJSON, Item.class);
-        item.getString("doesNotExist");
 
+        item.getString("doesNotExist");
     }
 
     @Test(expected = ElementNotFoundException.class)
     public void testDeserializeItemWithSingleDataEntryMissingInteger() {
-
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"age\", \"value\":\"24\"}]}";
 
         Item item = deserialize(givenJSON, Item.class);
         item.getInt("doesNotExist");
-
     }
 
     @Test
     public void testDeserializeItemWithSingleDataEntryContainingInt() {
-
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"age\", \"value\":24}]}";
 
         Item item = deserialize(givenJSON, Item.class);
@@ -100,7 +92,6 @@ public class ItemSerializationTest extends SerializationTestBase {
 
     @Test(expected = ElementNotFoundException.class)
     public void testDeserializeItemWithSingleDataEntryContainingMalformedInt_exception() {
-
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"age\", \"value\": \"24.abc\"}]}";
 
         Item item = deserialize(givenJSON, Item.class);

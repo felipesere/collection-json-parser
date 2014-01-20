@@ -5,7 +5,6 @@ import de.fesere.hypermedia.cj.model.serialization.Wrapper;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,17 +12,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 
 public class TemplateTest extends SerializationTestBase {
-
-    @Test
-    public void test_marshallCollectionWithTemplate() throws IOException {
-        Collection it = new Collection(URI.create("http://foo.com"));
-        it.setTemplate(emptyTempalte());
-
-        System.out.println(getMapper().writeValueAsString(new Wrapper<>(it)));
-
-
-    }
-
 
     @Test
     public void testCollectionWithTemplate() {

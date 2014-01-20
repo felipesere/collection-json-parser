@@ -1,7 +1,10 @@
 package de.fesere.hypermedia.cj.model;
 
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import de.fesere.hypermedia.cj.exceptions.CollectionHasErrorsException;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import de.fesere.hypermedia.cj.model.transformer.ReadTransformation;
@@ -11,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonTypeName("collection")
-//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Collection {
 

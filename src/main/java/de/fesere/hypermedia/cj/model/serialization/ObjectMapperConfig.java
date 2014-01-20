@@ -1,6 +1,7 @@
 package de.fesere.hypermedia.cj.model.serialization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 public class ObjectMapperConfig {
 
@@ -9,5 +10,12 @@ public class ObjectMapperConfig {
         mapper.registerModule(new WrapperModule());
 
         return mapper;
+    }
+
+    public class WrapperModule extends SimpleModule {
+        public WrapperModule() {
+            addSerializer(Wrapper.class, new WrapperSerializer());
+            addDeserializer(Wrapper.class, new WrapperDeserializer());
+        }
     }
 }

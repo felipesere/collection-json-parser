@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URI;
@@ -38,17 +39,28 @@ public class Query {
     }
 
     public Query set(String name, String value) {
-        for (DataEntry dataEntry : data) {
-            if (dataEntry.getName().equals(name)) {
-                dataEntry.set(value);
-            }
-        }
+        DataEntry found = findDataEntry(name);
 
+        found.set(value);
         return this;
     }
 
+    private DataEntry findDataEntry(String name) {
+        for (DataEntry dataEntry : data) {
+            if (dataEntry.getName().equals(name)) {
+                return dataEntry;
+            }
+        }
+        throw new ElementNotFoundException("Did not find element '"+name+"' in query '"+rel+"'");
+    }
+
     public URI buildURI() {
-        return URI.create(this.getHref() + "?" + this.getDataForUri());
+        String queryStering = getDataForUri();
+        if (StringUtils.isBlank(queryStering)) {
+            return href;
+        } else {
+            return URI.create(this.getHref() + "?" + this.getDataForUri());
+        }
     }
 
 
@@ -56,10 +68,9 @@ public class Query {
         List<String> entryPairs = new LinkedList<>();
         for (DataEntry entry : data) {
             String entryPair = entry.getQueryRepresentation();
-            if (entryPair.length() > 0) {
+            if (StringUtils.isNotBlank(entryPair)) {
                 entryPairs.add(entryPair);
             }
-
         }
 
         return StringUtils.join(entryPairs, "&");

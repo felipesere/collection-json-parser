@@ -1,28 +1,25 @@
 package de.fesere.hypermedia.cj.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import de.fesere.hypermedia.cj.http.DummyHTTPClient;
-import de.fesere.hypermedia.cj.model.serialization.ObjectMapperConfig;
-import de.fesere.hypermedia.cj.model.serialization.Wrapper;
 import de.fesere.hypermedia.cj.model.transformer.ReadTransformation;
 import junit.framework.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
-public class CjClientTests {
+public class CjClientTests extends SerializationTestBase {
+
+    public static final String BASE_URL = "http://test.com";
+    private static final String POST = "POST";
 
     @Test
     public void readCollectionFromURI() {
-
-
-        Collection collection = simpleCollection();
+        Collection collection = collection();
         DummyHTTPClient httpClient = new DummyHTTPClient();
-        httpClient.expectGetLinkWith(URI.create("http://root.url")).returnStringOnGetLink(collectionToString(collection));
+        httpClient.expectGetLinkWith(URI.create("http://root.url")).returnStringOnGetLink(serializeCollection(collection));
         CjClient client = new CjClient(httpClient);
         Collection result = client.read(URI.create("http://root.url"));
 
@@ -31,7 +28,7 @@ public class CjClientTests {
 
     @Test(expected = ElementNotFoundException.class)
     public void selectingNonExistingQueryThrowsException() {
-        Collection collection = simpleCollection();
+        Collection collection = collection();
         DummyHTTPClient httpClient = new DummyHTTPClient();
         CjClient client = new CjClient(httpClient);
         client.use(collection);
@@ -41,11 +38,11 @@ public class CjClientTests {
 
     @Test
     public void parserCreatesQuery() {
-        Collection collection = simpleCollection();
+        Collection collection = collection();
 
         DummyHTTPClient httpClient = new DummyHTTPClient();
         httpClient.expectGetLinkWith(URI.create("http://test.com/search?name=Max"))
-                  .returnStringOnGetLink(collectionToString(collection()));
+                .returnStringOnGetLink(serializeCollection(collection()));
 
         CjClient cjClient = new CjClient(httpClient);
         cjClient.use(collection);
@@ -76,6 +73,41 @@ public class CjClientTests {
         Assert.assertEquals("Musterman", personList.get(0).lastname);
     }
 
+    @Test
+    public void testAddItemToCollection() {
+        Collection collection = collection();
+        Template template = new Template(Arrays.asList(new DataEntry("foo"), new DataEntry("bar"), new DataEntry("batz")));
+        collection.setTemplate(template);
+
+
+        Item content = new Item(Arrays.asList(new DataEntry("foo", "a"), new DataEntry("bar", "b"), new DataEntry("batz", "c")));
+        template.fill(content);
+
+
+        DummyHTTPClient http = new DummyHTTPClient();
+        http.expect(POST).on(URI.create(BASE_URL)).withHeader("Content-Type", "application/vnd.collection+json").body(
+                "{\"template\" : {\n" +
+                        "      \"data\" : [\n" +
+                        "        {\"name\" : \"foo\", \"value\" : \"a\"},\n" +
+                        "        {\"name\" : \"bar\", \"value\" : \"b\"},\n" +
+                        "        {\"name\" : \"batz\", \"value\" : \"c\"},\n" +
+                        "      ]\n" +
+                        "    }" +
+                        "}"
+        );
+        http.respondWithURI(URI.create(BASE_URL + "/1"));
+        http.expectGetLinkWith(URI.create(BASE_URL + "/1"));
+
+        String resultJson = readFile("examples/full-collection.json");
+        http.returnStringOnGetLink(resultJson);
+        CjClient client = new CjClient(http);
+        client.use(collection);
+        Collection resultCollection = client.addItem(template);
+
+        Assert.assertNotNull(resultCollection);
+
+    }
+
     private static class Person {
         String firstname;
         String lastname;
@@ -85,33 +117,18 @@ public class CjClientTests {
         }
     }
 
-
-    private Collection simpleCollection() {
-        Collection collection = new Collection(URI.create("http://test.com"));
-        Query query = new Query(URI.create("http://test.com/search"), "search", Arrays.asList(new DataEntry("name"), new DataEntry("surname")));
-        collection.setQueries(Arrays.asList(query));
-        return collection;
-    }
-
     private Collection collection() {
-        Collection c = new Collection(URI.create("http://test.com"));
+        Collection collection = new Collection(URI.create(BASE_URL));
         Item item = new Item(URI.create("http://test.com/people/1"), null);
 
         item.addData(new DataEntry("name", "Max"));
         item.addData(new DataEntry("surname", "Musterman"));
 
-        c.addItem(item);
-        return c;
-    }
+        Query query = new Query(URI.create("http://test.com/search"), "search", Arrays.asList(new DataEntry("name"), new DataEntry("surname")));
+        collection.setQueries(Arrays.asList(query));
 
-    private String collectionToString(Collection c) {
-        ObjectMapperConfig config = new ObjectMapperConfig();
-        ObjectMapper mapper = config.getConfiguredObjectMapper();
 
-        try {
-           return  mapper.writeValueAsString(new Wrapper(c));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        collection.addItem(item);
+        return collection;
     }
 }

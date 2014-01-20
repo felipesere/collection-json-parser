@@ -1,25 +1,23 @@
 package de.fesere.hypermedia.cj.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import de.fesere.hypermedia.cj.http.HTTPClient;
-import de.fesere.hypermedia.cj.model.serialization.ObjectMapperConfig;
+import de.fesere.hypermedia.cj.model.serialization.Serializer;
 import de.fesere.hypermedia.cj.model.serialization.Wrapper;
 
-import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CjClient {
 
     private Collection collection;
     private final HTTPClient httpClient;
-    private final ObjectMapper mapper;
+    private Serializer serializer = new Serializer();
 
 
     public CjClient(HTTPClient httpClient) {
         this.httpClient = httpClient;
-        mapper = (new ObjectMapperConfig()).getConfiguredObjectMapper();
-
     }
 
     public CjClient use(Collection collection) {
@@ -30,9 +28,8 @@ public class CjClient {
     public Collection follow(Query query) {
 
         URI queryURI = query.buildURI();
-        String json = httpClient.getLink(queryURI);
 
-        return (Collection) deserialize(json, Wrapper.class).element;
+        return read(queryURI);
     }
 
     public Query selectQuery(String search) {
@@ -48,33 +45,20 @@ public class CjClient {
     public Collection read(URI uri) {
         String collectionJson = httpClient.getLink(uri);
 
-        return (Collection) deserialize(collectionJson, Wrapper.class).element;
+        return (Collection) serializer.deserialize(collectionJson, Wrapper.class).element;
     }
 
     public Collection addItem(Template template) {
-        String body = serialize(template);
+        String body = serializer.serialize(new Wrapper<>(template));
 
-        URI result = httpClient.post(collection.getHref(), body);
+        URI result = httpClient.post(collection.getHref(), body, createHeader());
 
         return read(result);
     }
 
-    private <T> T deserialize(String input, Class<T> responseClass) {
-
-        try {
-            return mapper.readValue(input, responseClass);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not deseriliaze input to " + responseClass.getName(),e);
-        }
-    }
-
-    private String serialize(Object obj) {
-
-        try {
-            return mapper.writeValueAsString(obj);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not serilize " + obj.getClass().getName() + " to string",e );
-        }
-
+    private Map<String, String> createHeader() {
+        Map<String, String> header =  new HashMap<>();
+        header.put("Content-Type", "application/vnd.collection+json");
+        return header;
     }
 }

@@ -16,7 +16,6 @@ public class CollectionSerializationTest extends SerializationTestBase {
         Collection collection = new Collection(TEST_COM);
 
         assertSerialization("{\"collection\":{\"href\":\"http://test.com\",\"version\":\"1.0\"}}", new Wrapper<>(collection));
-
     }
 
 
@@ -28,7 +27,6 @@ public class CollectionSerializationTest extends SerializationTestBase {
 
         Assert.assertEquals("1.0", collection.getVersion());
         Assert.assertEquals(TEST_COM, collection.getHref());
-
     }
 
     @Test
@@ -76,8 +74,6 @@ public class CollectionSerializationTest extends SerializationTestBase {
 
         collection.getLink("doesNotExist");
     }
-
-
 
 
 }

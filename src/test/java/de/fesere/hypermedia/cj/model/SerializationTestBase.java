@@ -1,7 +1,6 @@
 package de.fesere.hypermedia.cj.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.fesere.hypermedia.cj.model.serialization.ObjectMapperConfig;
+import de.fesere.hypermedia.cj.model.serialization.Serializer;
 import de.fesere.hypermedia.cj.model.serialization.Wrapper;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -11,7 +10,6 @@ import org.junit.internal.matchers.TypeSafeMatcher;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.List;
 
 import static java.nio.charset.Charset.defaultCharset;
@@ -20,49 +18,39 @@ import static java.nio.file.Files.readAllLines;
 
 public abstract class SerializationTestBase {
 
-    private final ObjectMapper mapper;
+    private Serializer serializer;
 
     public SerializationTestBase() {
-        mapper = (new ObjectMapperConfig()).getConfiguredObjectMapper();
+        serializer = new Serializer();
     }
 
-    public ObjectMapper getMapper() {
-        return mapper;
-    }
 
     void assertCollectionSerialization(String expected, Collection actual) {
         assertSerialization(expected, new Wrapper<>(actual));
     }
 
     void assertSerialization(String expected, Object actual) {
+        String actualJson = serializer.serialize(actual);
 
-        StringWriter sw = new StringWriter();
-
+        System.out.println(actualJson);
         try {
-            mapper.writeValue(sw, actual);
-        } catch (IOException e) {
-            Assert.fail("Exception during serialization: " + e.getMessage());
-        }
-
-        System.out.println(sw);
-        try {
-            JSONAssert.assertEquals(expected, sw.toString(), false);
+            JSONAssert.assertEquals(expected, actualJson, false);
         } catch (JSONException e) {
             Assert.fail("Exception: " + e.getMessage());
-
         }
+    }
+
+    public final String serialize(Object o){
+        return serializer.serialize(o);
+    }
+
+    public final String serializeCollection(Collection c) {
+        return serialize(new Wrapper<>(c));
     }
 
 
     public final <T> T deserialize(String givenJson, Class<T> clazz) {
-        System.out.println(givenJson);
-
-        try {
-            return mapper.readValue(givenJson, clazz);
-        } catch (IOException e) {
-            Assert.fail("Failed to deserialize given Json: " + e.getMessage());
-            return null; // fail(..) will throw an assertionError here
-        }
+       return  serializer.deserialize(givenJson, clazz);
     }
 
     public final Collection deserializeCollection(String giveJson) {

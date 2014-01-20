@@ -1,7 +1,6 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.exceptions.CollectionHasErrorsException;
-import de.fesere.hypermedia.cj.model.serialization.Wrapper;
 import org.junit.Test;
 
 import java.net.URI;
@@ -20,7 +19,7 @@ public class ExampleFilesTest extends SerializationTestBase {
         String exampleJson = readFile("examples/minimal-collection.json");
 
 
-        Collection result = (Collection) deserialize(exampleJson, Wrapper.class).element;
+        Collection result = deserializeCollection(exampleJson);
 
         assertEquals(URI.create("http://example.org/friends/"), result.getHref());
         assertEquals("1.0", result.getVersion());
@@ -38,15 +37,6 @@ public class ExampleFilesTest extends SerializationTestBase {
 
     }
 
-    @Test
-    public void testCollectionWithOnlyQuery() {
-        String givenJson = readFile("examples/query-collection.json");
-
-        Collection result = deserializeCollection(givenJson);
-
-        assertThat(result.getQueries(), hasSize(1));
-        assertThat(result.getQueries().get(0).getData(),hasSize(1) );
-    }
 
     @Test
     public void testCollectionWithFullExample() {

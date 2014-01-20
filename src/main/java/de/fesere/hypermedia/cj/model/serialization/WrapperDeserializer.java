@@ -1,7 +1,6 @@
 package de.fesere.hypermedia.cj.model.serialization;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import de.fesere.hypermedia.cj.model.Collection;
@@ -16,7 +15,7 @@ public class WrapperDeserializer extends StdDeserializer<Wrapper> {
     }
 
     @Override
-    public Wrapper deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+    public Wrapper deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         jsonParser.getCurrentToken();
         String name = jsonParser.getCurrentName();
         while(name == null || (!name.equalsIgnoreCase("collection") && !name.equalsIgnoreCase("template"))) {
@@ -28,6 +27,7 @@ public class WrapperDeserializer extends StdDeserializer<Wrapper> {
     }
 
     private Wrapper deserializeInner(JsonParser jsonParser, String name) throws IOException {
+        jsonParser.nextToken();
         switch (name) {
             case "collection" :
                 return deserializeInnerCollection(jsonParser);
@@ -37,15 +37,13 @@ public class WrapperDeserializer extends StdDeserializer<Wrapper> {
         }
     }
 
-    private Wrapper deserializeInnerTemplate(JsonParser jsonParser) throws IOException {
-        jsonParser.nextToken();
+    private Wrapper<Template> deserializeInnerTemplate(JsonParser jsonParser) throws IOException {
         Template template = jsonParser.readValueAs(Template.class);
-        return new Wrapper(template);
+        return new Wrapper<>(template);
     }
 
-    private Wrapper deserializeInnerCollection(JsonParser jsonParser) throws IOException {
-        jsonParser.nextToken();
+    private Wrapper<Collection> deserializeInnerCollection(JsonParser jsonParser) throws IOException {
         Collection collection = jsonParser.readValueAs(Collection.class);
-        return new Wrapper(collection);
+        return new Wrapper<>(collection);
     }
 }

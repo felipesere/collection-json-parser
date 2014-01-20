@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 @JsonTypeName("template")
-//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Template {
 
