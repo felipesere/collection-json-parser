@@ -5,7 +5,7 @@ import org.junit.Test;
 
 //For sake of consistency
 public class TwoWayTransformerTest {
-    private TwoWayTransformer t =  new DummyTransformer();
+    private DummyTransformer t =  new DummyTransformer();
 
     @Test(expected = IllegalStateException.class)
     public void testConvertToItem() throws Exception {
@@ -18,7 +18,6 @@ public class TwoWayTransformerTest {
     }
 
     private class DummyTransformer extends TwoWayTransformer<String> {
-
     }
 
 }
