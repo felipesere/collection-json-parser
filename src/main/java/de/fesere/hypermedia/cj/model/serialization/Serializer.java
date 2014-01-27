@@ -9,8 +9,11 @@ public class Serializer {
     private final ObjectMapper mapper;
 
     public Serializer() {
-        mapper = (new ObjectMapperConfig()).getConfiguredObjectMapper();
+        this(new ObjectMapperConfig().getConfiguredObjectMapper());
+    }
 
+    protected Serializer(ObjectMapper mapper) {
+        this.mapper = mapper;
     }
 
     public <T> T deserialize(String input, Class<T> responseClass) {

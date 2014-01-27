@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.net.URI;
+import java.util.Arrays;
 
 public class CollectionSerializationTest extends SerializationTestBase {
 
@@ -31,21 +32,18 @@ public class CollectionSerializationTest extends SerializationTestBase {
 
     @Test
     public void serializeCollectionWithSingleItem() {
-        Collection collection = new Collection(TEST_COM);
-
-        collection.addItem(new Item(URI.create("http://test.com/items/1")));
+        Item item = new Item(URI.create("http://test.com/items/1"));
+        Collection collection = new Collection(TEST_COM, Arrays.asList(item), null, null, null);
 
         assertCollectionSerialization("{\"collection\":{\"href\":\"http://test.com\",\"version\":\"1.0\",\"items\":[{\"href\":\"http://test.com/items/1\"}]}}", collection);
     }
 
     @Test
     public void serializeCollectionWithSingleItemWithData() {
-        Collection collection = new Collection(TEST_COM);
         Item item = new Item(URI.create("http://test.com/items/1"));
         item.addData(new DataEntry("foo", "bar"));
 
-
-        collection.addItem(item);
+        Collection collection = new Collection(TEST_COM, Arrays.asList(item), null, null, null);
 
         assertCollectionSerialization("{\"collection\":{" +
                 "\"href\":\"http://test.com\"," +

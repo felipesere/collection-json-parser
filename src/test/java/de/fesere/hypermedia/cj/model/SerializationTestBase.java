@@ -25,11 +25,11 @@ public abstract class SerializationTestBase {
     }
 
 
-    void assertCollectionSerialization(String expected, Collection actual) {
+    public void assertCollectionSerialization(String expected, Collection actual) {
         assertSerialization(expected, new Wrapper<>(actual));
     }
 
-    void assertSerialization(String expected, Object actual) {
+    public void assertSerialization(String expected, Object actual) {
         String actualJson = serializer.serialize(actual);
 
         System.out.println(actualJson);
