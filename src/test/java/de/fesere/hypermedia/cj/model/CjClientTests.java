@@ -76,9 +76,7 @@ public class CjClientTests extends SerializationTestBase {
     @Test
     public void testAddItemToCollection() {
         Collection collection = collection();
-        Template template = new Template(Arrays.asList(new DataEntry("foo"), new DataEntry("bar"), new DataEntry("batz")));
-        collection.setTemplate(template);
-
+        Template template = collection.getTemplate();
 
         Item content = new Item(Arrays.asList(new DataEntry("foo", "a"), new DataEntry("bar", "b"), new DataEntry("batz", "c")));
         template.fill(content);
@@ -118,17 +116,15 @@ public class CjClientTests extends SerializationTestBase {
     }
 
     private Collection collection() {
-        Collection collection = new Collection(URI.create(BASE_URL));
         Item item = new Item(URI.create("http://test.com/people/1"), null);
 
         item.addData(new DataEntry("name", "Max"));
         item.addData(new DataEntry("surname", "Musterman"));
 
-        Query query = new Query(URI.create("http://test.com/search"), "search", Arrays.asList(new DataEntry("name"), new DataEntry("surname")));
-        collection.setQueries(Arrays.asList(query));
+        Query query = new Query(URI.create("http://test.com/search"), "search", "", Arrays.asList(new DataEntry("name"), new DataEntry("surname")));
+        Template template = new Template(Arrays.asList(new DataEntry("foo"), new DataEntry("bar"), new DataEntry("batz")));
 
 
-        collection.addItem(item);
-        return collection;
+        return new Collection(URI.create(BASE_URL), Arrays.asList(item), Arrays.asList(query), null, template);
     }
 }

@@ -7,6 +7,7 @@ import de.fesere.hypermedia.cj.model.*;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class EmployeeDB {
@@ -47,14 +48,15 @@ public class EmployeeDB {
 
        Iterator<Collection> collectionIterator = new CollectionIterator(departments, httpCjClient);
 
+        List<Item> items = new LinkedList<>();
         while(collectionIterator.hasNext()) {
             Collection subset = collectionIterator.next();
-            departments.addItems(subset.getItems());
+            items.addAll(subset.getItems());
         }
 
 
         Item foundItem = null;
-        for(Item item : departments.getItems()) {
+        for(Item item : items) {
             if(item.getString("dept_name").equalsIgnoreCase(departmentName)) {
                 foundItem=item;
             }
@@ -69,26 +71,32 @@ public class EmployeeDB {
         Collection employees = httpCjClient.read(department.getLink("employees").getHref());
 
         Iterator<Collection> employeeIter = new CollectionIterator(employees, httpCjClient);
+        List<Item> employeeItems = new LinkedList<>();
         while(employeeIter.hasNext()) {
-            employees.addItems(employeeIter.next().getItems());
-            System.out.println(employees.getItems().size());
+            employeeItems.addAll(employeeIter.next().getItems());
+            System.out.println(employeeItems.size());
         }
 
-        return employees.convert(new EmployeeTransformer());
+        Collection finalEmployees = new Collection(employees.getHref(), employeeItems, employees.getQueries(), employees.getLinks(), employees.getTemplate());
+
+        return finalEmployees.convert(new EmployeeTransformer());
     }
 
     public List<Department> getAllDepartments() {
         Collection departments = httpCjClient.read(departmentsURI);
 
         Iterator<Collection> iterator = new CollectionIterator(departments, httpCjClient);
+        List<Item> items = new LinkedList<>();
         while(iterator.hasNext()) {
             System.out.println("itearion!");
-            departments.addItems(iterator.next().getItems());
+            items.addAll(iterator.next().getItems());
         }
 
         handlePossibleErrors(departments);
 
-        return departments.convert(new DepratmentTransformer());
+        Collection finalCollection = new Collection(departments.getHref(), items, departments.getQueries(), departments.getLinks(), departments.getTemplate());
+
+        return finalCollection.convert(new DepratmentTransformer());
     }
 
     public List<Employee> getAllEmployees() {

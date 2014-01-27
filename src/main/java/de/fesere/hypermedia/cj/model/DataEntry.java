@@ -1,16 +1,22 @@
 package de.fesere.hypermedia.cj.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @JsonSerialize
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DataEntry {
+
+    @JsonProperty(value = "name")
     private final String name;
+
+    @JsonProperty(value = "value")
     private String value;
+
+    @JsonProperty(value = "prompt")
     private final String prompt;
 
     public DataEntry(String name, String value) {
@@ -28,32 +34,52 @@ public class DataEntry {
         this.prompt = prompt;
     }
 
-
-    @JsonProperty(value = "name")
     public String getName() {
         return name;
     }
 
-    @JsonProperty(value = "value")
+
     public String getValue() {
         return value;
     }
 
-    @JsonProperty(value = "prompt")
     public String getPrompt() {
         return prompt;
     }
 
-    public void set(String s) {
-        this.value = s;
+    public void set(String value) {
+        this.value = value;
     }
 
-    @JsonIgnore
-    public String getQueryRepresentation() {
+    public String buildQueryRepresentation() {
 
-        if(value != null && value.length() > 0) {
+        if (value != null && value.length() > 0) {
             return name + "=" + value;
         }
         return "";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(EqualsUtils.isSameRef(this, obj)) {
+            return true;
+        }
+        if (EqualsUtils.isSameTypeNotNull(this, obj)) {
+            final DataEntry otherObject = (DataEntry) obj;
+            return new EqualsBuilder()
+                    .append(name, otherObject.name)
+                    .append(value, otherObject.value)
+                    .append(prompt, otherObject.prompt)
+                    .isEquals();
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(name).append(value).append(prompt).toHashCode();
     }
 }

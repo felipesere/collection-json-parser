@@ -1,10 +1,7 @@
 package de.fesere.hypermedia.cj.model;
 
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.*;
 import de.fesere.hypermedia.cj.exceptions.CollectionHasErrorsException;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import de.fesere.hypermedia.cj.model.transformer.ReadTransformation;
@@ -15,6 +12,8 @@ import java.util.List;
 
 @JsonTypeName("collection")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonPropertyOrder({"version", "href", "links", "error", "items", "queries", "template"})
 public class Collection {
 
     @JsonProperty("href")
@@ -40,16 +39,26 @@ public class Collection {
         this.href = href;
     }
 
+    public Collection(URI href, List<Item> items, List<Query> queries, List<Link>links, Template template) {
+        this(href);
+        if(items != null) {
+            this.items.addAll(items);
+        }
+        if(queries != null) {
+            this.queries.addAll(queries);
+        }
+        if(links != null) {
+            this.links.addAll(links);
+        }
+        this.template = template;
+    }
+
     public URI getHref() {
         return this.href;
     }
 
     public String getVersion() {
         return "1.0";
-    }
-
-    public void addItem(Item item) {
-        items.add(item);
     }
 
     public List<Item> getItems() {
@@ -76,15 +85,6 @@ public class Collection {
         return new ArrayList<>(queries);
     }
 
-    public void setQueries(List<Query> queries) {
-        this.queries = queries;
-    }
-
-
-    public Template getTemplate() {
-        throwExceptionOnError();
-        return template;
-    }
 
     public <T> List<T> convert(ReadTransformation<T> transformer) {
         throwExceptionOnError();
@@ -104,10 +104,6 @@ public class Collection {
     public boolean hasError() {
         return error != null;
     }
-
-
-
-
 
     public Error getError() {
         return error;
@@ -137,11 +133,8 @@ public class Collection {
         throw new ElementNotFoundException("Did not find query '"+rel+"' in collection " + href );
     }
 
-    public void addItems(List<Item> items) {
-        this.items.addAll(items);
-    }
-
-    public void setTemplate(Template template) {
-        this.template = template;
+    public Template getTemplate() {
+        throwExceptionOnError();
+        return template;
     }
 }

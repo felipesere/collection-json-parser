@@ -18,12 +18,18 @@ public class Query {
     private final URI href;
     private final String rel;
     private final List<DataEntry> data;
+    private final String prompt;
 
     @JsonCreator
-    public Query(@JsonProperty("href") URI href, @JsonProperty("rel") String rel, @JsonProperty("data") List<DataEntry> data) {
+    public Query(@JsonProperty("href") URI href, @JsonProperty("rel") String rel, @JsonProperty("prompt") String prompt, @JsonProperty("data") List<DataEntry> data) {
         this.href = href;
         this.rel = rel;
+        this.prompt = prompt;
         this.data = data;
+    }
+
+    public Query(String rel, String prompt,  List<DataEntry> data) {
+       this(null, rel, prompt, data);
     }
 
     public URI getHref() {
@@ -36,6 +42,10 @@ public class Query {
 
     public List<DataEntry> getData() {
         return data;
+    }
+
+    public String getPrompt() {
+        return prompt;
     }
 
     public Query set(String name, String value) {
@@ -67,7 +77,7 @@ public class Query {
     private String getDataForUri() {
         List<String> entryPairs = new LinkedList<>();
         for (DataEntry entry : data) {
-            String entryPair = entry.getQueryRepresentation();
+            String entryPair = entry.buildQueryRepresentation();
             if (StringUtils.isNotBlank(entryPair)) {
                 entryPairs.add(entryPair);
             }
