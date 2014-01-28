@@ -1,0 +1,13 @@
+{ "collection" :
+  {
+    "version" : "1.0",
+    "href" : "http://foo",
+
+    "template" : {
+      "data" : [
+        {"name" : "name", "value" : "foo", "prompt" : "Full Name"},
+        {"name" : "city", "value" : "karlsruhe", "prompt" : "City"}
+      ]
+    }
+  }
+}

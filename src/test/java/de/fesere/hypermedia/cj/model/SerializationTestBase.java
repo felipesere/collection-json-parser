@@ -53,6 +53,10 @@ public abstract class SerializationTestBase {
        return  serializer.deserialize(givenJson, clazz);
     }
 
+    public final Template deseriliazeTemplate(String givenJson) {
+        return (Template) deserialize(givenJson, Wrapper.class).element;
+    }
+
     public final Collection deserializeCollection(String giveJson) {
         return (Collection) deserialize(giveJson, Wrapper.class).element;
     }

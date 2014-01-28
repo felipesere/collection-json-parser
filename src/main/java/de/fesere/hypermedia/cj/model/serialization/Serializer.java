@@ -1,5 +1,6 @@
 package de.fesere.hypermedia.cj.model.serialization;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class Serializer {
 
         try {
             return mapper.writeValueAsString(obj);
-        } catch (IOException e) {
+        } catch (JsonProcessingException e) {
             throw new RuntimeException("Could not serilize " + obj.getClass().getName() + " to string",e );
         }
     }

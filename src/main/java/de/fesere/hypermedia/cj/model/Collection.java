@@ -112,9 +112,15 @@ public class Collection {
     public Link getLink(String rel) {
         throwExceptionOnError();
 
-        for(Link link : links) {
-            if(link.getRel().equalsIgnoreCase(rel)) {
-                return link;
+        return findByRel(links, rel);
+
+
+    }
+
+    private <T extends Linkable> T findByRel(List<T> elements, String rel) {
+        for(T linkable : elements ) {
+            if(linkable.getRel().equalsIgnoreCase(rel)) {
+                return linkable;
             }
         }
 
@@ -124,13 +130,7 @@ public class Collection {
     public Query getQuery(String rel) {
         throwExceptionOnError();
 
-        for(Query query : queries) {
-            if(query.getRel().equalsIgnoreCase(rel)) {
-                return query;
-            }
-        }
-
-        throw new ElementNotFoundException("Did not find query '"+rel+"' in collection " + href );
+        return findByRel(queries, rel);
     }
 
     public Template getTemplate() {

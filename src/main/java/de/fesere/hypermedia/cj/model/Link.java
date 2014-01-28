@@ -9,19 +9,14 @@ import java.net.URI;
 
 @JsonSerialize
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Link {
+public class Link extends Linkable{
 
-    private final String rel;
     private final URI href;
 
     @JsonCreator
     public Link(@JsonProperty("rel") String rel, @JsonProperty("href") URI href){
-        this.rel = rel;
+        super(rel);
         this.href = href;
-    }
-
-    public String getRel() {
-        return this.rel;
     }
 
     public URI getHref() {

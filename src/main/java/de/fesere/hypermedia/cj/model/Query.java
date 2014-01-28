@@ -13,17 +13,16 @@ import java.util.List;
 
 @JsonSerialize
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Query {
+public class Query extends Linkable {
 
     private final URI href;
-    private final String rel;
     private final List<DataEntry> data;
     private final String prompt;
 
     @JsonCreator
     public Query(@JsonProperty("href") URI href, @JsonProperty("rel") String rel, @JsonProperty("prompt") String prompt, @JsonProperty("data") List<DataEntry> data) {
+        super(rel);
         this.href = href;
-        this.rel = rel;
         this.prompt = prompt;
         this.data = data;
     }
@@ -34,10 +33,6 @@ public class Query {
 
     public URI getHref() {
         return href;
-    }
-
-    public String getRel() {
-        return rel;
     }
 
     public List<DataEntry> getData() {

@@ -1,9 +1,10 @@
 package de.fesere.hypermedia.cj.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @JsonSerialize
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -51,35 +52,15 @@ public class DataEntry {
         this.value = value;
     }
 
+    public void clear() {
+        this.value = "";
+    }
+
     public String buildQueryRepresentation() {
 
         if (value != null && value.length() > 0) {
             return name + "=" + value;
         }
         return "";
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(EqualsUtils.isSameRef(this, obj)) {
-            return true;
-        }
-        if (EqualsUtils.isSameTypeNotNull(this, obj)) {
-            final DataEntry otherObject = (DataEntry) obj;
-            return new EqualsBuilder()
-                    .append(name, otherObject.name)
-                    .append(value, otherObject.value)
-                    .append(prompt, otherObject.prompt)
-                    .isEquals();
-        }
-        else {
-            return false;
-        }
-
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(name).append(value).append(prompt).toHashCode();
     }
 }

@@ -16,12 +16,8 @@ public class WrapperDeserializer extends StdDeserializer<Wrapper> {
 
     @Override
     public Wrapper deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-        jsonParser.getCurrentToken();
+        jsonParser.nextToken();
         String name = jsonParser.getCurrentName();
-        while(name == null || (!name.equalsIgnoreCase("collection") && !name.equalsIgnoreCase("template"))) {
-            jsonParser.nextToken();
-            name = jsonParser.getCurrentName();
-        }
 
         return deserializeInner(jsonParser, name);
     }
@@ -33,7 +29,7 @@ public class WrapperDeserializer extends StdDeserializer<Wrapper> {
                 return deserializeInnerCollection(jsonParser);
             case "template" :
                 return deserializeInnerTemplate(jsonParser);
-            default: throw new RuntimeException("foooo!");
+            default: throw new RuntimeException("Was expecting either a collection or a template!");
         }
     }
 
