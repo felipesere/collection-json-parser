@@ -76,14 +76,6 @@ public class DummyHTTPClient implements HTTPClient {
         return this;
     }
 
-    public DummyHTTPClient respond() {
-        return this;
-    }
-
-    public DummyHTTPClient withStatus(int status) {
-        return this;
-    }
-
     public void respondWithURI(URI uri) {
         uriToRespond = uri;
     }

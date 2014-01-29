@@ -1,6 +1,7 @@
 package de.fesere.hypermedia.cj.model.server;
 
 import de.fesere.hypermedia.cj.model.*;
+import de.fesere.hypermedia.cj.model.transformer.WriteTransformer;
 import org.junit.Test;
 
 import java.net.URI;
@@ -19,10 +20,10 @@ public class CollectionBuilderTest extends SerializationTestBase {
     public void test_buildCollectionWithTemplate() {
         String expextedJSON = readFile("/examples/template-collection.json");
 
-        Template template = new Template(Arrays.asList( new DataEntry("full-name", "", "Full Name"),
-                                                        new DataEntry("email", "", "Email"),
-                                                        new DataEntry("blog", "", "Blog"),
-                                                        new DataEntry("avatar", "", "Avatar")));
+        Template template = new Template(Arrays.asList(new DataEntry("full-name", "", "Full Name"),
+                new DataEntry("email", "", "Email"),
+                new DataEntry("blog", "", "Blog"),
+                new DataEntry("avatar", "", "Avatar")));
 
 
         Collection collection = new CollectionBuilder(href).addTemplate(template).build();
@@ -47,11 +48,108 @@ public class CollectionBuilderTest extends SerializationTestBase {
     public void test_addQueryWithRelativeURL() {
         String expectedJSON = readFile("/examples/query-collection.json");
 
-
         Query query = new Query("search", "Search", Arrays.asList(new DataEntry("search", "")));
 
         Collection collection = new CollectionBuilder(href).addQuery(query, "/search").build();
 
         assertCollectionSerialization(expectedJSON, collection);
     }
+
+
+    @Test
+    public void test_addLinks() {
+        String expected = readFile("/examples/builder/only-links.json");
+        URI feeds = URI.create("http://example.org/friends/rss");
+        URI template = URI.create("http://example.org/friends/?template");
+        URI queries = URI.create("http://example.org/friends/?queries");
+
+        Collection collection = new CollectionBuilder(href).addLink("feed", feeds)
+                                                           .addLink("template", template)
+                                                           .addLink("queries", queries).build();
+        assertCollectionSerialization(expected, collection);
+    }
+
+    @Test
+    public void test_addLinksWithRelativeURL() {
+        String expected = readFile("/examples/builder/only-links.json");
+
+        Collection collection = new CollectionBuilder(href).addLink("feed", "/rss")
+                .addLink("template", "/?template")
+                .addLink("queries", "?queries").build();
+        assertCollectionSerialization(expected, collection);
+    }
+
+
+    @Test
+    public void test_addSingleItemWithoutLinks() {
+        String expected = readFile("/examples/builder/single-item-wihtout-links.json");
+
+        PersonTransformerWithoutLinks transformer = new PersonTransformerWithoutLinks(URI.create("http://example.org"));
+        Person person = new Person("jdoe", "J. Doe", "jdoe@example.org");
+        Collection collection = new CollectionBuilder<>(href, transformer).addItem(person).build();
+
+        assertCollectionSerialization(expected, collection);
+    }
+
+    @Test
+    public void test_addSingleItemWithLinks() {
+        String expected = readFile("/examples/builder/single-item-with-links.json");
+
+        PersonTransformerWithLinks transformer = new PersonTransformerWithLinks(URI.create("http://example.org"));
+        Person person = new Person("jdoe", "J. Doe", "jdoe@example.org");
+        Collection collection = new CollectionBuilder<>(href, transformer).addItem(person).build();
+
+        assertCollectionSerialization(expected, collection);
+    }
+
+
+    private class Person {
+        private String id;
+        private final String fullName;
+        private final String email;
+
+        public Person(String id, String fullName, String email) {
+            this.id = id;
+            this.fullName = fullName;
+            this.email = email;
+        }
+    }
+
+    private class PersonTransformerWithLinks implements WriteTransformer<Person> {
+
+        UriConstructor constructor;
+
+        public PersonTransformerWithLinks(URI base) {
+           constructor = new UriConstructor(base);
+        }
+
+        @Override
+        public Item convert(Person input) {
+            ItemBuilder builder = new ItemBuilder(constructor.buildAbsoluteHrefFromRelative("/friends/"+input.id));
+            builder.addData(new DataEntry("full-name", input.fullName , "Full Name"))
+                   .addData(new DataEntry("email", input.email, "Email"));
+            builder.addLink("blog",   constructor.buildAbsoluteHrefFromRelative("/blogs/"+input.id), "Blog")
+                   .addLink("avatar", constructor.buildAbsoluteHrefFromRelative("/images/" + input.id), "Avatar");
+
+           return builder.build();
+        }
+    }
+
+    private class PersonTransformerWithoutLinks implements WriteTransformer<Person> {
+        UriConstructor constructor;
+
+        public PersonTransformerWithoutLinks(URI base) {
+            constructor = new UriConstructor(base);
+        }
+
+        @Override
+        public Item convert(Person input) {
+            ItemBuilder builder = new ItemBuilder(constructor.buildAbsoluteHrefFromRelative("/friends/"+input.id));
+            builder.addData(new DataEntry("full-name", input.fullName , "Full Name"))
+                    .addData(new DataEntry("email", input.email, "Email"));
+
+            return builder.build();
+        }
+    }
 }
+

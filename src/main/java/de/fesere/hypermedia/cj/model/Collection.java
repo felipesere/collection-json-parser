@@ -10,11 +10,18 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+
 @JsonTypeName("collection")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, setterVisibility = NONE)
 @JsonPropertyOrder({"version", "href", "links", "error", "items", "queries", "template"})
 public class Collection {
+
+    @JsonProperty("version")
+    private final String version = "1.0";
 
     @JsonProperty("href")
     private final URI href;
@@ -34,9 +41,16 @@ public class Collection {
     @JsonProperty("error")
     private Error error;
 
+
+
     @JsonCreator()
     public Collection(@JsonProperty("href") URI href) {
         this.href = href;
+    }
+
+    public Collection(URI uri, Error error) {
+        this(uri);
+        this.error = error;
     }
 
     public Collection(URI href, List<Item> items, List<Query> queries, List<Link>links, Template template) {
@@ -55,10 +69,6 @@ public class Collection {
 
     public URI getHref() {
         return this.href;
-    }
-
-    public String getVersion() {
-        return "1.0";
     }
 
     public List<Item> getItems() {
@@ -136,5 +146,9 @@ public class Collection {
     public Template getTemplate() {
         throwExceptionOnError();
         return template;
+    }
+
+    public String getVersion() {
+        return version;
     }
 }
