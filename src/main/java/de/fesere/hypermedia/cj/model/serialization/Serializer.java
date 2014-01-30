@@ -19,7 +19,6 @@ public class Serializer {
     }
 
     public <T> T deserialize(String input, Class<T> responseClass) {
-
         try {
             return mapper.readValue(input, responseClass);
         } catch (IOException e) {
@@ -28,7 +27,6 @@ public class Serializer {
     }
 
     public String serialize(Object obj) {
-
         try {
             return mapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {

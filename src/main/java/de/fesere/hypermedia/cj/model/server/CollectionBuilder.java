@@ -1,6 +1,10 @@
 package de.fesere.hypermedia.cj.model.server;
 
-import de.fesere.hypermedia.cj.model.*;
+import de.fesere.hypermedia.cj.model.Collection;
+import de.fesere.hypermedia.cj.model.Item;
+import de.fesere.hypermedia.cj.model.Link;
+import de.fesere.hypermedia.cj.model.Query;
+import de.fesere.hypermedia.cj.model.Template;
 import de.fesere.hypermedia.cj.model.transformer.WriteTransformer;
 
 import java.net.URI;
