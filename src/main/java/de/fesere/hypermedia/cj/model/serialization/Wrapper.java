@@ -10,10 +10,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonDeserialize(using = WrapperDeserializer.class)
 public class Wrapper<T> {
 
-    public T element;
+    private  T element;
 
 
     public Wrapper(T element) {
         this.element = element;
+    }
+
+    public T getElement() {
+        return element;
     }
 }

@@ -21,10 +21,10 @@ public class WrapperSerializer extends StdSerializer<Wrapper> {
     public void serialize(Wrapper value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeStartObject();
 
-        String name = value.element.getClass().getAnnotation(JsonTypeName.class).value();
+        String name = value.getElement().getClass().getAnnotation(JsonTypeName.class).value();
         jgen.writeFieldName(name);
 
-        provider.defaultSerializeValue(value.element, jgen);
+        provider.defaultSerializeValue(value.getElement(), jgen);
         jgen.writeEndObject();
 
     }

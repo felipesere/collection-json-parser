@@ -5,7 +5,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class Linkable {
 
     @JsonProperty("rel")
-    String rel;
+    private String rel;
 
     public Linkable(String rel) {
         this.rel = rel;

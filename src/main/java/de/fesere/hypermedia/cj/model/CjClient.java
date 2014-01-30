@@ -45,7 +45,7 @@ public class CjClient {
     public Collection read(URI uri) {
         String collectionJson = httpClient.getLink(uri);
 
-        return (Collection) serializer.deserialize(collectionJson, Wrapper.class).element;
+        return (Collection) serializer.deserialize(collectionJson, Wrapper.class).getElement();
     }
 
     public Collection addItem(Template template) {

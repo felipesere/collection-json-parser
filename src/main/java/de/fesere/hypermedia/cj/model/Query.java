@@ -56,7 +56,7 @@ public class Query extends Linkable {
                 return dataEntry;
             }
         }
-        throw new ElementNotFoundException("Did not find element '"+name+"' in query '"+rel+"'");
+        throw new ElementNotFoundException("Did not find element '"+name+"' in query '"+getRel()+"'");
     }
 
     public URI buildURI() {

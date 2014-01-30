@@ -26,17 +26,17 @@ public class TemplateBuilder {
     }
 
     public TemplateBuilder emptyFromItem(Item item) {
-        List<DataEntry> entries = getClearedDataEntries(item);
-        setEntries(entries);
+        List<DataEntry> itemEntries = getClearedDataEntries(item);
+        setEntries(itemEntries);
 
         return this;
     }
 
     private List<DataEntry> getClearedDataEntries(Item item) {
-        List<DataEntry> entries = item.getData();
-        for(DataEntry entry : entries) {
+        List<DataEntry> itemEntries = item.getData();
+        for(DataEntry entry : itemEntries) {
             entry.clear();
         }
-        return entries;
+        return itemEntries;
     }
 }

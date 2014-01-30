@@ -12,7 +12,7 @@ public class ObjectMapperConfig {
         return mapper;
     }
 
-    public class WrapperModule extends SimpleModule {
+    public static class WrapperModule extends SimpleModule {
         public WrapperModule() {
             addSerializer(Wrapper.class, new WrapperSerializer());
             addDeserializer(Wrapper.class, new WrapperDeserializer());

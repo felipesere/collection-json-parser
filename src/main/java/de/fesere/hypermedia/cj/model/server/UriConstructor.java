@@ -32,7 +32,7 @@ public class UriConstructor {
     }
 
     private String removeTrailingSlash(String hrefTemp) {
-        return hrefTemp.substring(0, hrefTemp.lastIndexOf("/"));
+        return hrefTemp.substring(0, hrefTemp.lastIndexOf('/'));
     }
 
     public URI getBase() {
