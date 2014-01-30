@@ -14,23 +14,24 @@ import java.net.URI;
 public class Link extends Linkable{
 
     private final URI href;
-
-    @JsonProperty("prompt")
     private final String prompt;
 
     @JsonCreator
-    public Link(@JsonProperty("rel") String rel, @JsonProperty("href") URI href){
-        this(rel, href, null);
-    }
-
-    public Link(String rel, URI href, String prompt) {
+    public Link(@JsonProperty("rel") String rel, @JsonProperty("href") URI href, @JsonProperty("prompt") String prompt){
         super(rel);
         this.href = href;
         this.prompt = prompt;
     }
 
+    public Link(String rel, URI href) {
+        this(rel,href, null);
+    }
 
     public URI getHref() {
         return href;
+    }
+
+    public String getPrompt() {
+        return prompt;
     }
 }

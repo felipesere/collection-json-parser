@@ -1,13 +1,14 @@
 package de.fesere.hypermedia.cj.model.serialization;
 
+import de.fesere.hypermedia.cj.exceptions.SerializationException;
 import org.junit.Test;
 
 public class WrapperDeserializerTest {
 
-    Serializer serializer = new Serializer();
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = SerializationException.class)
     public void test_onlyCollectionOrTemplateCanBeDeseriliazedWithWrapper() {
+        Serializer serializer = new Serializer();
         serializer.deserialize("{\"foo\": \"bar\"}", Wrapper.class);
     }
 }

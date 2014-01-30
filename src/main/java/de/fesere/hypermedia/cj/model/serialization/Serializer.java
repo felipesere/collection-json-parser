@@ -22,7 +22,7 @@ public class Serializer {
         try {
             return mapper.readValue(input, responseClass);
         } catch (IOException e) {
-            throw new RuntimeException("Could not deseriliaze input to " + responseClass.getName(),e);
+            throw new RuntimeException("Could not deseriliaze input to " + responseClass.getName(), e);
         }
     }
 
@@ -31,7 +31,7 @@ public class Serializer {
         try {
             return mapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Could not serilize " + obj.getClass().getName() + " to string",e );
+            throw new RuntimeException("Could not serilize " + obj.getClass().getName() + " to string", e);
         }
     }
 }

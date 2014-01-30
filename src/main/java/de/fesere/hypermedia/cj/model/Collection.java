@@ -1,7 +1,13 @@
 package de.fesere.hypermedia.cj.model;
 
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import de.fesere.hypermedia.cj.exceptions.CollectionHasErrorsException;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import de.fesere.hypermedia.cj.model.transformer.ReadTransformation;

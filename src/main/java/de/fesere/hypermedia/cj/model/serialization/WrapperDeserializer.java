@@ -3,6 +3,7 @@ package de.fesere.hypermedia.cj.model.serialization;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import de.fesere.hypermedia.cj.exceptions.SerializationException;
 import de.fesere.hypermedia.cj.model.Collection;
 import de.fesere.hypermedia.cj.model.Template;
 
@@ -29,7 +30,7 @@ public class WrapperDeserializer extends StdDeserializer<Wrapper> {
                 return deserializeInnerCollection(jsonParser);
             case "template" :
                 return deserializeInnerTemplate(jsonParser);
-            default: throw new RuntimeException("Was expecting either a collection or a template!");
+            default: throw new SerializationException("Was expecting either a collection or a template!");
         }
     }
 

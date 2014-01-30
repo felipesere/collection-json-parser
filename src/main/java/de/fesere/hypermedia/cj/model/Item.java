@@ -1,6 +1,10 @@
 package de.fesere.hypermedia.cj.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 
@@ -68,7 +72,7 @@ public class Item {
                 try {
                     return Integer.parseInt(entry.getValue());
                 } catch (NumberFormatException nfe) {
-                    throw new ElementNotFoundException("Did not find property '"+name+"' in '"+href+"'");
+                    throw new ElementNotFoundException("Did not find property '"+name+"' in '"+href+"'", nfe);
                 }
             }
         }
