@@ -30,7 +30,7 @@ public class CjClientTest extends SerializationTestBase {
 
     @Test
     public void readCollectionFromURI() {
-        String json = serializeCollection(collectionWithMaxPerson());
+        String json = serializer.serialize(collectionWithMaxPerson());
         httpClient.expectGetLinkWith(URI.create("http://root.url")).returnStringOnGet(json);
 
         Collection result = classUnderTest.readCollection(URI.create("http://root.url"));
@@ -40,7 +40,7 @@ public class CjClientTest extends SerializationTestBase {
 
     @Test
     public void parserCreatesQuery() {
-        String json = serializeCollection(collectionWithMaxPerson());
+        String json = serializer.serialize(collectionWithMaxPerson());
 
         httpClient.expectGetLinkWith(URI.create("http://test.com/search?name=Max")).returnStringOnGet(json);
 

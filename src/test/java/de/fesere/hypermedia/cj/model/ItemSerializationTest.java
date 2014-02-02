@@ -26,7 +26,7 @@ public class ItemSerializationTest extends SerializationTestBase {
     public void testJSONtoPOJO() {
         String givenJSON = "{\"href\":\"http://test.com/item/1\"}";
 
-        Item item = deserialize(givenJSON, Item.class);
+        Item item = serializer.deserialize(givenJSON, Item.class);
 
         assertEquals(TEST_COM_ITEM, item.getHref());
     }
@@ -36,7 +36,7 @@ public class ItemSerializationTest extends SerializationTestBase {
 
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"foo\", \"value\":\"bar\", \"prompt\":\"foos prompt\"}]}";
 
-        Item item = deserialize(givenJSON, Item.class);
+        Item item = serializer.deserialize(givenJSON, Item.class);
         assertThat(item.getHref(), is(TEST_COM_ITEM));
 
         DataEntry dataEntry = item.getData().get(0);
@@ -57,7 +57,7 @@ public class ItemSerializationTest extends SerializationTestBase {
     public void testDeserializeItemWithSingleDataEntry() {
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"foo\", \"value\":\"bar\"}]}";
 
-        Item item = deserialize(givenJSON, Item.class);
+        Item item = serializer.deserialize(givenJSON, Item.class);
 
         assertEquals(TEST_COM_ITEM, item.getHref());
         assertThat(item.getData(), contains(name("foo")));
@@ -67,7 +67,7 @@ public class ItemSerializationTest extends SerializationTestBase {
     public void testDeserializeItemWithSingleDataEntryMissingString() {
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"age\", \"value\":\"24\"}]}";
 
-        Item item = deserialize(givenJSON, Item.class);
+        Item item = serializer.deserialize(givenJSON, Item.class);
 
         item.getString("doesNotExist");
     }
@@ -76,7 +76,7 @@ public class ItemSerializationTest extends SerializationTestBase {
     public void testDeserializeItemWithSingleDataEntryMissingInteger() {
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"age\", \"value\":\"24\"}]}";
 
-        Item item = deserialize(givenJSON, Item.class);
+        Item item = serializer.deserialize(givenJSON, Item.class);
         item.getInt("doesNotExist");
     }
 
@@ -84,7 +84,7 @@ public class ItemSerializationTest extends SerializationTestBase {
     public void testDeserializeItemWithSingleDataEntryContainingInt() {
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"age\", \"value\":24}]}";
 
-        Item item = deserialize(givenJSON, Item.class);
+        Item item = serializer.deserialize(givenJSON, Item.class);
 
         assertEquals(TEST_COM_ITEM, item.getHref());
         assertThat(item.getData(), contains(name("age")));
@@ -95,7 +95,7 @@ public class ItemSerializationTest extends SerializationTestBase {
     public void testDeserializeItemWithSingleDataEntryContainingMalformedInt_exception() {
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"age\", \"value\": \"24.abc\"}]}";
 
-        Item item = deserialize(givenJSON, Item.class);
+        Item item = serializer.deserialize(givenJSON, Item.class);
 
         assertEquals(TEST_COM_ITEM, item.getHref());
         assertThat(item.getData(), contains(name("age")));
@@ -108,7 +108,7 @@ public class ItemSerializationTest extends SerializationTestBase {
     public void testDeserializeItemWithSingleDataEntryContainingDouble() {
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"distance\", \"value\":24.004}]}";
 
-        Item item = deserialize(givenJSON, Item.class);
+        Item item = serializer.deserialize(givenJSON, Item.class);
 
         assertEquals(TEST_COM_ITEM, item.getHref());
         assertThat(item.getData(), contains(name("distance")));
@@ -119,7 +119,7 @@ public class ItemSerializationTest extends SerializationTestBase {
     public void testDeserializeItemWithSingleDataEntryContainingInvalidDouble() {
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"distance\", \"value\": \"24.004xyz\"}]}";
 
-        Item item = deserialize(givenJSON, Item.class);
+        Item item = serializer.deserialize(givenJSON, Item.class);
 
         assertEquals(TEST_COM_ITEM, item.getHref());
         assertThat(item.getData(), contains(name("distance")));

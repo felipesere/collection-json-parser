@@ -19,7 +19,7 @@ public class ExampleFilesTest extends SerializationTestBase {
         String exampleJson = readFile("examples/minimal-collection.json");
 
 
-        Collection result = deserializeCollection(exampleJson);
+        Collection result = serializer.deserialize(exampleJson, Collection.class);
 
         assertEquals(URI.create("http://example.org/friends/"), result.getHref());
         assertEquals("1.0", result.getVersion());
@@ -29,7 +29,7 @@ public class ExampleFilesTest extends SerializationTestBase {
     public void testCollectionWithSingleItem() {
         String givenJson = readFile("examples/item-collection.json");
 
-        Collection result = deserializeCollection(givenJson);
+        Collection result = serializer.deserialize(givenJson, Collection.class);
 
         assertThat(result.getLinks(), hasSize(3));
         assertThat(result.getItems(), hasSize(1));
@@ -42,7 +42,7 @@ public class ExampleFilesTest extends SerializationTestBase {
     public void testCollectionWithFullExample() {
         String givenJson = readFile("examples/full-collection.json");
 
-        Collection result = deserializeCollection(givenJson);
+        Collection result = serializer.deserialize(givenJson, Collection.class);
 
         assertEquals(URI.create("http://example.org/friends/"), result.getHref());
         assertEquals("1.0", result.getVersion());
@@ -73,7 +73,7 @@ public class ExampleFilesTest extends SerializationTestBase {
     public void testCollectionWithError() {
         String givenJson = readFile("examples/collection-with-error.json");
 
-        Collection result = deserializeCollection(givenJson);
+        Collection result = serializer.deserialize(givenJson, Collection.class);
 
         assertTrue("no error was set", result.hasError());
         assertEquals("Server Error", result.getError().getTitle());
@@ -84,7 +84,7 @@ public class ExampleFilesTest extends SerializationTestBase {
     @Test(expected = CollectionHasErrorsException.class)
     public void testCollectionWithErrorThrowsExceptionOnOtherAccessors() {
         String givenJson = readFile("examples/collection-with-error.json");
-        Collection result = deserializeCollection(givenJson);
+        Collection result = serializer.deserialize(givenJson, Collection.class);
 
         result.getLinks();
     }

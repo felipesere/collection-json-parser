@@ -17,7 +17,7 @@ import static java.nio.file.Files.readAllLines;
 
 public abstract class SerializationTestBase {
 
-    private Serializer serializer;
+    Serializer serializer;
 
     public SerializationTestBase() {
         serializer = new Serializer();
@@ -48,23 +48,6 @@ public abstract class SerializationTestBase {
         } catch (JSONException e) {
             Assert.fail("Exception: " + e.getMessage());
         }
-    }
-
-    public final String serializeCollection(Collection c) {
-        return serializer.serialize(c);
-    }
-
-
-    public final <T> T deserialize(String givenJson, Class<T> clazz) {
-       return  serializer.deserialize(givenJson, clazz);
-    }
-
-    public final Template deseriliazeTemplate(String givenJson) {
-        return serializer.deserialize(givenJson, Template.class);
-    }
-
-    public final Collection deserializeCollection(String giveJson) {
-        return serializer.deserialize(giveJson, Collection.class);
     }
 
     public final String readFile(String filename) {

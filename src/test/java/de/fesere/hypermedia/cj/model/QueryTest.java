@@ -18,7 +18,7 @@ public class QueryTest extends SerializationTestBase{
     public void testCollectionWithOnlyQuery() {
         String givenJson = readFile("examples/query-collection.json");
 
-        Collection result = deserializeCollection(givenJson);
+        Collection result = serializer.deserialize(givenJson, Collection.class);
 
         assertThat(result.getQueries(), hasSize(1));
         assertThat(result.getQueries().get(0).getData(),hasSize(1) );

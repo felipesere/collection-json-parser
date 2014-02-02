@@ -23,7 +23,7 @@ public class CollectionSerializationTest extends SerializationTestBase {
     public void testJSONtoPOJO() {
         String givenJson = "{\"collection\":{\"href\":\"http://test.com\",\"version\":\"1.0\"}}";
 
-        Collection collection = deserializeCollection(givenJson);
+        Collection collection = serializer.deserialize(givenJson, Collection.class);
 
         Assert.assertEquals("1.0", collection.getVersion());
         Assert.assertEquals(TEST_COM, collection.getHref());
