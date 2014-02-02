@@ -52,7 +52,7 @@ public class CjClient {
     }
 
     private String serializeBody(Template template) {
-        return serializer.serialize(new Wrapper<>(template));
+        return serializer.serialize(template);
     }
 
     private Map<String, String> createHeader() {

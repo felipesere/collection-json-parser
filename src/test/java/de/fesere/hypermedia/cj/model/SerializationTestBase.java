@@ -1,7 +1,6 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.serialization.Serializer;
-import de.fesere.hypermedia.cj.serialization.Wrapper;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.json.JSONException;
@@ -25,13 +24,24 @@ public abstract class SerializationTestBase {
     }
 
 
-    public void assertCollectionSerialization(String expected, Collection actual) {
-        assertSerialization(expected, new Wrapper<>(actual));
+    public void assertCollectionSerialization(String expected, Collection collection) {
+        String actual =  serializer.serialize(collection);
+        assertJson(expected, actual);
+    }
+
+
+    public void assertTemplateSerialization(String expected, Template template){
+        String actual = serializer.serialize(template);
+        assertJson(expected,actual);
     }
 
     public void assertSerialization(String expected, Object actual) {
         String actualJson = serializer.serialize(actual);
 
+        assertJson(expected, actualJson);
+    }
+
+    private void assertJson(String expected, String actualJson) {
         System.out.println(actualJson);
         try {
             JSONAssert.assertEquals(expected, actualJson, false);
