@@ -60,11 +60,11 @@ public abstract class SerializationTestBase {
     }
 
     public final Template deseriliazeTemplate(String givenJson) {
-        return serializer.deseriliazeTemplate(givenJson);
+        return serializer.deserialize(givenJson, Template.class);
     }
 
     public final Collection deserializeCollection(String giveJson) {
-        return serializer.deserializeCollection(giveJson);
+        return serializer.deserialize(giveJson, Collection.class);
     }
 
     public final String readFile(String filename) {

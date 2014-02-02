@@ -21,6 +21,14 @@ public class Serializer {
     }
 
     public <T> T deserialize(String input, Class<T> responseClass) {
+        if(responseClass.equals(Collection.class)){
+            return (T) deserializeCollection(input);
+        }
+
+        if(responseClass.equals(Template.class)){
+            return (T) deseriliazeTemplate(input);
+        }
+
         try {
             return mapper.readValue(input, responseClass);
         } catch (IOException e) {
@@ -29,6 +37,14 @@ public class Serializer {
     }
 
     public String serialize(Object obj) {
+
+        if(obj instanceof Collection ) {
+            return serialize((Collection) obj);
+        }
+        if(obj instanceof Template) {
+            return serialize((Template) obj);
+        }
+
         try {
             return mapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
@@ -36,19 +52,19 @@ public class Serializer {
         }
     }
 
-    public final Template deseriliazeTemplate(String givenJson) {
+    private Template deseriliazeTemplate(String givenJson) {
         return (Template) deserialize(givenJson, Wrapper.class).getElement();
     }
 
-    public final Collection deserializeCollection(String giveJson) {
+    private Collection deserializeCollection(String giveJson) {
         return (Collection) deserialize(giveJson, Wrapper.class).getElement();
     }
 
-    public final String serialize(Collection collection) {
+    private String serialize(Collection collection) {
         return serialize(new Wrapper<>(collection));
     }
 
-    public final String serialize(Template template) {
+    private String serialize(Template template) {
         return serialize(new Wrapper<>(template));
     }
 }
