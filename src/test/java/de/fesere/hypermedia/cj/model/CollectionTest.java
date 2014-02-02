@@ -70,6 +70,21 @@ public class CollectionTest {
         collection.getQuery("doesNotExist");
     }
 
+
+    @Test(expected = ElementNotFoundException.class)
+    public void testCollectionMissingQuery() {
+        Collection collection = new Collection(baseURI);
+
+        collection.getQuery("doesNotExist");
+    }
+
+    @Test(expected = ElementNotFoundException.class)
+    public void testCollectionMissingLink() {
+        Collection collection = new Collection(baseURI);
+
+        collection.getLink("doesNotExist");
+    }
+
     private class Foo {
         public Foo(String something) {
         }

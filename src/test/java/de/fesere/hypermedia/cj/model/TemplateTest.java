@@ -15,9 +15,7 @@ public class TemplateTest extends SerializationTestBase {
 
     @Test
     public void testCollectionWithTemplate() {
-        String givenJson = readFile("examples/template-collection.json");
-
-        Collection result = deserializeCollection(givenJson);
+        Collection result = readCollection("examples/template-collection.json");
 
 
         assertThat(result.getTemplate().getData(), hasSize(4));
@@ -62,7 +60,7 @@ public class TemplateTest extends SerializationTestBase {
                 "      ]\n" +
                 "    } }";
 
-        Template template = deseriliazeTemplate(json);
+        Template template = serializer.deserialize(json, Template.class);
         assertNotNull(template);
 
     }

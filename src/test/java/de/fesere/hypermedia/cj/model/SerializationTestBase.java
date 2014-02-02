@@ -17,7 +17,7 @@ import static java.nio.file.Files.readAllLines;
 
 public abstract class SerializationTestBase {
 
-    private Serializer serializer;
+    Serializer serializer;
 
     public SerializationTestBase() {
         serializer = new Serializer();
@@ -32,7 +32,7 @@ public abstract class SerializationTestBase {
 
     public void assertTemplateSerialization(String expected, Template template){
         String actual = serializer.serialize(template);
-        assertJson(expected,actual);
+        assertJson(expected, actual);
     }
 
     public void assertSerialization(String expected, Object actual) {
@@ -50,23 +50,6 @@ public abstract class SerializationTestBase {
         }
     }
 
-    public final String serializeCollection(Collection c) {
-        return serializer.serialize(c);
-    }
-
-
-    public final <T> T deserialize(String givenJson, Class<T> clazz) {
-       return  serializer.deserialize(givenJson, clazz);
-    }
-
-    public final Template deseriliazeTemplate(String givenJson) {
-        return serializer.deserialize(givenJson, Template.class);
-    }
-
-    public final Collection deserializeCollection(String giveJson) {
-        return serializer.deserialize(giveJson, Collection.class);
-    }
-
     public final String readFile(String filename) {
         String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         try {
@@ -79,7 +62,13 @@ public abstract class SerializationTestBase {
             return null;
         }
 
+    } 
+    public final Collection readCollection(String filename) {
+        String json = readFile(filename);
+
+        return serializer.deserialize(json, Collection.class);
     }
+
 
     private String mergeLines(List<String> lines) {
         StringBuilder builder = new StringBuilder();

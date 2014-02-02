@@ -16,7 +16,7 @@ import java.util.List;
 
 @JsonSerialize
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonPropertyOrder({"href", "data", "links"})
 public class Item {
     private final URI href;

@@ -17,7 +17,7 @@ import static org.hamcrest.core.Is.is;
 
 public class CjClientTest extends SerializationTestBase {
 
-    public static final String BASE_URL = "http://test.com";
+    public static final String BASE_URL = "http://writeToStringExample.com";
     private static final String POST = "POST";
     private static final String PUT = "PUT";
     private DummyHTTPClient httpClient = new DummyHTTPClient();
@@ -30,7 +30,7 @@ public class CjClientTest extends SerializationTestBase {
 
     @Test
     public void readCollectionFromURI() {
-        String json = serializeCollection(collectionWithMaxPerson());
+        String json = serializer.serialize(collectionWithMaxPerson());
         httpClient.expectGetLinkWith(URI.create("http://root.url")).returnStringOnGet(json);
 
         Collection result = classUnderTest.readCollection(URI.create("http://root.url"));
@@ -40,11 +40,11 @@ public class CjClientTest extends SerializationTestBase {
 
     @Test
     public void parserCreatesQuery() {
-        String json = serializeCollection(collectionWithMaxPerson());
+        String json = serializer.serialize(collectionWithMaxPerson());
 
-        httpClient.expectGetLinkWith(URI.create("http://test.com/search?name=Max")).returnStringOnGet(json);
+        httpClient.expectGetLinkWith(URI.create("http://writeToStringExample.com/search?name=Max")).returnStringOnGet(json);
 
-        Query query = new Query(URI.create("http://test.com/search"),"foo","Lorem ipsum", Arrays.asList(new DataEntry("name", "Max")));
+        Query query = new Query(URI.create("http://writeToStringExample.com/search"),"foo","Lorem ipsum", Arrays.asList(new DataEntry("name", "Max")));
         Collection result = classUnderTest.follow(query);
 
         assertThat(result, is(notNullValue()));
@@ -115,12 +115,12 @@ public class CjClientTest extends SerializationTestBase {
     }
 
     private Collection collectionWithMaxPerson() {
-        Item item = new Item(URI.create("http://test.com/people/1"), null);
+        Item item = new Item(URI.create("http://writeToStringExample.com/people/1"), null);
 
         item.addData(new DataEntry("name", "Max"));
         item.addData(new DataEntry("surname", "Musterman"));
 
-        Query query = new Query(URI.create("http://test.com/search"), "search", "", Arrays.asList(new DataEntry("name"), new DataEntry("surname")));
+        Query query = new Query(URI.create("http://writeToStringExample.com/search"), "search", "", Arrays.asList(new DataEntry("name"), new DataEntry("surname")));
         Template template = new Template(Arrays.asList(new DataEntry("foo"), new DataEntry("bar"), new DataEntry("batz")));
 
 

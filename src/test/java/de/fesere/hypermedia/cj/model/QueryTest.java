@@ -16,9 +16,7 @@ public class QueryTest extends SerializationTestBase{
 
     @Test
     public void testCollectionWithOnlyQuery() {
-        String givenJson = readFile("examples/query-collection.json");
-
-        Collection result = deserializeCollection(givenJson);
+        Collection result = readCollection("examples/query-collection.json");
 
         assertThat(result.getQueries(), hasSize(1));
         assertThat(result.getQueries().get(0).getData(),hasSize(1) );
@@ -27,7 +25,6 @@ public class QueryTest extends SerializationTestBase{
 
     @Test
     public void testBuildURI_noQueryStringIfQueryRemainsEmpty() {
-
         Query classUnderTest = createBaseQueryWith3Entries();
 
         URI uri = classUnderTest.buildURI();
@@ -57,6 +54,4 @@ public class QueryTest extends SerializationTestBase{
         Query theQuery = createBaseQueryWith3Entries();
         theQuery.set("doesNotExist", "a");
     }
-
-
 }
