@@ -34,7 +34,140 @@
         <h1>
 <a name="collection-json-parser" class="anchor" href="#collection-json-parser"><span class="octicon octicon-link"></span></a>collection-json-parser</h1>
 
-<p>A library for reading and writing JSON in collection+json format</p>
+<p>Collection-JSON-parser is a small library for reading and writing JSON in <a href="https://github.com/mamund/collection-json">collection+json</a> (from <a href="https://github.com/mamund" class="user-mention">@mamund</a>) format.
+It was born because I wanted to build a prototype for the office and was in need of pet-project.</p>
+
+<p>The library provides a Java model for <code>Collections</code>, <code>Queries</code>, <code>Tempaltes</code>, <code>Items</code> and Data from Cj.
+Futhermore it provives a <code>Serializer</code> which converts any of the above mentioned classes to and from JSON.</p>
+
+<p>For people building a client that uses Cj, the library provides a <code>CjClient</code> which takes care of building requests
+and parsing responses. Users will need to implement a small <code>HTTPClient</code> which is used by the <code>CjClient</code> to handle
+communication.</p>
+
+<p>To make building of <code>Collections</code> easier, a set of builders are provided.</p>
+
+<p>Finally, to convert between <code>Items</code> in a <code>Collection</code> and your domain model, the library makes use of <code>Transformers</code>.</p>
+
+<h2>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting started</h2>
+
+<p>To use the library in your project you need to clone it</p>
+
+<p><code>git clone https://github.com/felipesere/collection-json-parser.git</code></p>
+
+<p>and then build it with Maven</p>
+
+<p><code>maven clean install</code></p>
+
+<p>then add it as a dependency to your Maven project using the following coordinates</p>
+
+<pre><code>&lt;dependency&gt;
+   &lt;groupId&gt;de.fesere.hypermedia&lt;/groupId&gt;
+   &lt;artifactId&gt;collection-json-parser&lt;/artifactId&gt;
+   &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>Then you can proceed to create your own collections of read them from Strings.</p>
+
+<h2>
+<a name="using-collection-json-parser-to-read" class="anchor" href="#using-collection-json-parser-to-read"><span class="octicon octicon-link"></span></a>Using <code>collection-json-parser</code> to read</h2>
+
+<p>The tests in <code>/src/main/test/java</code> mostly show how to use the library.</p>
+
+<p>In a gist, the usage pattern is the following:
+If you receive a <code>String</code> containing a <code>Collection</code> in JSON, you can serialize it as such:</p>
+
+<div class="highlight highlight-Java"><pre><span class="n">String</span> <span class="n">json</span> <span class="o">=</span> <span class="s">"..."</span><span class="o">;</span>
+<span class="n">Serializer</span> <span class="n">serializer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Serializer</span><span class="o">();</span>
+
+<span class="n">Collection</span> <span class="n">collection</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="na">deserialize</span><span class="o">(</span><span class="n">json</span><span class="o">,</span> <span class="n">Collection</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</pre></div>
+
+<p>If you then want to extract the <code>Items</code> and convert them to some domain object, e.g. <code>Foo</code>,
+you have to implement the <code>ReadTransformer&lt;T&gt;</code> interface and pass it to the convert method:</p>
+
+<div class="highlight highlight-Java"><pre><span class="n">FooTransformer</span> <span class="n">fooTransformer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FooTransfomer</span><span class="o">();</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Foo</span><span class="o">&gt;</span> <span class="n">foos</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">fooTransformer</span><span class="o">);</span>
+</pre></div>
+
+<p>The implementation of <code>FooTransformer</code> get each <code>Item</code> of the <code>Collection</code> one at a time.
+It should use the methods on <code>Item</code> to extract values.
+The methods are:</p>
+
+<ul>
+<li> <code>getString(String name)</code> to get a <code>String</code> value</li>
+<li> <code>getInt(Stirng name)</code>to get an <code>int</code>
+</li>
+<li> <code>getDouble(String name)</code> to get a <code>double</code>
+</li>
+</ul><p>These methods throw an <code>ElementNotFoundException</code> if no element named <code>name</code> is found
+and both <code>getInt</code> and <code>getDouble</code> throw a <code>MalformedDataValueException</code> if the value
+can not be properly converted.</p>
+
+<h2>
+<a name="using-collection-json-parser-to-write" class="anchor" href="#using-collection-json-parser-to-write"><span class="octicon octicon-link"></span></a>Using <code>collection-json-parser</code> to write</h2>
+
+<p>Writing a <code>Collection</code>is fairly easy.
+Simply use the differnet builders in <code>de.fesere.hypermedia.cj.model.builder</code> to construct the differnet objects.</p>
+
+<p>For example, if you want to create a <code>Collection</code> with a single <code>Item</code> and two <code>Links</code>, you could the follwing</p>
+
+<div class="highlight highlight-Java"><pre><span class="n">CollectionBuilder</span> <span class="n">collectionBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CollectionBuilder</span><span class="o">(</span><span class="n">URI</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">"http://example.com"</span><span class="o">));</span>
+<span class="n">collectionBuilder</span><span class="o">.</span><span class="na">getLinkBuilder</span><span class="o">().</span><span class="na">addLink</span><span class="o">(</span><span class="s">"documentation"</span><span class="o">,</span><span class="s">"/documentation/v1"</span><span class="o">)</span>
+                                  <span class="o">.</span><span class="na">addLink</span><span class="o">(</span><span class="s">"questions"</span><span class="o">,</span> <span class="n">URI</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">"http://stackoverflow.com"</span><span class="o">)).</span><span class="na">build</span><span class="o">();</span>
+
+<span class="n">ItemBuilder</span> <span class="n">itemBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ItemBuilder</span><span class="o">(</span><span class="n">URI</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">"http;//example.com/item/1"</span><span class="o">));</span>
+<span class="n">itemBuilder</span><span class="o">.</span><span class="na">addData</span><span class="o">(</span><span class="k">new</span> <span class="n">DataEntry</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span> <span class="s">"Bob"</span><span class="o">,</span> <span class="s">"Users first name"</span><span class="o">));</span>
+<span class="n">Collection</span> <span class="n">collection</span> <span class="o">=</span> <span class="n">collectionBuilder</span><span class="o">.</span><span class="na">addItem</span><span class="o">(</span><span class="n">itemBuilder</span><span class="o">.</span><span class="na">build</span><span class="o">()).</span><span class="na">build</span><span class="o">();</span>
+
+<span class="n">Serializer</span> <span class="n">serializer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Serializer</span><span class="o">();</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">serializer</span><span class="o">.</span><span class="na">serialize</span><span class="o">(</span><span class="n">collection</span><span class="o">));</span>
+</pre></div>
+
+<p>which would result in</p>
+
+<div class="highlight highlight-JSON"><pre><span class="p">{</span>
+  <span class="nt">"version"</span> <span class="p">:</span> <span class="s2">"1.0"</span><span class="p">,</span>
+  <span class="nt">"href"</span> <span class="p">:</span> <span class="s2">"http://example.com"</span><span class="p">,</span>
+  <span class="nt">"links"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">{</span>
+    <span class="nt">"rel"</span> <span class="p">:</span> <span class="s2">"documentation"</span><span class="p">,</span>
+    <span class="nt">"href"</span> <span class="p">:</span> <span class="s2">"http://example.com/documentation/v1"</span>
+  <span class="p">},</span> <span class="p">{</span>
+    <span class="nt">"rel"</span> <span class="p">:</span> <span class="s2">"questions"</span><span class="p">,</span>
+    <span class="nt">"href"</span> <span class="p">:</span> <span class="s2">"http://stackoverflow.com"</span>
+  <span class="p">}</span> <span class="p">],</span>
+  <span class="nt">"items"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">{</span>
+    <span class="nt">"href"</span> <span class="p">:</span> <span class="s2">"http;//example.com/item/1"</span><span class="p">,</span>
+    <span class="nt">"data"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">{</span>
+      <span class="nt">"name"</span> <span class="p">:</span> <span class="s2">"name"</span><span class="p">,</span>
+      <span class="nt">"value"</span> <span class="p">:</span> <span class="s2">"Bob"</span><span class="p">,</span>
+      <span class="nt">"prompt"</span> <span class="p">:</span> <span class="s2">"Users first name"</span>
+    <span class="p">}</span> <span class="p">],</span>
+    <span class="nt">"links"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">]</span>
+  <span class="p">}</span> <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="build-status" class="anchor" href="#build-status"><span class="octicon octicon-link"></span></a>Build status:</h2>
+
+<table>
+<thead><tr>
+<th>Branch</th>
+<th>Status</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Development</td>
+<td><a href="https://travis-ci.org/felipesere/collection-json-parser"><img src="https://travis-ci.org/felipesere/collection-json-parser.png?branch=develop" alt="Build Status"></a></td>
+</tr>
+<tr>
+<td>Master:</td>
+<td><a href="https://travis-ci.org/felipesere/collection-json-parser"><img src="https://travis-ci.org/felipesere/collection-json-parser.png?branch=master" alt="Build Status"></a></td>
+</tr>
+</tbody>
+</table>
       </section>
     </div>
 
