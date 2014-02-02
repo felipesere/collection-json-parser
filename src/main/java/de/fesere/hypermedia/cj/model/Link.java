@@ -23,10 +23,6 @@ public class Link extends Linkable{
         this.prompt = prompt;
     }
 
-    public Link(String rel, URI href) {
-        this(rel,href, null);
-    }
-
     public URI getHref() {
         return href;
     }

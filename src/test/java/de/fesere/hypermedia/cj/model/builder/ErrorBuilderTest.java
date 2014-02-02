@@ -1,4 +1,4 @@
-package de.fesere.hypermedia.cj.model.server;
+package de.fesere.hypermedia.cj.model.builder;
 
 import de.fesere.hypermedia.cj.model.Collection;
 import de.fesere.hypermedia.cj.model.SerializationTestBase;

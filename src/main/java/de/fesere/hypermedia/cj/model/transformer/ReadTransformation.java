@@ -4,5 +4,5 @@ import de.fesere.hypermedia.cj.model.Item;
 
 public interface ReadTransformation<T> {
 
-    T convert(Item item);
+    T transform(Item item);
 }

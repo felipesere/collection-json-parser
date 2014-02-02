@@ -1,4 +1,4 @@
-package de.fesere.hypermedia.cj.model.server;
+package de.fesere.hypermedia.cj.model.builder;
 
 import de.fesere.hypermedia.cj.model.*;
 import de.fesere.hypermedia.cj.model.transformer.WriteTransformer;
@@ -63,9 +63,13 @@ public class CollectionBuilderTest extends SerializationTestBase {
         URI template = URI.create("http://example.org/friends/?template");
         URI queries = URI.create("http://example.org/friends/?queries");
 
-        Collection collection = new CollectionBuilder(href).addLink("feed", feeds)
-                                                           .addLink("template", template)
-                                                           .addLink("queries", queries).build();
+        CollectionBuilder collectionBuilder = new CollectionBuilder(href);
+        collectionBuilder.getLinkBuilder().addLink("feed", feeds)
+                                          .addLink("template", template)
+                                          .addLink("queries", queries).build();
+
+        Collection collection = collectionBuilder.build();
+
         assertCollectionSerialization(expected, collection);
     }
 
@@ -73,9 +77,12 @@ public class CollectionBuilderTest extends SerializationTestBase {
     public void test_addLinksWithRelativeURL() {
         String expected = readFile("/examples/builder/only-links.json");
 
-        Collection collection = new CollectionBuilder(href).addLink("feed", "/rss")
-                .addLink("template", "/?template")
-                .addLink("queries", "?queries").build();
+        CollectionBuilder collectionBuilder = new CollectionBuilder(href);
+        collectionBuilder.getLinkBuilder().addLink("feed", "/rss")
+                                          .addLink("template", "/?template")
+                                          .addLink("queries", "?queries");
+
+        Collection collection = collectionBuilder.build();
         assertCollectionSerialization(expected, collection);
     }
 
@@ -86,7 +93,7 @@ public class CollectionBuilderTest extends SerializationTestBase {
 
         PersonTransformerWithoutLinks transformer = new PersonTransformerWithoutLinks(URI.create("http://example.org"));
         Person person = new Person("jdoe", "J. Doe", "jdoe@example.org");
-        Collection collection = new CollectionBuilder<>(href, transformer).addItem(person).build();
+        Collection collection = new CollectionBuilder<>(href, transformer).addObject(person).build();
 
         assertCollectionSerialization(expected, collection);
     }
@@ -97,7 +104,7 @@ public class CollectionBuilderTest extends SerializationTestBase {
 
         PersonTransformerWithLinks transformer = new PersonTransformerWithLinks(URI.create("http://example.org"));
         Person person = new Person("jdoe", "J. Doe", "jdoe@example.org");
-        Collection collection = new CollectionBuilder<>(href, transformer).addItem(person).build();
+        Collection collection = new CollectionBuilder<>(href, transformer).addObject(person).build();
 
         assertCollectionSerialization(expected, collection);
     }
@@ -124,11 +131,13 @@ public class CollectionBuilderTest extends SerializationTestBase {
         }
 
         @Override
-        public Item convert(Person input) {
+        public Item transform(Person input) {
             ItemBuilder builder = new ItemBuilder(constructor.buildAbsoluteHrefFromRelative("/friends/"+input.id));
             builder.addData(new DataEntry("full-name", input.fullName , "Full Name"))
                    .addData(new DataEntry("email", input.email, "Email"));
-            builder.addLink("blog",   constructor.buildAbsoluteHrefFromRelative("/blogs/"+input.id), "Blog")
+
+            LinkBuilder linkBuilder = builder.getRelativeLinkBuilder();
+            linkBuilder.addLink("blog",   constructor.buildAbsoluteHrefFromRelative("/blogs/"+input.id), "Blog")
                    .addLink("avatar", constructor.buildAbsoluteHrefFromRelative("/images/" + input.id), "Avatar");
 
            return builder.build();
@@ -143,7 +152,7 @@ public class CollectionBuilderTest extends SerializationTestBase {
         }
 
         @Override
-        public Item convert(Person input) {
+        public Item transform(Person input) {
             ItemBuilder builder = new ItemBuilder(constructor.buildAbsoluteHrefFromRelative("/friends/"+input.id));
             builder.addData(new DataEntry("full-name", input.fullName , "Full Name"))
                     .addData(new DataEntry("email", input.email, "Email"));

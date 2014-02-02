@@ -102,13 +102,13 @@ public class Collection {
     }
 
 
-    public <T> List<T> convert(ReadTransformation<T> transformer) {
+    public <T> List<T> transform(ReadTransformation<T> transformer) {
         throwExceptionOnError();
 
         List<T> result = new ArrayList<>(items.size());
 
         for(Item item : items) {
-            T convertedItem = transformer.convert(item);
+            T convertedItem = transformer.transform(item);
             if(convertedItem != null) {
                 result.add(convertedItem);
             }

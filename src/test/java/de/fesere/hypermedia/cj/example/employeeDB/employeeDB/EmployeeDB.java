@@ -20,7 +20,7 @@ public class EmployeeDB {
 
     public EmployeeDB() {
         URI START = URI.create("http://employee.herokuapp.com");
-        Collection rootCollection = httpCjClient.read(START);
+        Collection rootCollection = httpCjClient.readCollection(START);
 
         handlePossibleErrors(rootCollection);
 
@@ -35,16 +35,16 @@ public class EmployeeDB {
     }
 
     public void addNewEmployee(Employee employee) {
-        Collection employees = httpCjClient.read(employeesURI);
+        Collection employees = httpCjClient.readCollection(employeesURI);
 
         Template template = employees.getTemplate();
-        template.fill(new EmployeeTransformer().convert(employee));
+        template.fill(new EmployeeTransformer().transform(employee));
 
-        httpCjClient.addItem(template);
+        httpCjClient.addItem(employees.getHref(), template);
     }
 
     public List<Employee> getEmployeesOfDepartment(String departmentName) {
-        Collection departments = httpCjClient.read(departmentsURI);
+        Collection departments = httpCjClient.readCollection(departmentsURI);
 
        Iterator<Collection> collectionIterator = new CollectionIterator(departments, httpCjClient);
 
@@ -66,9 +66,9 @@ public class EmployeeDB {
             return Collections.emptyList();
         }
 
-        Collection department = httpCjClient.read(foundItem.getHref());
+        Collection department = httpCjClient.readCollection(foundItem.getHref());
 
-        Collection employees = httpCjClient.read(department.getLink("employees").getHref());
+        Collection employees = httpCjClient.readCollection(department.getLink("employees").getHref());
 
         Iterator<Collection> employeeIter = new CollectionIterator(employees, httpCjClient);
         List<Item> employeeItems = new LinkedList<>();
@@ -79,11 +79,11 @@ public class EmployeeDB {
 
         Collection finalEmployees = new Collection(employees.getHref(), employeeItems, employees.getQueries(), employees.getLinks(), employees.getTemplate());
 
-        return finalEmployees.convert(new EmployeeTransformer());
+        return finalEmployees.transform(new EmployeeTransformer());
     }
 
     public List<Department> getAllDepartments() {
-        Collection departments = httpCjClient.read(departmentsURI);
+        Collection departments = httpCjClient.readCollection(departmentsURI);
 
         Iterator<Collection> iterator = new CollectionIterator(departments, httpCjClient);
         List<Item> items = new LinkedList<>();
@@ -96,24 +96,24 @@ public class EmployeeDB {
 
         Collection finalCollection = new Collection(departments.getHref(), items, departments.getQueries(), departments.getLinks(), departments.getTemplate());
 
-        return finalCollection.convert(new DepratmentTransformer());
+        return finalCollection.transform(new DepratmentTransformer());
     }
 
     public List<Employee> getAllEmployees() {
-        Collection employees = httpCjClient.read(employeesURI);
+        Collection employees = httpCjClient.readCollection(employeesURI);
 
         handlePossibleErrors(employees);
 
-        return employees.convert(new EmployeeTransformer());
+        return employees.transform(new EmployeeTransformer());
     }
 
     public List<Employee> findEmployeeByName(String name) {
-        Collection employees = httpCjClient.read(employeesURI);
+        Collection employees = httpCjClient.readCollection(employeesURI);
         Query searchQuery = employees.getQuery("search");
 
         Query filledQuery = searchQuery.set("name", name);
 
-        return httpCjClient.follow(filledQuery).convert(new EmployeeTransformer());
+        return httpCjClient.follow(filledQuery).transform(new EmployeeTransformer());
     }
 
     private class CollectionIterator implements Iterator<Collection> {
@@ -136,7 +136,7 @@ public class EmployeeDB {
 
             URI nextUri = context.getLink("next").getHref();
 
-            Collection next = cjClient.read(nextUri);
+            Collection next = cjClient.readCollection(nextUri);
             context = next;
 
             return next;

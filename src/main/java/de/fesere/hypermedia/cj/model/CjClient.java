@@ -1,6 +1,5 @@
 package de.fesere.hypermedia.cj.model;
 
-import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import de.fesere.hypermedia.cj.http.HTTPClient;
 import de.fesere.hypermedia.cj.model.serialization.Serializer;
 import de.fesere.hypermedia.cj.model.serialization.Wrapper;
@@ -11,7 +10,6 @@ import java.util.Map;
 
 public class CjClient {
 
-    private Collection collection;
     private final HTTPClient httpClient;
     private Serializer serializer = new Serializer();
 
@@ -20,40 +18,41 @@ public class CjClient {
         this.httpClient = httpClient;
     }
 
-    public CjClient use(Collection collection) {
-        this.collection = collection;
-        return this;
-    }
-
     public Collection follow(Query query) {
 
         URI queryURI = query.buildURI();
 
-        return read(queryURI);
+        return readCollection(queryURI);
     }
 
-    public Query selectQuery(String search) {
-        for (Query query : collection.getQueries()) {
-            if (query.getRel().equals(search)) {
-                return query;
-            }
-        }
-
-        throw new ElementNotFoundException("Query '" + search + "' not found");
-    }
-
-    public Collection read(URI uri) {
+    public Collection readCollection(URI uri) {
         String collectionJson = httpClient.getLink(uri);
 
+        return deserializeCollection(collectionJson);
+    }
+
+    private Collection deserializeCollection(String collectionJson) {
         return (Collection) serializer.deserialize(collectionJson, Wrapper.class).getElement();
     }
 
-    public Collection addItem(Template template) {
-        String body = serializer.serialize(new Wrapper<>(template));
+    public Collection addItem(URI href,Template template) {
+        String body = serializeBody(template);
 
-        URI result = httpClient.post(collection.getHref(), body, createHeader());
+        URI result = httpClient.post(href, body, createHeader());
 
-        return read(result);
+        return readCollection(result);
+    }
+
+    public Collection updateItem(URI itemHref, Template template) {
+        String body = serializeBody(template);
+
+        String json = httpClient.put(itemHref, body, createHeader());
+
+        return  deserializeCollection(json);
+    }
+
+    private String serializeBody(Template template) {
+        return serializer.serialize(new Wrapper<>(template));
     }
 
     private Map<String, String> createHeader() {

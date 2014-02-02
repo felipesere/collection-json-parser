@@ -1,4 +1,4 @@
-package de.fesere.hypermedia.cj.model.server;
+package de.fesere.hypermedia.cj.model.builder;
 
 import de.fesere.hypermedia.cj.model.Collection;
 import de.fesere.hypermedia.cj.model.Item;
@@ -15,6 +15,7 @@ public class CollectionBuilder<T> {
 
     private final WriteTransformer<T> transformer;
     private UriConstructor uriConstructor;
+    private LinkBuilder linkBuilder;
     private Template temaplate;
     private List<Query> queries = new LinkedList<>();
     private List<Link> links = new LinkedList<>();
@@ -26,6 +27,7 @@ public class CollectionBuilder<T> {
             throw new IllegalArgumentException("URI must not be null!");
         }
         uriConstructor = new UriConstructor(href);
+        linkBuilder = new LinkBuilder(href);
     }
 
     public CollectionBuilder(URI href) {
@@ -36,11 +38,6 @@ public class CollectionBuilder<T> {
         this.temaplate = temaplte;
         return this;
     }
-
-    public Collection build() {
-        return new Collection(uriConstructor.getBase(), items, queries, links, temaplate);
-    }
-
 
     public CollectionBuilder addQuery(Query query) {
         queries.add(query);
@@ -55,23 +52,25 @@ public class CollectionBuilder<T> {
         return addQuery(temp);
     }
 
-    public CollectionBuilder addLink(String rel, URI uri) {
-        links.add(new Link(rel, uri));
-        return this;
+    public LinkBuilder getLinkBuilder() {
+        return linkBuilder;
     }
 
-    public CollectionBuilder addLink(String rel, String relativeURL) {
-        URI absoluteURL = uriConstructor.buildAbsoluteHrefFromRelative(relativeURL);
-        return addLink(rel, absoluteURL);
-    }
-
-
-    public CollectionBuilder addItem(T thing) {
-        Item item = transformer.convert(thing);
+    public CollectionBuilder addObject(T object) {
+        Item item = transformer.transform(object);
         if (item != null) {
-            items.add(item);
+            addItem(item);
         }
 
         return this;
+    }
+
+    public CollectionBuilder addItem(Item item) {
+        items.add(item);
+        return this;
+    }
+
+    public Collection build() {
+        return new Collection(uriConstructor.getBase(), items, queries, linkBuilder.build(), temaplate);
     }
 }

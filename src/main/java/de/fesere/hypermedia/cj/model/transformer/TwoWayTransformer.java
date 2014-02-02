@@ -4,12 +4,12 @@ import de.fesere.hypermedia.cj.model.Item;
 
 public abstract class TwoWayTransformer<T> implements ReadTransformation<T>, WriteTransformer<T>  {
     @Override
-    public T convert(Item item) {
-        throw new IllegalStateException(this.getClass().getName()+ " does not convert to operation" );
+    public T transform(Item item) {
+        throw new IllegalStateException(this.getClass().getName()+ " does not support operation" );
     }
 
     @Override
-    public Item convert(T input) {
-        throw new IllegalStateException(this.getClass().getName()+ " does not convert to operation" );
+    public Item transform(T input) {
+        throw new IllegalStateException(this.getClass().getName()+ " does not support operation" );
     }
 }

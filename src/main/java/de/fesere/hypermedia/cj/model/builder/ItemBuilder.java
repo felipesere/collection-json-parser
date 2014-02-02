@@ -1,8 +1,7 @@
-package de.fesere.hypermedia.cj.model.server;
+package de.fesere.hypermedia.cj.model.builder;
 
 import de.fesere.hypermedia.cj.model.DataEntry;
 import de.fesere.hypermedia.cj.model.Item;
-import de.fesere.hypermedia.cj.model.Link;
 
 import java.net.URI;
 import java.util.LinkedList;
@@ -11,11 +10,12 @@ import java.util.List;
 public class ItemBuilder {
 
     private List<DataEntry> dataEntries = new LinkedList<>();
-    private List<Link> links = new LinkedList<>();
     private UriConstructor constructor;
+    private LinkBuilder linkBuilder;
 
     public ItemBuilder(URI href) {
         constructor = new UriConstructor(href);
+        linkBuilder = new LinkBuilder(href);
     }
 
     public ItemBuilder addData(DataEntry entry) {
@@ -23,12 +23,11 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder addLink(String rel, URI uri, String prompt) {
-        links.add(new Link(rel, uri, prompt));
-        return this;
+    public LinkBuilder getRelativeLinkBuilder() {
+        return linkBuilder;
     }
 
     public Item build() {
-        return new Item(constructor.getBase(), dataEntries, links);
+        return new Item(constructor.getBase(), dataEntries, linkBuilder.build());
     }
 }

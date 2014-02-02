@@ -15,11 +15,11 @@ public class DummyHTTPClient implements HTTPClient {
 
     private URI expectedURI = null;
     private URI expectedGETuri = null;
-    private String getLinkResponse = "";
     private String expectedVerb;
     private String headerName;
     private String headerValue;
     private String expectedContent;
+    private String bodyToRespond ="";
     private URI uriToRespond;
 
     public DummyHTTPClient expectGetLinkWith(URI uri) {
@@ -27,8 +27,13 @@ public class DummyHTTPClient implements HTTPClient {
         return this;
     }
 
-    public DummyHTTPClient returnStringOnGetLink(String s) {
-        getLinkResponse = s;
+    public DummyHTTPClient returnStringOnGet(String body) {
+        bodyToRespond = body;
+        return this;
+    }
+
+    public DummyHTTPClient returnStringOnPUT(String body) {
+        bodyToRespond = body;
         return this;
     }
 
@@ -38,7 +43,7 @@ public class DummyHTTPClient implements HTTPClient {
         if(expectedGETuri != null) {
             Assert.assertEquals("getLink called with unexpected URI", expectedGETuri, actual);
         }
-        return getLinkResponse;
+        return bodyToRespond;
     }
 
     @Override
@@ -53,6 +58,20 @@ public class DummyHTTPClient implements HTTPClient {
 
         }
         return uriToRespond;
+    }
+
+    @Override
+    public String put(URI href, String body, Map<String, String> header) {
+        assertThat(expectedVerb, is("PUT"));
+        assertThat(expectedURI, is(href));
+        assertThat(header, hasEntry(headerName, headerValue));
+        try {
+            JSONAssert.assertEquals(expectedContent, body, false);
+        } catch (JSONException e) {
+            Assert.fail(e.getMessage());
+
+        }
+        return bodyToRespond;
     }
 
     public DummyHTTPClient expect(String verb) {
@@ -78,5 +97,16 @@ public class DummyHTTPClient implements HTTPClient {
 
     public void respondWithURI(URI uri) {
         uriToRespond = uri;
+    }
+
+    public void clear() {
+        expectedURI = null;
+        expectedGETuri = null;
+        expectedVerb = "";
+        headerName = "";
+        headerValue = "";
+        expectedContent = "";
+        uriToRespond = null;
+        bodyToRespond ="";
     }
 }

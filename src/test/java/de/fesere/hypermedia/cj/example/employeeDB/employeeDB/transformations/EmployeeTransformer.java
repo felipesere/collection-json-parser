@@ -8,7 +8,7 @@ import de.fesere.hypermedia.cj.model.transformer.TwoWayTransformer;
 public class EmployeeTransformer extends TwoWayTransformer<Employee> {
 
     @Override
-    public Employee convert(Item item) {
+    public Employee transform(Item item) {
 
         return new Employee(item.getInt("emp_no"),
                 item.getString("birth_date"),
@@ -18,7 +18,7 @@ public class EmployeeTransformer extends TwoWayTransformer<Employee> {
     }
 
     @Override
-    public Item convert(Employee input) {
+    public Item transform(Employee input) {
         Item item = new Item();
         item.addData(new DataEntry("birth_date", input.getBirthday()));
         item.addData(new DataEntry("first_name", input.getFirstName()));

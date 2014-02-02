@@ -9,12 +9,12 @@ public class TwoWayTransformerTest {
 
     @Test(expected = IllegalStateException.class)
     public void testConvertToItem() throws Exception {
-        t.convert("foo");
+        t.transform("foo");
     }
 
     @Test(expected = IllegalStateException.class)
     public void testConvertFromItem() throws Exception {
-        t.convert(new Item());
+        t.transform(new Item());
     }
 
     private class DummyTransformer extends TwoWayTransformer<String> {
