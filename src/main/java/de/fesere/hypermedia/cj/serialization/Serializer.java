@@ -29,12 +29,9 @@ public class Serializer {
             return (T) deseriliazeTemplate(input);
         }
 
-        try {
-            return mapper.readValue(input, responseClass);
-        } catch (IOException e) {
-            throw new SerializationException("Could not deseriliaze input to " + responseClass.getName(), e);
-        }
+        return defaultDeserialisation(input, responseClass);
     }
+
 
     public String serialize(Object obj) {
 
@@ -45,6 +42,10 @@ public class Serializer {
             return serialize((Template) obj);
         }
 
+        return defaultSerialization(obj);
+    }
+
+    private String defaultSerialization(Object obj) {
         try {
             return mapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
@@ -52,19 +53,27 @@ public class Serializer {
         }
     }
 
-    private Template deseriliazeTemplate(String givenJson) {
-        return (Template) deserialize(givenJson, Wrapper.class).getElement();
-    }
-
-    private Collection deserializeCollection(String giveJson) {
-        return (Collection) deserialize(giveJson, Wrapper.class).getElement();
-    }
-
     private String serialize(Collection collection) {
-        return serialize(new Wrapper<>(collection));
+        return defaultSerialization(new Wrapper<>(collection));
     }
 
     private String serialize(Template template) {
-        return serialize(new Wrapper<>(template));
+        return defaultSerialization(new Wrapper<>(template));
+    }
+
+    private <T> T defaultDeserialisation(String input, Class<T> responseClass) {
+        try {
+            return mapper.readValue(input, responseClass);
+        } catch (IOException e) {
+            throw new SerializationException("Could not deseriliaze input to " + responseClass.getName(), e);
+        }
+    }
+
+    private Template deseriliazeTemplate(String givenJson) {
+        return (Template) defaultDeserialisation(givenJson, Wrapper.class).getElement();
+    }
+
+    private Collection deserializeCollection(String giveJson) {
+        return (Collection) defaultDeserialisation(giveJson, Wrapper.class).getElement();
     }
 }
