@@ -40,12 +40,8 @@ public abstract class SerializationTestBase {
         }
     }
 
-    public final String serialize(Object o){
-        return serializer.serialize(o);
-    }
-
     public final String serializeCollection(Collection c) {
-        return serialize(new Wrapper<>(c));
+        return serializer.serialize(c);
     }
 
 
@@ -54,11 +50,11 @@ public abstract class SerializationTestBase {
     }
 
     public final Template deseriliazeTemplate(String givenJson) {
-        return (Template) deserialize(givenJson, Wrapper.class).getElement();
+        return serializer.deseriliazeTemplate(givenJson);
     }
 
     public final Collection deserializeCollection(String giveJson) {
-        return (Collection) deserialize(giveJson, Wrapper.class).getElement();
+        return serializer.deserializeCollection(giveJson);
     }
 
     public final String readFile(String filename) {
