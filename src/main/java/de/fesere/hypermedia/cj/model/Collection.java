@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import de.fesere.hypermedia.cj.exceptions.CollectionHasErrorsException;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
+import de.fesere.hypermedia.cj.serialization.Wrapped;
 import de.fesere.hypermedia.cj.transformer.ReadTransformation;
 
 import java.net.URI;
@@ -24,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, setterVisibility = NONE)
 @JsonPropertyOrder({"version", "href", "links", "error", "items", "queries", "template"})
-public class Collection {
+public class Collection implements Wrapped{
 
     @JsonProperty("version")
     private final String version = "1.0";

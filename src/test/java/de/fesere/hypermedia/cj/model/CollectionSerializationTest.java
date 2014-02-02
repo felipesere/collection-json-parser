@@ -1,7 +1,6 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
-import de.fesere.hypermedia.cj.serialization.Wrapper;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,7 +15,7 @@ public class CollectionSerializationTest extends SerializationTestBase {
     public void testPOJOtoJSON() {
         Collection collection = new Collection(TEST_COM);
 
-        assertSerialization("{\"collection\":{\"href\":\"http://test.com\",\"version\":\"1.0\"}}", new Wrapper<>(collection));
+        assertCollectionSerialization("{\"collection\":{\"href\":\"http://test.com\",\"version\":\"1.0\"}}", collection);
     }
 
 
