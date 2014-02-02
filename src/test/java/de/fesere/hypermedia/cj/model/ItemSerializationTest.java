@@ -13,18 +13,18 @@ import static org.hamcrest.core.Is.is;
 
 public class ItemSerializationTest extends SerializationTestBase {
 
-    private static final URI TEST_COM_ITEM = URI.create("http://test.com/item/1");
+    private static final URI TEST_COM_ITEM = URI.create("http://writeToStringExample.com/item/1");
 
     @Test
     public void testPOJOtoJSON() {
         Item classUnderTest = new Item(TEST_COM_ITEM);
 
-        assertSerialization("{\"href\":\"http://test.com/item/1\"}", classUnderTest);
+        assertSerialization("{\"href\":\"http://writeToStringExample.com/item/1\"}", classUnderTest);
     }
 
     @Test
     public void testJSONtoPOJO() {
-        String givenJSON = "{\"href\":\"http://test.com/item/1\"}";
+        String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\"}";
 
         Item item = serializer.deserialize(givenJSON, Item.class);
 
@@ -34,7 +34,7 @@ public class ItemSerializationTest extends SerializationTestBase {
     @Test
     public void testJSONwithAllPropertiesToPOJO() {
 
-        String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"foo\", \"value\":\"bar\", \"prompt\":\"foos prompt\"}]}";
+        String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"foo\", \"value\":\"bar\", \"prompt\":\"foos prompt\"}]}";
 
         Item item = serializer.deserialize(givenJSON, Item.class);
         assertThat(item.getHref(), is(TEST_COM_ITEM));
@@ -50,12 +50,12 @@ public class ItemSerializationTest extends SerializationTestBase {
         Item item = new Item(TEST_COM_ITEM);
         item.addData(new DataEntry("foo", "bar"));
 
-        assertSerialization("{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"foo\", \"value\":\"bar\"}]}", item);
+        assertSerialization("{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"foo\", \"value\":\"bar\"}]}", item);
     }
 
     @Test
     public void testDeserializeItemWithSingleDataEntry() {
-        String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"foo\", \"value\":\"bar\"}]}";
+        String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"foo\", \"value\":\"bar\"}]}";
 
         Item item = serializer.deserialize(givenJSON, Item.class);
 
@@ -65,7 +65,7 @@ public class ItemSerializationTest extends SerializationTestBase {
 
     @Test(expected = ElementNotFoundException.class)
     public void testDeserializeItemWithSingleDataEntryMissingString() {
-        String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"age\", \"value\":\"24\"}]}";
+        String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"age\", \"value\":\"24\"}]}";
 
         Item item = serializer.deserialize(givenJSON, Item.class);
 
@@ -74,7 +74,7 @@ public class ItemSerializationTest extends SerializationTestBase {
 
     @Test(expected = ElementNotFoundException.class)
     public void testDeserializeItemWithSingleDataEntryMissingInteger() {
-        String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"age\", \"value\":\"24\"}]}";
+        String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"age\", \"value\":\"24\"}]}";
 
         Item item = serializer.deserialize(givenJSON, Item.class);
         item.getInt("doesNotExist");
@@ -82,7 +82,7 @@ public class ItemSerializationTest extends SerializationTestBase {
 
     @Test
     public void testDeserializeItemWithSingleDataEntryContainingInt() {
-        String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"age\", \"value\":24}]}";
+        String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"age\", \"value\":24}]}";
 
         Item item = serializer.deserialize(givenJSON, Item.class);
 
@@ -93,7 +93,7 @@ public class ItemSerializationTest extends SerializationTestBase {
 
     @Test(expected = MalformedDataValueException.class)
     public void testDeserializeItemWithSingleDataEntryContainingMalformedInt_exception() {
-        String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"age\", \"value\": \"24.abc\"}]}";
+        String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"age\", \"value\": \"24.abc\"}]}";
 
         Item item = serializer.deserialize(givenJSON, Item.class);
 
@@ -106,7 +106,7 @@ public class ItemSerializationTest extends SerializationTestBase {
 
     @Test
     public void testDeserializeItemWithSingleDataEntryContainingDouble() {
-        String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"distance\", \"value\":24.004}]}";
+        String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"distance\", \"value\":24.004}]}";
 
         Item item = serializer.deserialize(givenJSON, Item.class);
 
@@ -117,7 +117,7 @@ public class ItemSerializationTest extends SerializationTestBase {
 
     @Test(expected = MalformedDataValueException.class)
     public void testDeserializeItemWithSingleDataEntryContainingInvalidDouble() {
-        String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"distance\", \"value\": \"24.004xyz\"}]}";
+        String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"distance\", \"value\": \"24.004xyz\"}]}";
 
         Item item = serializer.deserialize(givenJSON, Item.class);
 
