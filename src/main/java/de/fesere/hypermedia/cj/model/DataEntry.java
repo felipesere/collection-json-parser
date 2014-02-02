@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.apache.commons.lang3.StringUtils;
 
 @JsonSerialize
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -20,12 +21,12 @@ public class DataEntry {
     @JsonProperty(value = "prompt")
     private final String prompt;
 
-    public DataEntry(String name, String value) {
-        this(name, value, null);
-    }
-
     public DataEntry(String name) {
         this(name, null);
+    }
+
+    public DataEntry(String name, String value) {
+        this(name, value, null);
     }
 
     @JsonCreator
@@ -53,12 +54,12 @@ public class DataEntry {
     }
 
     public void clear() {
-        this.value = "";
+        value = "";
     }
 
     public String buildQueryRepresentation() {
 
-        if (value != null && value.length() > 0) {
+        if (StringUtils.isNotBlank(value)) {
             return name + "=" + value;
         }
         return "";
