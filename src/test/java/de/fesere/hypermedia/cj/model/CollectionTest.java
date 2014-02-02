@@ -6,7 +6,7 @@ import de.fesere.hypermedia.cj.model.builder.CollectionBuilder;
 import de.fesere.hypermedia.cj.model.builder.ErrorBuilder;
 import de.fesere.hypermedia.cj.model.builder.ItemBuilder;
 import de.fesere.hypermedia.cj.model.builder.LinkBuilder;
-import de.fesere.hypermedia.cj.model.transformer.ReadTransformation;
+import de.fesere.hypermedia.cj.transformer.ReadTransformation;
 import org.junit.Test;
 
 import java.net.URI;

@@ -1,7 +1,7 @@
-package de.fesere.hypermedia.cj.example.employeeDB.employeeDB;
+package de.fesere.hypermedia.cj.example.employeeDB;
 
-import de.fesere.hypermedia.cj.example.employeeDB.employeeDB.transformations.DepratmentTransformer;
-import de.fesere.hypermedia.cj.example.employeeDB.employeeDB.transformations.EmployeeTransformer;
+import de.fesere.hypermedia.cj.example.employeeDB.transformations.DepratmentTransformer;
+import de.fesere.hypermedia.cj.example.employeeDB.transformations.EmployeeTransformer;
 import de.fesere.hypermedia.cj.model.*;
 
 import java.net.URI;

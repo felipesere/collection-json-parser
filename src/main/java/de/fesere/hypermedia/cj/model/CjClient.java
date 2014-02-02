@@ -1,8 +1,8 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.http.HTTPClient;
-import de.fesere.hypermedia.cj.model.serialization.Serializer;
-import de.fesere.hypermedia.cj.model.serialization.Wrapper;
+import de.fesere.hypermedia.cj.serialization.Serializer;
+import de.fesere.hypermedia.cj.serialization.Wrapper;
 
 import java.net.URI;
 import java.util.HashMap;

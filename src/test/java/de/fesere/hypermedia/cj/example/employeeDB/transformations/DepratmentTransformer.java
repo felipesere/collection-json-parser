@@ -1,8 +1,8 @@
-package de.fesere.hypermedia.cj.example.employeeDB.employeeDB.transformations;
+package de.fesere.hypermedia.cj.example.employeeDB.transformations;
 
-import de.fesere.hypermedia.cj.example.employeeDB.employeeDB.Department;
+import de.fesere.hypermedia.cj.example.employeeDB.Department;
 import de.fesere.hypermedia.cj.model.Item;
-import de.fesere.hypermedia.cj.model.transformer.ReadTransformation;
+import de.fesere.hypermedia.cj.transformer.ReadTransformation;
 
 public class DepratmentTransformer implements ReadTransformation<Department> {
     @Override

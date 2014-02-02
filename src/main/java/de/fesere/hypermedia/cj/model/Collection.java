@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import de.fesere.hypermedia.cj.exceptions.CollectionHasErrorsException;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
-import de.fesere.hypermedia.cj.model.transformer.ReadTransformation;
+import de.fesere.hypermedia.cj.transformer.ReadTransformation;
 
 import java.net.URI;
 import java.util.ArrayList;

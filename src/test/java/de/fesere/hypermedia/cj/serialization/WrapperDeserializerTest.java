@@ -1,4 +1,4 @@
-package de.fesere.hypermedia.cj.model.serialization;
+package de.fesere.hypermedia.cj.serialization;
 
 import de.fesere.hypermedia.cj.exceptions.SerializationException;
 import org.junit.Test;

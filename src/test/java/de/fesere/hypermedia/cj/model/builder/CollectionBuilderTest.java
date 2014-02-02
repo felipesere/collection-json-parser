@@ -1,7 +1,7 @@
 package de.fesere.hypermedia.cj.model.builder;
 
 import de.fesere.hypermedia.cj.model.*;
-import de.fesere.hypermedia.cj.model.transformer.WriteTransformer;
+import de.fesere.hypermedia.cj.transformer.WriteTransformer;
 import org.junit.Test;
 
 import java.net.URI;

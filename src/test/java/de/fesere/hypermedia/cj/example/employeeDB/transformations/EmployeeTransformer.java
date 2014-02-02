@@ -1,9 +1,9 @@
-package de.fesere.hypermedia.cj.example.employeeDB.employeeDB.transformations;
+package de.fesere.hypermedia.cj.example.employeeDB.transformations;
 
-import de.fesere.hypermedia.cj.example.employeeDB.employeeDB.Employee;
+import de.fesere.hypermedia.cj.example.employeeDB.Employee;
 import de.fesere.hypermedia.cj.model.DataEntry;
 import de.fesere.hypermedia.cj.model.Item;
-import de.fesere.hypermedia.cj.model.transformer.TwoWayTransformer;
+import de.fesere.hypermedia.cj.transformer.TwoWayTransformer;
 
 public class EmployeeTransformer extends TwoWayTransformer<Employee> {
 

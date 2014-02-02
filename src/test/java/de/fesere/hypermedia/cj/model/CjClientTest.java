@@ -2,6 +2,7 @@ package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.http.DummyHTTPClient;
 import de.fesere.hypermedia.cj.model.builder.ItemBuilder;
+import de.fesere.hypermedia.cj.model.builder.TemplateBuilder;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,8 +54,7 @@ public class CjClientTest extends SerializationTestBase {
 
     @Test
     public void testAddItemToCollection() {
-        Collection collection = collectionWithMaxPerson();
-        Template template = collection.getTemplate();
+        Template template = new TemplateBuilder().emptyWithNames("foo", "bar", "batz").build();
 
         ItemBuilder builder = new ItemBuilder(URI.create(""));
         builder.addData(new DataEntry("foo", "a"))
@@ -79,7 +79,8 @@ public class CjClientTest extends SerializationTestBase {
         httpClient.expectGetLinkWith(URI.create(BASE_URL + "/1"));
         httpClient.returnStringOnGet(readFile("examples/full-collection.json"));
 
-        Collection resultCollection = classUnderTest.addItem(collection.getHref(),template);
+        URI collectionHref = URI.create(BASE_URL);
+        Collection resultCollection = classUnderTest.addItem(collectionHref, template);
 
         Assert.assertNotNull(resultCollection);
 
@@ -87,15 +88,14 @@ public class CjClientTest extends SerializationTestBase {
 
     @Test
     public void test_updateItemInCollection() {
-        Collection collection = collectionWithMaxPerson();
-        Template template = collection.getTemplate();
+        Template template = new TemplateBuilder().emptyWithNames("foo", "bar", "batz").build();
 
         ItemBuilder builder = new ItemBuilder(URI.create(""));
         builder.addData(new DataEntry("foo", "a"))
                 .addData(new DataEntry("bar", "b"))
                 .addData(new DataEntry("batz", "c"));
-
         Item content = builder.build();
+
         template.fill(content);
 
         httpClient.expect(PUT).on(URI.create(BASE_URL+ "/1")).withHeader("Content-Type", "application/vnd.collection+json").body("{\"template\" : {\n" +

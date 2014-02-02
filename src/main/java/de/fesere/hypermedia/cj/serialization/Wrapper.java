@@ -1,4 +1,4 @@
-package de.fesere.hypermedia.cj.model.serialization;
+package de.fesere.hypermedia.cj.serialization;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

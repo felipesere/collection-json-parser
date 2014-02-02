@@ -1,7 +1,7 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
-import de.fesere.hypermedia.cj.model.serialization.Wrapper;
+import de.fesere.hypermedia.cj.serialization.Wrapper;
 import org.junit.Assert;
 import org.junit.Test;
 

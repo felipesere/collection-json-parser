@@ -1,4 +1,4 @@
-package de.fesere.hypermedia.cj.example.employeeDB.employeeDB;
+package de.fesere.hypermedia.cj.example.employeeDB;
 
 import de.fesere.hypermedia.cj.http.HTTPClient;
 import org.apache.commons.httpclient.HttpClient;

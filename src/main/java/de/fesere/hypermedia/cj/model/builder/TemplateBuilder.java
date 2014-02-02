@@ -12,17 +12,12 @@ public class TemplateBuilder {
 
     public TemplateBuilder filledFromItem(Item item) {
         setEntries(item.getData());
-        return  this;
+        return this;
     }
 
     private void setEntries(List<DataEntry> entries) {
         this.entries.clear();
         this.entries.addAll(entries);
-    }
-
-
-    public Template build() {
-        return new Template(entries);
     }
 
     public TemplateBuilder emptyFromItem(Item item) {
@@ -38,5 +33,19 @@ public class TemplateBuilder {
             entry.clear();
         }
         return itemEntries;
+    }
+
+
+    public TemplateBuilder emptyWithNames(String ... names) {
+        List<DataEntry> nameEntries = new LinkedList<>();
+        for(String name : names) {
+            nameEntries.add(new DataEntry(name, ""));
+        }
+        setEntries(nameEntries);
+        return this;
+    }
+
+    public Template build() {
+        return new Template(entries);
     }
 }

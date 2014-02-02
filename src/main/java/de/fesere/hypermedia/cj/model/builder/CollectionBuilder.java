@@ -5,7 +5,7 @@ import de.fesere.hypermedia.cj.model.Item;
 import de.fesere.hypermedia.cj.model.Link;
 import de.fesere.hypermedia.cj.model.Query;
 import de.fesere.hypermedia.cj.model.Template;
-import de.fesere.hypermedia.cj.model.transformer.WriteTransformer;
+import de.fesere.hypermedia.cj.transformer.WriteTransformer;
 
 import java.net.URI;
 import java.util.LinkedList;

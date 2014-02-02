@@ -1,7 +1,7 @@
 package de.fesere.hypermedia.cj.model;
 
-import de.fesere.hypermedia.cj.example.employeeDB.employeeDB.Department;
-import de.fesere.hypermedia.cj.example.employeeDB.employeeDB.EmployeeDB;
+import de.fesere.hypermedia.cj.example.employeeDB.Department;
+import de.fesere.hypermedia.cj.example.employeeDB.EmployeeDB;
 import org.junit.Ignore;
 import org.junit.Test;
 

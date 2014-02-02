@@ -1,4 +1,4 @@
-package de.fesere.hypermedia.cj.example.employeeDB.employeeDB;
+package de.fesere.hypermedia.cj.example.employeeDB;
 
 public class Employee {
     private final int nr;
