@@ -102,24 +102,39 @@ which would result in
 
 ```JSON
 {
-  "version" : "1.0",
-  "href" : "http://example.com",
-  "links" : [ {
-    "rel" : "documentation",
-    "href" : "http://example.com/documentation/v1"
-  }, {
-    "rel" : "questions",
-    "href" : "http://stackoverflow.com"
-  } ],
-  "items" : [ {
-    "href" : "http;//example.com/item/1",
-    "data" : [ {
-      "name" : "name",
-      "value" : "Bob",
-      "prompt" : "Users first name"
-    } ],
-    "links" : [ ]
-  } ]
+    "collection": {
+        "version": "1.0",
+        "href": "http://test.com",
+        "links": [
+            {
+                "rel": "search",
+                "href": "http://test.com/search"
+            }
+        ],
+        "items": [
+            {
+                "href": "http://test.com",
+                "data": [
+                    {
+                        "name": "foo",
+                        "value": "bar"
+                    }
+                ]
+            }
+        ],
+        "template": {
+            "data": [
+                {
+                    "name": "mac",
+                    "value": ""
+                },
+                {
+                    "name": "win",
+                    "value": ""
+                }
+            ]
+        }
+    }
 }
 ```
 
