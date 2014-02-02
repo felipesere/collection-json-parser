@@ -8,7 +8,27 @@
     <packaging>jar</packaging>
 
     <name>collection-json-parser</name>
-    <url>http://maven.apache.org</url>
+    <url>https://github.com/felipesere/collection-json-parser</url>
+
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>https://raw.github.com/felipesere/collection-json-parser/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git@github.com:felipesere/collection-json-parser.git</connection>
+        <url>scm:git:git@github.com:felipesere/collection-json-parser.git</url>
+        <developerConnection>scm:git:git@github.com:felipesere/collection-json-parser.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Felipe Seré</name>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -78,6 +98,19 @@
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
