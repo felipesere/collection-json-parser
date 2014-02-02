@@ -13,17 +13,13 @@ import java.util.List;
 
 @JsonSerialize
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Query extends Linkable {
+public class Query extends Link {
 
-    private final URI href;
     private final List<DataEntry> data;
-    private final String prompt;
 
     @JsonCreator
     public Query(@JsonProperty("href") URI href, @JsonProperty("rel") String rel, @JsonProperty("prompt") String prompt, @JsonProperty("data") List<DataEntry> data) {
-        super(rel);
-        this.href = href;
-        this.prompt = prompt;
+        super(rel, href, prompt);
         this.data = data;
     }
 
@@ -31,16 +27,8 @@ public class Query extends Linkable {
        this(null, rel, prompt, data);
     }
 
-    public URI getHref() {
-        return href;
-    }
-
     public List<DataEntry> getData() {
         return data;
-    }
-
-    public String getPrompt() {
-        return prompt;
     }
 
     public Query set(String name, String value) {
@@ -62,9 +50,9 @@ public class Query extends Linkable {
     public URI buildURI() {
         String queryStering = getDataForUri();
         if (StringUtils.isBlank(queryStering)) {
-            return href;
+            return getHref();
         } else {
-            return URI.create(this.getHref() + "?" + this.getDataForUri());
+            return URI.create(getHref() + "?" + this.getDataForUri());
         }
     }
 

@@ -128,19 +128,19 @@ public class Collection {
     public Link getLink(String rel) {
         throwExceptionOnError();
 
-        return findByRel(links, rel);
+        return findByRel(links,rel);
 
 
     }
 
-    private <T extends Linkable> T findByRel(List<T> elements, String rel) {
+    private <T extends Link> T findByRel(List<T> elements, String rel) {
         for(T linkable : elements ) {
             if(linkable.getRel().equalsIgnoreCase(rel)) {
                 return linkable;
             }
         }
 
-        throw new ElementNotFoundException("Did not find link '"+rel+"' in collection " + href );
+        throw new ElementNotFoundException("Did not find element '"+rel+"' in collection " + href );
     }
 
     public Query getQuery(String rel) {

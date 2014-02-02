@@ -11,16 +11,21 @@ import java.net.URI;
 @JsonSerialize
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class Link extends Linkable{
+public class Link {
 
     private final URI href;
     private final String prompt;
+    private String rel;
 
     @JsonCreator
     public Link(@JsonProperty("rel") String rel, @JsonProperty("href") URI href, @JsonProperty("prompt") String prompt){
-        super(rel);
+        this.rel = rel;
         this.href = href;
         this.prompt = prompt;
+    }
+
+    public String getRel() {
+        return this.rel;
     }
 
     public URI getHref() {
