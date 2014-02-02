@@ -40,6 +40,14 @@ then add it as a dependency to your Maven project using the following coordinate
 
 Then you can proceed to create your own collections of read them from Strings.
 
+
+Using `collection-json-parser`
+-------------------------------
+
+The tests in `/src/main/test/java` mostly show how to
+
+
+
 Build status:
 -------------
 
