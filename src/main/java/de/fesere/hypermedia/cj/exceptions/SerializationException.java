@@ -6,7 +6,7 @@ public class SerializationException extends RuntimeException {
         super(message);
     }
 
-    public SerializationException(String message, Throwable throwbale) {
-        super(message, throwbale);
+    public SerializationException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

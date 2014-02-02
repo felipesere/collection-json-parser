@@ -1,6 +1,7 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
+import de.fesere.hypermedia.cj.exceptions.MalformedDataValueException;
 import org.junit.Test;
 
 import java.net.URI;
@@ -90,7 +91,7 @@ public class ItemSerializationTest extends SerializationTestBase {
         assertThat(item.getInt("age"), is(24));
     }
 
-    @Test(expected = ElementNotFoundException.class)
+    @Test(expected = MalformedDataValueException.class)
     public void testDeserializeItemWithSingleDataEntryContainingMalformedInt_exception() {
         String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"age\", \"value\": \"24.abc\"}]}";
 
@@ -100,5 +101,28 @@ public class ItemSerializationTest extends SerializationTestBase {
         assertThat(item.getData(), contains(name("age")));
 
         item.getInt("age");
+    }
+
+
+    @Test
+    public void testDeserializeItemWithSingleDataEntryContainingDouble() {
+        String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"distance\", \"value\":24.004}]}";
+
+        Item item = deserialize(givenJSON, Item.class);
+
+        assertEquals(TEST_COM_ITEM, item.getHref());
+        assertThat(item.getData(), contains(name("distance")));
+        assertThat(item.getDouble("distance"), is(24.004D));
+    }
+
+    @Test(expected = MalformedDataValueException.class)
+    public void testDeserializeItemWithSingleDataEntryContainingInvalidDouble() {
+        String givenJSON = "{\"href\":\"http://test.com/item/1\", \"data\":[{\"name\":\"distance\", \"value\": \"24.004xyz\"}]}";
+
+        Item item = deserialize(givenJSON, Item.class);
+
+        assertEquals(TEST_COM_ITEM, item.getHref());
+        assertThat(item.getData(), contains(name("distance")));
+        assertThat(item.getDouble("distance"), is(24.004D));
     }
 }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
+import de.fesere.hypermedia.cj.exceptions.MalformedDataValueException;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -58,26 +59,33 @@ public class Item {
     }
 
     public String getString(String name) {
-        for(DataEntry entry : data) {
-            if(entry.getName().equals(name)){
-                return entry.getValue();
-            }
-        }
-        throw new ElementNotFoundException("Did not find property '"+name+"' in '"+href+"'");
+        DataEntry found = findDataEntry(name);
+        return found.getValue();
     }
 
     public int getInt(String name) {
+        DataEntry found = findDataEntry(name);
+
+        try {
+            return Integer.parseInt(found.getValue());
+        } catch (NumberFormatException nfe) {
+            throw new MalformedDataValueException("Did not find property '"+name+"' in '"+href+"'", nfe);
+        }
+
+    }
+
+    private DataEntry findDataEntry(String name) {
+        DataEntry found = null;
         for(DataEntry entry : data) {
             if(entry.getName().equals(name)) {
-                try {
-                    return Integer.parseInt(entry.getValue());
-                } catch (NumberFormatException nfe) {
-                    throw new ElementNotFoundException("Did not find property '"+name+"' in '"+href+"'", nfe);
-                }
+                found = entry;
+                break;
             }
         }
-        throw new ElementNotFoundException("Did not find property '"+name+"' in '"+href+"'");
-
+        if(found == null) {
+            throw new ElementNotFoundException("Did not find property '"+name+"' in '"+href+"'");
+        }
+        return found;
     }
 
     public List<DataEntry> getData() {
@@ -86,5 +94,16 @@ public class Item {
 
     public List<Link> getLinks() {
         return links;
+    }
+
+    public double getDouble(String name) {
+       DataEntry found = findDataEntry(name);
+
+        try {
+            return Double.parseDouble(found.getValue());
+        } catch (NumberFormatException nfe) {
+            throw new MalformedDataValueException("Did not find property '"+name+"' in '"+href+"'", nfe);
+        }
+
     }
 }

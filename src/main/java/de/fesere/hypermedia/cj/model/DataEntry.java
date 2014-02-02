@@ -40,7 +40,6 @@ public class DataEntry {
         return name;
     }
 
-
     public String getValue() {
         return value;
     }
