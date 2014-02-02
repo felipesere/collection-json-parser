@@ -1,6 +1,5 @@
 package de.fesere.hypermedia.cj.model;
 
-import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -58,19 +57,7 @@ public class CollectionSerializationTest extends SerializationTestBase {
                 "}", collection);
     }
 
-    @Test(expected = ElementNotFoundException.class)
-    public void testCollectionMissingQuery() {
-        Collection collection = new Collection(TEST_COM);
 
-        collection.getQuery("doesNotExist");
-    }
-
-    @Test(expected = ElementNotFoundException.class)
-    public void testCollectionMissingLink() {
-        Collection collection = new Collection(TEST_COM);
-
-        collection.getLink("doesNotExist");
-    }
 
 
 }

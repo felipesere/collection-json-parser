@@ -15,9 +15,7 @@ public class TemplateTest extends SerializationTestBase {
 
     @Test
     public void testCollectionWithTemplate() {
-        String givenJson = readFile("examples/template-collection.json");
-
-        Collection result = serializer.deserialize(givenJson, Collection.class);
+        Collection result = readCollection("examples/template-collection.json");
 
 
         assertThat(result.getTemplate().getData(), hasSize(4));

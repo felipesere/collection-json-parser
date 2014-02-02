@@ -32,7 +32,7 @@ public abstract class SerializationTestBase {
 
     public void assertTemplateSerialization(String expected, Template template){
         String actual = serializer.serialize(template);
-        assertJson(expected,actual);
+        assertJson(expected, actual);
     }
 
     public void assertSerialization(String expected, Object actual) {
@@ -62,7 +62,13 @@ public abstract class SerializationTestBase {
             return null;
         }
 
+    } 
+    public final Collection readCollection(String filename) {
+        String json = readFile(filename);
+
+        return serializer.deserialize(json, Collection.class);
     }
+
 
     private String mergeLines(List<String> lines) {
         StringBuilder builder = new StringBuilder();
