@@ -1,66 +1,52 @@
 package de.fesere.hypermedia.cj.model;
 
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.apache.commons.lang3.StringUtils;
 
 @JsonSerialize
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DataEntry {
+abstract public class DataEntry<T> {
 
-    @JsonProperty(value = "name")
+    @JsonProperty("name")
     private final String name;
 
-    @JsonProperty(value = "value")
-    private String value;
-
-    @JsonProperty(value = "prompt")
+    @JsonProperty("prompt")
     private final String prompt;
 
-    public DataEntry(String name) {
-        this(name, null);
-    }
+    @JsonProperty("value")
+    private T value;
 
-    public DataEntry(String name, String value) {
-        this(name, value, null);
+    public DataEntry(String name) {
+        this(name, null, null);
     }
 
     @JsonCreator
-    public DataEntry(@JsonProperty("name") String name, @JsonProperty("value") String value, @JsonProperty("prompt") String prompt) {
+    public DataEntry(@JsonProperty("name") String name, @JsonProperty("value") T value,  @JsonProperty("prompt") String prompt) {
         this.name = name;
-        this.value = value;
         this.prompt = prompt;
+        this.value = value;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getValue() {
-        return value;
-    }
-
     public String getPrompt() {
         return prompt;
     }
 
-    public void set(String value) {
-        this.value = value;
+    public abstract void set(T value);
+
+    public abstract void clear();
+
+    public T getValue() {
+        return value;
     }
 
-    public void clear() {
-        value = "";
-    }
-
-    public String buildQueryRepresentation() {
-
-        if (StringUtils.isNotBlank(value)) {
-            return name + "=" + value;
-        }
-        return "";
-    }
+    public abstract  String buildQueryRepresentation();
 }

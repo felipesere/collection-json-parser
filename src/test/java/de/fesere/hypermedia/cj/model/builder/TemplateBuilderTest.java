@@ -12,7 +12,7 @@ public class TemplateBuilderTest extends SerializationTestBase {
     public void test_generatePrefilledTemplateFromItem() {
         String expectedJson = readFile("/examples/builder/filled-template.json");
 
-        Item item = new Item(Arrays.asList(new DataEntry("name", "foo", "Full Name"), new DataEntry("city", "karlsruhe", "City")));
+        Item item = new Item(Arrays.asList(new StringDataEntry("name", "foo", "Full Name"), new StringDataEntry("city", "karlsruhe", "City")));
 
         Template template = new TemplateBuilder().filledFromItem(item).build();
 
@@ -26,8 +26,8 @@ public class TemplateBuilderTest extends SerializationTestBase {
     public void test_generateEmptyTemplateFromItem() {
         String expectedJson = readFile("/examples/builder/empty-template.json");
 
-        Item item = new ItemBuilder(URI.create("http://foo")).addData(new DataEntry("name", "foo", "Full Name"))
-                                                              .addData(new DataEntry("city", "karlsruhe", "City")).build();
+        Item item = new ItemBuilder(URI.create("http://foo")).addData(new StringDataEntry("name", "foo", "Full Name"))
+                                                              .addData(new StringDataEntry("city", "karlsruhe", "City")).build();
         Template template = new TemplateBuilder().emptyFromItem(item).build();
 
         Collection collection = new CollectionBuilder(URI.create("http://foo")).addTemplate(template).build();

@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -19,22 +21,14 @@ public class TemplateTest extends SerializationTestBase {
 
 
         assertThat(result.getTemplate().getData(), hasSize(4));
-        assertThat(result.getTemplate().getData(), hasItems(
-                name("full-name"),
-                name("email"),
-                name("blog"),
-                name("avatar"))
-        );
+        assertThat(result.getTemplate().getData(), hasItems(name("full-name"), name("email"), name("blog"), name("avatar")));
     }
 
     @Test
     public void test_fill() throws IOException {
         Template template = emptyTemplate();
 
-        Item item = new Item(Arrays.asList(new DataEntry("full-name", "Felipe Sere"),
-                new DataEntry("email", "felipe@foo.com"),
-                new DataEntry("blog", "Splash Of Color"),
-                new DataEntry("avatar", "psycho.png")));
+        Item item = new Item(Arrays.asList(new StringDataEntry("full-name", "Felipe Sere"), new StringDataEntry("email", "felipe@foo.com"), new StringDataEntry("blog", "Splash Of Color"), new StringDataEntry("avatar", "psycho.png")));
 
         template.fill(item);
 
@@ -46,7 +40,7 @@ public class TemplateTest extends SerializationTestBase {
                 "        {\"name\" : \"blog\", \"value\" : \"Splash Of Color\", \"prompt\" : \"Blog\"},\n" +
                 "        {\"name\" : \"avatar\", \"value\" : \"psycho.png\", \"prompt\" : \"Avatar\"}\n" +
                 "      ]\n" +
-                "    } }",template);
+                "    } }", template);
     }
 
     @Test
@@ -66,9 +60,13 @@ public class TemplateTest extends SerializationTestBase {
     }
 
     private Template emptyTemplate() {
-        return new Template(Arrays.asList(new DataEntry("full-name", "", "Full Name"),
-                new DataEntry("email", "", "Email"),
-                new DataEntry("blog", "", "Blog"),
-                new DataEntry("avatar", "", "Avatar")));
+        List<DataEntry> entries = new LinkedList<>();
+        List<StringDataEntry> strings = Arrays.asList(new StringDataEntry("full-name", "", "Full Name"), new StringDataEntry("email", "", "Email"), new StringDataEntry("blog", "", "Blog"), new StringDataEntry("avatar", "", "Avatar"));
+
+        for(DataEntry entry : strings) {
+            entries.add(entry);
+        }
+
+        return new Template(entries);
     }
 }

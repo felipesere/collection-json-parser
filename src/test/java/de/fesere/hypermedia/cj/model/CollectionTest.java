@@ -34,7 +34,7 @@ public class CollectionTest {
     public void test_convertSingleItem() {
 
         ItemBuilder itemBuilder = new ItemBuilder(baseURI);
-        itemBuilder.addData(new DataEntry("foo", "Lorem ipsum"));
+        itemBuilder.addData(new StringDataEntry("foo", "Lorem ipsum"));
 
         Collection collection = new CollectionBuilder(baseURI).addItem(itemBuilder.build()).build();
 

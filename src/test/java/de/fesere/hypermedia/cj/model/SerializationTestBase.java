@@ -88,7 +88,7 @@ public abstract class SerializationTestBase {
 
             @Override
             public void describeTo(Description description) {
-                description.appendText("a DataEntry with name="+name );
+                description.appendText("a StringDataEntry with name="+name );
             }
         };
     }

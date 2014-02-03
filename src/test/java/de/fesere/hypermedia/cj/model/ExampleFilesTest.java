@@ -10,7 +10,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
 
 public class ExampleFilesTest extends SerializationTestBase {
 
@@ -44,12 +43,6 @@ public class ExampleFilesTest extends SerializationTestBase {
         assertThat("Incorrect number of queries ", result.getQueries(),hasSize(1));
         assertThat("Template not found ", result.getTemplate(), is(notNullValue()));
 
-        assertThat(result.getTemplate().getData(), hasItems(
-                name("full-name"),
-                name("email"),
-                name("blog"),
-                name("avatar"))
-        );
 
         assertThat(result.getLinks(), hasSize(3));
         assertThat(result.getLink("feed").getRel(), is("feed"));

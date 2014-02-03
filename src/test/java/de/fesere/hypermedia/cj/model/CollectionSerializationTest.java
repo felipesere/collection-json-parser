@@ -39,7 +39,7 @@ public class CollectionSerializationTest extends SerializationTestBase {
     @Test
     public void serializeCollectionWithSingleItemWithData() {
         Item item = new Item(URI.create("http://writeToStringExample.com/items/1"));
-        item.addData(new DataEntry("foo", "bar"));
+        item.addData(new StringDataEntry("foo", "bar"));
 
         Collection collection = new Collection(TEST_COM, Arrays.asList(item), null, null, null);
 

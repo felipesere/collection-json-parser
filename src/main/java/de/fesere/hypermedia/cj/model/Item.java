@@ -25,10 +25,10 @@ public class Item {
 
 
     public Item() {
-        this(Collections.<DataEntry>emptyList());
+        this(Collections.<StringDataEntry>emptyList());
     }
 
-    public Item(List<DataEntry> data) {
+    public Item(List<StringDataEntry> data) {
         this((URI) null);
         if(data != null) {
             this.data.addAll(data);
@@ -45,7 +45,7 @@ public class Item {
         this.links = links;
     }
 
-    public Item(URI href, List<DataEntry> entries, List<Link> links) {
+    public Item(URI href, List<StringDataEntry> entries, List<Link> links) {
         this(href, links);
         this.data.addAll(entries);
     }
@@ -54,24 +54,31 @@ public class Item {
         return this.href;
     }
 
-    public void addData(DataEntry dataEntry) {
+    public void addData(StringDataEntry dataEntry) {
         data.add(dataEntry);
     }
 
     public String getString(String name) {
         DataEntry found = findDataEntry(name);
-        return found.getValue();
+        if(found instanceof StringDataEntry) {
+            return ((StringDataEntry) found).getValue();
+        }
+        throw new MalformedDataValueException("Did not find property '"+name+"' as String in " + href);
     }
 
     public int getInt(String name) {
         DataEntry found = findDataEntry(name);
 
-        try {
-            return Integer.parseInt(found.getValue());
-        } catch (NumberFormatException nfe) {
-            throw new MalformedDataValueException("Did not find property '"+name+"' in '"+href+"'", nfe);
+        if(found instanceof NumberDataEntry) {
+            try {
+                Number value = ((NumberDataEntry) found).getValue();
+                return Integer.parseInt(value.toString());
+            } catch (NumberFormatException nfe) {
+                throw new MalformedDataValueException("Did not find property '"+name+"' in '"+href+"'", nfe);
+            }
         }
 
+        throw new MalformedDataValueException("Did not find property '"+name+"' as Number in " + href);
     }
 
     private DataEntry findDataEntry(String name) {
@@ -97,13 +104,17 @@ public class Item {
     }
 
     public double getDouble(String name) {
-       DataEntry found = findDataEntry(name);
+        DataEntry found = findDataEntry(name);
 
-        try {
-            return Double.parseDouble(found.getValue());
-        } catch (NumberFormatException nfe) {
-            throw new MalformedDataValueException("Did not find property '"+name+"' in '"+href+"'", nfe);
+        if(found instanceof NumberDataEntry) {
+            try {
+                Number value = ((NumberDataEntry) found).getValue();
+                return Double.parseDouble(value.toString());
+            } catch (NumberFormatException nfe) {
+                throw new MalformedDataValueException("Did not find property '"+name+"' in '"+href+"'", nfe);
+            }
         }
 
+        throw new MalformedDataValueException("Did not find property '"+name+"' as Number in " + href);
     }
 }
