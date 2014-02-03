@@ -136,7 +136,7 @@ public class CollectionBuilderTest extends SerializationTestBase {
             builder.addData(new DataEntry("full-name", input.fullName , "Full Name"))
                    .addData(new DataEntry("email", input.email, "Email"));
 
-            LinkBuilder linkBuilder = builder.getRelativeLinkBuilder();
+            LinkBuilder linkBuilder = builder.getLinkBuilder();
             linkBuilder.addLink("blog",   constructor.buildAbsoluteHrefFromRelative("/blogs/"+input.id), "Blog")
                    .addLink("avatar", constructor.buildAbsoluteHrefFromRelative("/images/" + input.id), "Avatar");
 

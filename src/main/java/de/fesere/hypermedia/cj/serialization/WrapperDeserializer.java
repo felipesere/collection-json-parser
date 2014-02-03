@@ -34,6 +34,8 @@ public class WrapperDeserializer extends StdDeserializer<Wrapper> {
         }
     }
 
+
+
     private Wrapper<Template> deserializeInnerTemplate(JsonParser jsonParser) throws IOException {
         Template template = jsonParser.readValueAs(Template.class);
         return new Wrapper<>(template);

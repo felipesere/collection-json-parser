@@ -23,7 +23,7 @@ public class ItemBuilder {
         return this;
     }
 
-    public LinkBuilder getRelativeLinkBuilder() {
+    public LinkBuilder getLinkBuilder() {
         return linkBuilder;
     }
 

@@ -2,7 +2,6 @@ package de.fesere.hypermedia.cj.model.builder;
 
 import de.fesere.hypermedia.cj.model.Collection;
 import de.fesere.hypermedia.cj.model.Item;
-import de.fesere.hypermedia.cj.model.Link;
 import de.fesere.hypermedia.cj.model.Query;
 import de.fesere.hypermedia.cj.model.Template;
 import de.fesere.hypermedia.cj.transformer.WriteTransformer;
@@ -18,7 +17,6 @@ public class CollectionBuilder<T> {
     private LinkBuilder linkBuilder;
     private Template temaplate;
     private List<Query> queries = new LinkedList<>();
-    private List<Link> links = new LinkedList<>();
     private List<Item> items = new LinkedList<>();
 
     public CollectionBuilder(URI href, WriteTransformer<T> transformer) {
