@@ -18,7 +18,10 @@ public class Query extends Link {
     private final List<DataEntry> data;
 
     @JsonCreator
-    public Query(@JsonProperty("href") URI href, @JsonProperty("rel") String rel, @JsonProperty("prompt") String prompt, @JsonProperty("data") List<DataEntry> data) {
+    public Query(@JsonProperty("href") URI href,
+                 @JsonProperty("rel") String rel,
+                 @JsonProperty("prompt") String prompt,
+                 @JsonProperty("data") List<DataEntry> data) {
         super(rel, href, prompt);
         this.data = data;
     }
