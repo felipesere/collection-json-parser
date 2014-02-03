@@ -1,5 +1,6 @@
 package de.fesere.hypermedia.cj.model;
 
+import de.fesere.hypermedia.cj.model.data.DataEntry;
 import de.fesere.hypermedia.cj.serialization.Serializer;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -88,7 +89,7 @@ public abstract class SerializationTestBase {
 
             @Override
             public void describeTo(Description description) {
-                description.appendText("a DataEntry with name="+name );
+                description.appendText("a StringDataEntry with name="+name );
             }
         };
     }

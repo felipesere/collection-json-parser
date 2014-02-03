@@ -2,6 +2,8 @@ package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import de.fesere.hypermedia.cj.exceptions.MalformedDataValueException;
+import de.fesere.hypermedia.cj.model.data.DataEntry;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.junit.Test;
 
 import java.net.URI;
@@ -42,13 +44,13 @@ public class ItemSerializationTest extends SerializationTestBase {
         DataEntry dataEntry = item.getData().get(0);
         assertThat(dataEntry.getPrompt(), is("foos prompt"));
         assertThat(dataEntry.getName(), is("foo"));
-        assertThat(dataEntry.getValue(), is("bar"));
+        assertThat((String) dataEntry.getValue(), is("bar"));
     }
 
     @Test
     public void testSerializeItemWithSingleDataEntry() {
         Item item = new Item(TEST_COM_ITEM);
-        item.addData(new DataEntry("foo", "bar"));
+        item.addData(new StringDataEntry("foo", "bar"));
 
         assertSerialization("{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"foo\", \"value\":\"bar\"}]}", item);
     }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URI;
@@ -15,7 +16,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Query extends Link {
 
-    private final List<DataEntry> data;
+    private final List<StringDataEntry> data;
 
     @JsonCreator
     public Query(@JsonProperty("href") URI href,
@@ -26,23 +27,23 @@ public class Query extends Link {
         this.data = data;
     }
 
-    public Query(String rel, String prompt,  List<DataEntry> data) {
+    public Query(String rel, String prompt,  List<StringDataEntry> data) {
        this(null, rel, prompt, data);
     }
 
-    public List<DataEntry> getData() {
+    public List<StringDataEntry> getData() {
         return data;
     }
 
     public Query set(String name, String value) {
-        DataEntry found = findDataEntry(name);
+        StringDataEntry found = findDataEntry(name);
 
         found.set(value);
         return this;
     }
 
-    private DataEntry findDataEntry(String name) {
-        for (DataEntry dataEntry : data) {
+    private StringDataEntry findDataEntry(String name) {
+        for (StringDataEntry dataEntry : data) {
             if (dataEntry.getName().equals(name)) {
                 return dataEntry;
             }
@@ -62,7 +63,7 @@ public class Query extends Link {
 
     private String getDataForUri() {
         List<String> entryPairs = new LinkedList<>();
-        for (DataEntry entry : data) {
+        for (StringDataEntry entry : data) {
             String entryPair = entry.buildQueryRepresentation();
             if (StringUtils.isNotBlank(entryPair)) {
                 entryPairs.add(entryPair);

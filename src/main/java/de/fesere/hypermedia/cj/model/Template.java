@@ -4,6 +4,7 @@ package de.fesere.hypermedia.cj.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import de.fesere.hypermedia.cj.model.data.DataEntry;
 import de.fesere.hypermedia.cj.serialization.Wrapped;
 
 import java.util.LinkedList;

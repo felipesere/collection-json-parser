@@ -1,7 +1,8 @@
 package de.fesere.hypermedia.cj.model.builder;
 
-import de.fesere.hypermedia.cj.model.DataEntry;
+import de.fesere.hypermedia.cj.model.data.DataEntry;
 import de.fesere.hypermedia.cj.model.Item;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import de.fesere.hypermedia.cj.model.Template;
 
 import java.util.LinkedList;
@@ -39,7 +40,7 @@ public class TemplateBuilder {
     public TemplateBuilder emptyWithNames(String ... names) {
         List<DataEntry> nameEntries = new LinkedList<>();
         for(String name : names) {
-            nameEntries.add(new DataEntry(name, ""));
+            nameEntries.add(new StringDataEntry(name));
         }
         setEntries(nameEntries);
         return this;

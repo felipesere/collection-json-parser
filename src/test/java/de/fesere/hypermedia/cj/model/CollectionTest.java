@@ -6,6 +6,7 @@ import de.fesere.hypermedia.cj.model.builder.CollectionBuilder;
 import de.fesere.hypermedia.cj.model.builder.ErrorBuilder;
 import de.fesere.hypermedia.cj.model.builder.ItemBuilder;
 import de.fesere.hypermedia.cj.model.builder.LinkBuilder;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import de.fesere.hypermedia.cj.transformer.ReadTransformation;
 import org.junit.Test;
 
@@ -34,7 +35,7 @@ public class CollectionTest {
     public void test_convertSingleItem() {
 
         ItemBuilder itemBuilder = new ItemBuilder(baseURI);
-        itemBuilder.addData(new DataEntry("foo", "Lorem ipsum"));
+        itemBuilder.addData(new StringDataEntry("foo", "Lorem ipsum"));
 
         Collection collection = new CollectionBuilder(baseURI).addItem(itemBuilder.build()).build();
 

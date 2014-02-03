@@ -1,7 +1,7 @@
 package de.fesere.hypermedia.cj.example.employeeDB.transformations;
 
 import de.fesere.hypermedia.cj.example.employeeDB.Employee;
-import de.fesere.hypermedia.cj.model.DataEntry;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import de.fesere.hypermedia.cj.model.Item;
 import de.fesere.hypermedia.cj.transformer.TwoWayTransformer;
 
@@ -20,10 +20,10 @@ public class EmployeeTransformer extends TwoWayTransformer<Employee> {
     @Override
     public Item transform(Employee input) {
         Item item = new Item();
-        item.addData(new DataEntry("birth_date", input.getBirthday()));
-        item.addData(new DataEntry("first_name", input.getFirstName()));
-        item.addData(new DataEntry("last_name", input.getLastName()));
-        item.addData(new DataEntry("gender", input.getGender()));
+        item.addData(new StringDataEntry("birth_date", input.getBirthday()));
+        item.addData(new StringDataEntry("first_name", input.getFirstName()));
+        item.addData(new StringDataEntry("last_name", input.getLastName()));
+        item.addData(new StringDataEntry("gender", input.getGender()));
 
         return item;
     }

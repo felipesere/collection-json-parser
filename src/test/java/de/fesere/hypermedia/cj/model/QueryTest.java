@@ -1,6 +1,7 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.junit.Test;
 
 import java.net.URI;
@@ -33,9 +34,9 @@ public class QueryTest extends SerializationTestBase{
 
     private Query createBaseQueryWith3Entries() {
         return new Query(URI.create(BASE_URI),
-                 "search","",  Arrays.asList(new DataEntry("foo"),
-                                         new DataEntry("bar"),
-                                         new DataEntry("batz")));
+                 "search","",  Arrays.asList(new StringDataEntry("foo"),
+                                         new StringDataEntry("bar"),
+                                         new StringDataEntry("batz")));
     }
 
     @Test

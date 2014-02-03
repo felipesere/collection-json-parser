@@ -8,6 +8,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import de.fesere.hypermedia.cj.exceptions.MalformedDataValueException;
+import de.fesere.hypermedia.cj.model.data.BooleanDataEntry;
+import de.fesere.hypermedia.cj.model.data.DataEntry;
+import de.fesere.hypermedia.cj.model.data.NumberDataEntry;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -25,12 +29,12 @@ public class Item {
 
 
     public Item() {
-        this(Collections.<DataEntry>emptyList());
+        this(Collections.<StringDataEntry>emptyList());
     }
 
-    public Item(List<DataEntry> data) {
+    public Item(List<StringDataEntry> data) {
         this((URI) null);
-        if(data != null) {
+        if (data != null) {
             this.data.addAll(data);
         }
     }
@@ -54,38 +58,8 @@ public class Item {
         return this.href;
     }
 
-    public void addData(DataEntry dataEntry) {
+    public void addData(StringDataEntry dataEntry) {
         data.add(dataEntry);
-    }
-
-    public String getString(String name) {
-        DataEntry found = findDataEntry(name);
-        return found.getValue();
-    }
-
-    public int getInt(String name) {
-        DataEntry found = findDataEntry(name);
-
-        try {
-            return Integer.parseInt(found.getValue());
-        } catch (NumberFormatException nfe) {
-            throw new MalformedDataValueException("Did not find property '"+name+"' in '"+href+"'", nfe);
-        }
-
-    }
-
-    private DataEntry findDataEntry(String name) {
-        DataEntry found = null;
-        for(DataEntry entry : data) {
-            if(entry.getName().equals(name)) {
-                found = entry;
-                break;
-            }
-        }
-        if(found == null) {
-            throw new ElementNotFoundException("Did not find property '"+name+"' in '"+href+"'");
-        }
-        return found;
     }
 
     public List<DataEntry> getData() {
@@ -96,14 +70,58 @@ public class Item {
         return links;
     }
 
-    public double getDouble(String name) {
-       DataEntry found = findDataEntry(name);
+    public String getString(String name) {
+        DataEntry found = findDataEntry(name);
 
-        try {
-            return Double.parseDouble(found.getValue());
-        } catch (NumberFormatException nfe) {
-            throw new MalformedDataValueException("Did not find property '"+name+"' in '"+href+"'", nfe);
+        if (found instanceof StringDataEntry) {
+            return ((StringDataEntry) found).getValue();
+        }
+        throw new MalformedDataValueException("Did not find property '" + name + "' as String in " + href);
+    }
+
+    public int getInt(String name) {
+        DataEntry found = findDataEntry(name);
+
+        if (found instanceof NumberDataEntry) {
+            Number value = ((NumberDataEntry) found).getValue();
+            return Integer.parseInt(value.toString());
+
         }
 
+        throw new MalformedDataValueException("Did not find property '" + name + "' as Number in " + href);
+    }
+
+    public double getDouble(String name) {
+        DataEntry found = findDataEntry(name);
+
+        if (found instanceof NumberDataEntry) {
+            Number value = ((NumberDataEntry) found).getValue();
+            return Double.parseDouble(value.toString());
+        }
+
+        throw new MalformedDataValueException("Did not find property '" + name + "' as Number in " + href);
+    }
+
+    public boolean getBoolean(String name) {
+        DataEntry entry = findDataEntry(name);
+        if(entry instanceof BooleanDataEntry) {
+            return (boolean) entry.getValue();
+        }
+
+        throw new MalformedDataValueException("Did not find property '" + name + "' as boolean in " + href);
+    }
+
+    private DataEntry findDataEntry(String name) {
+        DataEntry found = null;
+        for (DataEntry entry : data) {
+            if (entry.getName().equals(name)) {
+                found = entry;
+                break;
+            }
+        }
+        if (found == null) {
+            throw new ElementNotFoundException("Did not find property '" + name + "' in '" + href + "'");
+        }
+        return found;
     }
 }

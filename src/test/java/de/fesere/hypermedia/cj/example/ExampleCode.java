@@ -1,7 +1,7 @@
 package de.fesere.hypermedia.cj.example;
 
 import de.fesere.hypermedia.cj.model.Collection;
-import de.fesere.hypermedia.cj.model.DataEntry;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import de.fesere.hypermedia.cj.model.Template;
 import de.fesere.hypermedia.cj.model.builder.CollectionBuilder;
 import de.fesere.hypermedia.cj.model.builder.ItemBuilder;
@@ -21,7 +21,7 @@ public class ExampleCode {
         CollectionBuilder collectionBuilder = new CollectionBuilder(baseUri);
 
         ItemBuilder itemBuilder = new ItemBuilder(baseUri);
-        itemBuilder.addData(new DataEntry("foo", "bar"));
+        itemBuilder.addData(new StringDataEntry("foo", "bar"));
         collectionBuilder.addItem(itemBuilder.build());
 
         collectionBuilder.getLinkBuilder().addLink("search", "/search").build();
