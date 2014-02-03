@@ -72,6 +72,7 @@ public class Item {
 
     public String getString(String name) {
         DataEntry found = findDataEntry(name);
+
         if (found instanceof StringDataEntry) {
             return ((StringDataEntry) found).getValue();
         }

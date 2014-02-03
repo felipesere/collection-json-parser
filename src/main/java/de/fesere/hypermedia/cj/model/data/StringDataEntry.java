@@ -1,7 +1,5 @@
 package de.fesere.hypermedia.cj.model.data;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class StringDataEntry extends DataEntry<String> {
 
     private String value;
@@ -26,20 +24,7 @@ public class StringDataEntry extends DataEntry<String> {
     }
 
     @Override
-    public void clear() {
-        value = null;
-    }
-
-    @Override
     public String getValue() {
         return value;
-    }
-
-    @Override
-    public String buildQueryRepresentation() {
-        if (StringUtils.isNotBlank(value)) {
-            return getName() + "=" + value;
-        }
-        return "";
     }
 }

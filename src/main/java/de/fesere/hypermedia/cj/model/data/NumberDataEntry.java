@@ -15,22 +15,7 @@ public class NumberDataEntry extends DataEntry<Number> {
     }
 
     @Override
-    public void clear() {
-        value = null;
-    }
-
-    @Override
     public Number getValue() {
         return value;
-    }
-
-
-    @Override
-    public String buildQueryRepresentation() {
-
-        if (value != null) {
-            return getName() + "=" + value;
-        }
-        return "";
     }
 }

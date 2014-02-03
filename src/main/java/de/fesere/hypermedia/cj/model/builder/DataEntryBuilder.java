@@ -40,10 +40,6 @@ public class DataEntryBuilder {
     }
 
     public DataEntry build() {
-        if(StringUtils.isBlank(name)) {
-            throw new IllegalStateException("Trying to build a nameless DataEntry");
-        }
-
         if(StringUtils.isNotBlank(stringValue)) {
             return new StringDataEntry(name, stringValue, prompt);
         }

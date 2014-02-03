@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.fesere.hypermedia.cj.serialization.DataEntryDeserializer;
 import de.fesere.hypermedia.cj.serialization.DataEntrySerializer;
+import org.apache.commons.lang3.StringUtils;
 
 @JsonSerialize(using = DataEntrySerializer.class)
 @JsonDeserialize(using = DataEntryDeserializer.class)
@@ -35,9 +36,18 @@ abstract public class DataEntry<T> {
 
     public abstract void set(T value);
 
-    public abstract void clear();
+    public void clear() {
+        set(null);
+    }
 
     public abstract T getValue();
 
-    public abstract  String buildQueryRepresentation();
+    public String buildQueryRepresentation() {
+        T value = getValue();
+
+        if (value != null && StringUtils.isNotBlank(value.toString())) {
+            return getName() + "=" + value.toString();
+        }
+        return "";
+    }
 }
