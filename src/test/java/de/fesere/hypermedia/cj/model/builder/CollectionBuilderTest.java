@@ -49,7 +49,7 @@ public class CollectionBuilderTest extends SerializationTestBase {
 
 
         URI queryURI = URI.create("http://example.org/friends/search");
-        Query query = new Query(queryURI, "search", "Search", Arrays.asList(new StringDataEntry("search", "")));
+        Query query = new Query(queryURI, "search", "Search", Arrays.<DataEntry>asList(new StringDataEntry("search", "")));
 
         Collection collection = new CollectionBuilder(href).addQuery(query).build();
 
@@ -60,7 +60,7 @@ public class CollectionBuilderTest extends SerializationTestBase {
     public void test_addQueryWithRelativeURL() {
         String expectedJSON = readFile("/examples/query-collection.json");
 
-        Query query = new Query("search", "Search", Arrays.asList(new StringDataEntry("search", "")));
+        Query query = new Query("search", "Search", Arrays.<DataEntry>asList(new StringDataEntry("search", "")));
 
         Collection collection = new CollectionBuilder(href).addQuery(query, "/search").build();
 

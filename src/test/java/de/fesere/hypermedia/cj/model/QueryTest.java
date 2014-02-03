@@ -1,11 +1,13 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
+import de.fesere.hypermedia.cj.model.data.DataEntry;
 import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.junit.Test;
 
 import java.net.URI;
-import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -33,10 +35,13 @@ public class QueryTest extends SerializationTestBase{
     }
 
     private Query createBaseQueryWith3Entries() {
+        List<DataEntry> entries = new LinkedList<>();
+        entries.add(new StringDataEntry("foo"));
+        entries.add(new StringDataEntry("bar"));
+        entries.add(new StringDataEntry("batz"));
+
         return new Query(URI.create(BASE_URI),
-                 "search","",  Arrays.asList(new StringDataEntry("foo"),
-                                         new StringDataEntry("bar"),
-                                         new StringDataEntry("batz")));
+                 "search","",  entries);
     }
 
     @Test

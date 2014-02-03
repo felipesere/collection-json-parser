@@ -48,7 +48,7 @@ public class CjClientTest extends SerializationTestBase {
 
         httpClient.expectGetLinkWith(URI.create("http://writeToStringExample.com/search?name=Max")).returnStringOnGet(json);
 
-        Query query = new Query(URI.create("http://writeToStringExample.com/search"),"foo","Lorem ipsum", Arrays.asList(new StringDataEntry("name", "Max")));
+        Query query = new Query(URI.create("http://writeToStringExample.com/search"),"foo","Lorem ipsum", Arrays.<DataEntry>asList(new StringDataEntry("name", "Max")));
         Collection result = classUnderTest.follow(query);
 
         assertThat(result, is(notNullValue()));
@@ -124,16 +124,17 @@ public class CjClientTest extends SerializationTestBase {
         item.addData(new StringDataEntry("name", "Max"));
         item.addData(new StringDataEntry("surname", "Musterman"));
 
-        Query query = new Query(URI.create("http://writeToStringExample.com/search"), "search", "", Arrays.asList(new StringDataEntry("name"), new StringDataEntry("surname")));
-        List<DataEntry> entries =  new LinkedList<>();
+        List<DataEntry> entries = new LinkedList<>();
+        entries.add(new StringDataEntry("name"));
+        entries.add(new StringDataEntry("surname"));
+        Query query = new Query(URI.create("http://writeToStringExample.com/search"), "search", "", entries);
 
-        List<StringDataEntry> stringDataEntries = Arrays.asList(new StringDataEntry("foo"), new StringDataEntry("bar"), new StringDataEntry("batz"));
-        for(StringDataEntry string : stringDataEntries) {
-            entries.add(string);
-        }
+        List<DataEntry> input =  new LinkedList<>();
+        input.add(new StringDataEntry("foo"));
+        input.add(new StringDataEntry("bar"));
+        input.add(new StringDataEntry("batz"));
 
-
-        Template template = new Template(entries);
+        Template template = new Template(input);
 
 
         return new Collection(URI.create(BASE_URL), Arrays.asList(item), Arrays.asList(query), null, template);
