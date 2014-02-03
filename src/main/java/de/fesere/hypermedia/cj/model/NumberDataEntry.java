@@ -10,7 +10,7 @@ public class NumberDataEntry extends DataEntry<Number> {
 
     @JsonCreator
     public NumberDataEntry(@JsonProperty("name") String name, @JsonProperty("value") Number value, @JsonProperty("prompt") String prompt) {
-        super(name, value,  prompt);
+        super(name,  prompt);
         this.value = value;
     }
 
@@ -22,7 +22,6 @@ public class NumberDataEntry extends DataEntry<Number> {
         value = null;
     }
 
-    @Override
     public Number getValue() {
         return value;
     }

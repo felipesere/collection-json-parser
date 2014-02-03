@@ -20,7 +20,7 @@ public class StringDataEntry extends DataEntry<String> {
 
     @JsonCreator
     public StringDataEntry(@JsonProperty("name") String name, @JsonProperty("value") String value, @JsonProperty("prompt") String prompt) {
-        super(name, value,  prompt);
+        super(name, prompt);
         this.value = value;
     }
 
@@ -32,7 +32,7 @@ public class StringDataEntry extends DataEntry<String> {
         value = null;
     }
 
-    @Override
+    @JsonProperty("value")
     public String getValue() {
         return value;
     }

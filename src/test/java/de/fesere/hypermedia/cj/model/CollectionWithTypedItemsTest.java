@@ -14,8 +14,8 @@ public class CollectionWithTypedItemsTest extends SerializationTestBase {
         CollectionBuilder builder = new CollectionBuilder(URI.create("http://example.org/friends/"));
 
         ItemBuilder itemBuilder = new ItemBuilder(URI.create("http://example.org/friends/jdoe"));
-        itemBuilder.addData(new StringDataEntry("name", "J. Doe", "Full Name"))
-                   .addData(new StringDataEntry("age", "24", "Persons Age"));
+        itemBuilder.addData(new StringDataEntry("full-name", "J. Doe", "Full Name"))
+                   .addData(new NumberDataEntry("age", 24, "Persons Age"));
         Item item = itemBuilder.build();
 
         Collection collection = builder.addItem(item).build();

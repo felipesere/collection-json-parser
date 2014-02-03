@@ -5,9 +5,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import de.fesere.hypermedia.cj.serialization.DataEntryDeserializer;
+import de.fesere.hypermedia.cj.serialization.DataEntrySerializer;
 
-@JsonSerialize
+@JsonSerialize(using = DataEntrySerializer.class)
+@JsonDeserialize(using = DataEntryDeserializer.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 abstract public class DataEntry<T> {
@@ -16,24 +20,24 @@ abstract public class DataEntry<T> {
     private final String name;
 
     @JsonProperty("prompt")
-    private final String prompt;
-
-    @JsonProperty("value")
-    private T value;
+    private String prompt;
 
     public DataEntry(String name) {
-        this(name, null, null);
+        this(name, null);
     }
 
     @JsonCreator
-    public DataEntry(@JsonProperty("name") String name, @JsonProperty("value") T value,  @JsonProperty("prompt") String prompt) {
+    public DataEntry(@JsonProperty("name") String name,  @JsonProperty("prompt") String prompt) {
         this.name = name;
         this.prompt = prompt;
-        this.value = value;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setPrompt(String prompt) {
+        this.prompt = prompt;
     }
 
     public String getPrompt() {
@@ -44,9 +48,7 @@ abstract public class DataEntry<T> {
 
     public abstract void clear();
 
-    public T getValue() {
-        return value;
-    }
+    public abstract T getValue();
 
     public abstract  String buildQueryRepresentation();
 }

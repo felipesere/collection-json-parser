@@ -45,7 +45,7 @@ public class Item {
         this.links = links;
     }
 
-    public Item(URI href, List<StringDataEntry> entries, List<Link> links) {
+    public Item(URI href, List<DataEntry> entries, List<Link> links) {
         this(href, links);
         this.data.addAll(entries);
     }
