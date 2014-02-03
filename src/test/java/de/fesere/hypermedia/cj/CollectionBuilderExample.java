@@ -2,7 +2,7 @@ package de.fesere.hypermedia.cj;
 
 
 import de.fesere.hypermedia.cj.model.Collection;
-import de.fesere.hypermedia.cj.model.StringDataEntry;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import de.fesere.hypermedia.cj.model.builder.CollectionBuilder;
 import de.fesere.hypermedia.cj.model.builder.ItemBuilder;
 import de.fesere.hypermedia.cj.serialization.Serializer;

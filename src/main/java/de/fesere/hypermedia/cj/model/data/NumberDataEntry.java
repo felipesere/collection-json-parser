@@ -1,32 +1,31 @@
-package de.fesere.hypermedia.cj.model;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+package de.fesere.hypermedia.cj.model.data;
 
 public class NumberDataEntry extends DataEntry<Number> {
 
-    @JsonProperty("value")
     private Number value;
 
-    @JsonCreator
-    public NumberDataEntry(@JsonProperty("name") String name, @JsonProperty("value") Number value, @JsonProperty("prompt") String prompt) {
+    public NumberDataEntry(String name, Number value, String prompt) {
         super(name,  prompt);
         this.value = value;
     }
 
+    @Override
     public void set(Number value) {
         this.value = value;
     }
 
+    @Override
     public void clear() {
         value = null;
     }
 
+    @Override
     public Number getValue() {
         return value;
     }
 
 
+    @Override
     public String buildQueryRepresentation() {
 
         if (value != null) {

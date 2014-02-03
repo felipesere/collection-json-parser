@@ -1,6 +1,8 @@
 package de.fesere.hypermedia.cj.model;
 
 
+import de.fesere.hypermedia.cj.model.data.DataEntry;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.junit.Test;
 
 import java.io.IOException;

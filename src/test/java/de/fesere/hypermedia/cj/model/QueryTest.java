@@ -1,6 +1,7 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.junit.Test;
 
 import java.net.URI;

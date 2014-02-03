@@ -1,5 +1,6 @@
 package de.fesere.hypermedia.cj.model;
 
+import de.fesere.hypermedia.cj.model.data.DataEntry;
 import de.fesere.hypermedia.cj.serialization.Serializer;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

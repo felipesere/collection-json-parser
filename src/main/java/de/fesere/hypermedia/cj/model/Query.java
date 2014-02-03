@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URI;

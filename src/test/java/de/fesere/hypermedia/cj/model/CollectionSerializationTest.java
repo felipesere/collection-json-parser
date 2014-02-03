@@ -1,5 +1,6 @@
 package de.fesere.hypermedia.cj.model;
 
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.junit.Assert;
 import org.junit.Test;
 

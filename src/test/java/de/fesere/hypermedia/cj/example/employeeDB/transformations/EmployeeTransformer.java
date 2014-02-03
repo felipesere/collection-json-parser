@@ -1,7 +1,7 @@
 package de.fesere.hypermedia.cj.example.employeeDB.transformations;
 
 import de.fesere.hypermedia.cj.example.employeeDB.Employee;
-import de.fesere.hypermedia.cj.model.StringDataEntry;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import de.fesere.hypermedia.cj.model.Item;
 import de.fesere.hypermedia.cj.transformer.TwoWayTransformer;
 

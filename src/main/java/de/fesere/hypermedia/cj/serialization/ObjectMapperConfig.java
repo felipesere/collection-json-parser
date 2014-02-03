@@ -3,7 +3,7 @@ package de.fesere.hypermedia.cj.serialization;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import de.fesere.hypermedia.cj.model.DataEntry;
+import de.fesere.hypermedia.cj.model.data.DataEntry;
 
 public class ObjectMapperConfig {
 
