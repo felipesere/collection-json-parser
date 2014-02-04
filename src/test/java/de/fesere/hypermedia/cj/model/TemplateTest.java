@@ -30,7 +30,7 @@ public class TemplateTest extends SerializationTestBase {
     public void test_fill() throws IOException {
         Template template = emptyTemplate();
 
-        Item item = new Item(Arrays.asList(new StringDataEntry("full-name", "Felipe Sere"), new StringDataEntry("email", "felipe@foo.com"), new StringDataEntry("blog", "Splash Of Color"), new StringDataEntry("avatar", "psycho.png")));
+        Item item = new Item(Arrays.<DataEntry>asList(new StringDataEntry("full-name", "Felipe Sere"), new StringDataEntry("email", "felipe@foo.com"), new StringDataEntry("blog", "Splash Of Color"), new StringDataEntry("avatar", "psycho.png")));
 
         template.fill(item);
 

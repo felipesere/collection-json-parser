@@ -1,6 +1,7 @@
 package de.fesere.hypermedia.cj.model.builder;
 
 import de.fesere.hypermedia.cj.model.*;
+import de.fesere.hypermedia.cj.model.data.DataEntry;
 import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ public class TemplateBuilderTest extends SerializationTestBase {
     public void test_generatePrefilledTemplateFromItem() {
         String expectedJson = readFile("/examples/builder/filled-template.json");
 
-        Item item = new Item(Arrays.asList(new StringDataEntry("name", "foo", "Full Name"), new StringDataEntry("city", "karlsruhe", "City")));
+        Item item = new Item(Arrays.<DataEntry>asList(new StringDataEntry("name", "foo", "Full Name"), new StringDataEntry("city", "karlsruhe", "City")));
 
         Template template = new TemplateBuilder().filledFromItem(item).build();
 

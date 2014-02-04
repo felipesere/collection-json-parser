@@ -29,10 +29,10 @@ public class Item {
 
 
     public Item() {
-        this(Collections.<StringDataEntry>emptyList());
+        this(Collections.<DataEntry>emptyList());
     }
 
-    public Item(List<StringDataEntry> data) {
+    public Item(List<DataEntry> data) {
         this((URI) null);
         if (data != null) {
             this.data.addAll(data);

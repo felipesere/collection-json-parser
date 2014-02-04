@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import de.fesere.hypermedia.cj.model.data.DataEntry;
 import de.fesere.hypermedia.cj.serialization.Wrapped;
+import de.fesere.hypermedia.cj.transformer.DataEntryTransformer;
+import de.fesere.hypermedia.cj.transformer.ReadTransformation;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,5 +32,10 @@ public class Template implements Wrapped {
             String value = item.getString(entryName);
             entry.set(value);
         }
+    }
+
+    public <T> T convert(ReadTransformation<T> transformation) {
+        DataEntryTransformer<T> dataEntryTransformer = new DataEntryTransformer<>(transformation);
+        return dataEntryTransformer.transform(data);
     }
 }
