@@ -71,6 +71,7 @@ The methods are:
 *  `getString(String name)` to get a `String` value
 *  `getInt(Stirng name)`to get an `int`
 *  `getDouble(String name)` to get a `double`
+*  `getBoolean(String name)`to get a `boolean`
 
 These methods throw an `ElementNotFoundException` if no element named `name` is found
 and both `getInt` and `getDouble` throw a `MalformedDataValueException` if the value
@@ -91,12 +92,19 @@ collectionBuilder.getLinkBuilder().addLink("documentation","/documentation/v1")
                                   .addLink("questions", URI.create("http://stackoverflow.com")).build();
 
 ItemBuilder itemBuilder = new ItemBuilder(URI.create("http;//example.com/item/1"));
-itemBuilder.addData(new DataEntry("name", "Bob", "Users first name"));
+itemBuilder.addData(new StringDataEntry("name", "Bob", "Users first name"));
 Collection collection = collectionBuilder.addItem(itemBuilder.build()).build();
 
 Serializer serializer = new Serializer();
 System.out.println(serializer.serialize(collection));
 ```
+
+The `DataEntry` can be any of
+
+* `StringDataEntry` to add `String` to the data of an entity/template
+* `NumberDataEntry` to add anything that implements the Java `Number`interface, such as `int` and `double`
+* `BooleanDataEntry` to add a `boolean` to the item/template
+
 
 which would result in
 
@@ -138,6 +146,15 @@ which would result in
 }
 ```
 
+
+Contributing:
+-------------
+
+I try to follow the [Git flow](http://nvie.com/posts/a-successful-git-branching-model/) model by
+having a *master* and a *develop* branch.
+Please branch from the *develop* branch and send me pull requests.
+
+**Currently there is no differnce between master and develop, but this will change once there are stable releases**.
 
 
 
