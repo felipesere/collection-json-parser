@@ -112,36 +112,44 @@ which would result in
 {
     "collection": {
         "version": "1.0",
-        "href": "http://test.com",
+        "href": "http://example.com",
         "links": [
             {
-                "rel": "search",
-                "href": "http://test.com/search"
+                "rel": "documentation",
+                "href": "http://example.com/documentation/v1"
+            },
+            {
+                "rel": "questions",
+                "href": "http://stackoverflow.com"
             }
         ],
         "items": [
             {
-                "href": "http://test.com",
+                "href": "http;//example.com/item/1",
                 "data": [
                     {
-                        "name": "foo",
-                        "value": "bar"
+                        "name": "name",
+                        "value": "Bob",
+                        "prompt": "Users first name"
+                    },
+                    {
+                        "name": "age",
+                        "value": 24,
+                        "prompt": "Users age"
+                    },
+                    {
+                        "name": "height",
+                        "value": 0.00192,
+                        "prompt": "Users height in km"
+                    },
+                    {
+                        "name": "payed",
+                        "value": false,
+                        "prompt": "User payed fee"
                     }
                 ]
             }
-        ],
-        "template": {
-            "data": [
-                {
-                    "name": "mac",
-                    "value": ""
-                },
-                {
-                    "name": "win",
-                    "value": ""
-                }
-            ]
-        }
+        ]
     }
 }
 ```
