@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import de.fesere.hypermedia.cj.model.data.BooleanDataEntry;
-import de.fesere.hypermedia.cj.model.data.DataEntry;
-import de.fesere.hypermedia.cj.model.data.NumberDataEntry;
-import de.fesere.hypermedia.cj.model.data.StringDataEntry;
+import de.fesere.hypermedia.cj.model.data.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -19,6 +16,9 @@ public class DataEntrySerializer extends StdSerializer<DataEntry> {
 
     @Override
     public void serialize(DataEntry value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonGenerationException {
+        if (value instanceof EmptyDataEntry) {
+            return;
+        }
         jgen.writeStartObject();
 
         writeName(value, jgen);
@@ -45,7 +45,15 @@ public class DataEntrySerializer extends StdSerializer<DataEntry> {
         if (hasRealValue(value)) {
             writeRealValue(value, jgen);
         } else {
-         jgen.writeString("");
+            writeEmptyValue(value, jgen);
+        }
+    }
+
+    private void writeEmptyValue(DataEntry value, JsonGenerator jgen) throws IOException {
+        if (value instanceof NullDataEntry) {
+            jgen.writeString((String)null);
+        } else {
+            jgen.writeString("");
         }
     }
 
@@ -55,7 +63,7 @@ public class DataEntrySerializer extends StdSerializer<DataEntry> {
             jgen.writeString(stringEntry.getValue());
         } else if (value instanceof NumberDataEntry) {
             writeNumber((NumberDataEntry) value, jgen);
-        } else if(value instanceof BooleanDataEntry) {
+        } else if (value instanceof BooleanDataEntry) {
             jgen.writeBoolean((boolean) value.getValue());
         }
     }

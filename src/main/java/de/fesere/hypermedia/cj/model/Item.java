@@ -58,7 +58,7 @@ public class Item {
         return this.href;
     }
 
-    public void addData(StringDataEntry dataEntry) {
+    public void addData(DataEntry dataEntry) {
         data.add(dataEntry);
     }
 
