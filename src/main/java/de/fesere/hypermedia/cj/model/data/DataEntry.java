@@ -34,10 +34,7 @@ abstract public class DataEntry<T> {
         return prompt;
     }
 
-    public abstract void set(T value);
-
-    public void clear() {
-        set(null);
+    public void set(T value) {
     }
 
     public abstract T getValue();

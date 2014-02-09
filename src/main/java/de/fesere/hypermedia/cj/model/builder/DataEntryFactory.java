@@ -8,6 +8,10 @@ public class DataEntryFactory {
         return new EmptyDataEntry("none");
     }
 
+    public static DataEntry createNull(String name, String prompt) {
+        return new NullDataEntry(name,prompt);
+    }
+
     public static DataEntry create(String name) {
         return new StringDataEntry(name);
     }
@@ -34,9 +38,5 @@ public class DataEntryFactory {
 
     public static DataEntry create(String name, boolean value, String prompt) {
         return new BooleanDataEntry(name, value, prompt);
-    }
-
-    public static DataEntry createNull(String name, String prompt) {
-        return new NullDataEntry(name,prompt);
     }
 }

@@ -7,10 +7,6 @@ public class EmptyDataEntry extends DataEntry {
     }
 
     @Override
-    public void set(Object value) {
-    }
-
-    @Override
     public Object getValue() {
         return "";
     }
