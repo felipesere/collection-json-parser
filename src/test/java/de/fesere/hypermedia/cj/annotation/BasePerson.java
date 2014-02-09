@@ -1,12 +1,9 @@
 package de.fesere.hypermedia.cj.annotation;
 
 import de.fesere.hypermedia.cj.annotations.Data;
-import de.fesere.hypermedia.cj.annotations.ItemConfig;
-import de.fesere.hypermedia.cj.annotations.NullWriteStrategy;
 
 
-@ItemConfig(writeNull = NullWriteStrategy.AS_NULL)
-public class Person {
+public abstract class BasePerson {
 
     @Data(value = "name", prompt = "The persons name")
     private String name;
@@ -26,7 +23,7 @@ public class Person {
     @Data(value="foo")
     Integer foo = null;
 
-    public Person(String name, int age, int id, boolean isAdmin, double someValue){
+    public BasePerson(String name, int age, int id, boolean isAdmin, double someValue){
         this.name = name;
         this.age = age;
         this.id = id;

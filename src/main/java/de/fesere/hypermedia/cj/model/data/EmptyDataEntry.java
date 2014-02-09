@@ -5,9 +5,4 @@ public class EmptyDataEntry extends DataEntry {
     public EmptyDataEntry(String name) {
         super(name);
     }
-
-    @Override
-    public Object getValue() {
-        return "";
-    }
 }

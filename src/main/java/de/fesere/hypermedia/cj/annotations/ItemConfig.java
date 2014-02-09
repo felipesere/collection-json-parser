@@ -6,5 +6,6 @@ import java.lang.annotation.*;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ItemConfig {
+
     NullWriteStrategy writeNull() default NullWriteStrategy.AS_NULL;
 }

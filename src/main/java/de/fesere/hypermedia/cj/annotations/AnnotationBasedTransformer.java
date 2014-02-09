@@ -8,24 +8,48 @@ import de.fesere.hypermedia.cj.transformer.WriteTransformer;
 
 import java.lang.reflect.Field;
 import java.net.URI;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class AnnotationBasedTransformer implements WriteTransformer {
     @Override
     public Item transform(Object input) {
-        Field[] declaredFields = input.getClass().getDeclaredFields();
         ItemBuilder builder = new ItemBuilder(URI.create("http://bla.blu"));
 
+        Field[] declaredFields = getAnnotatedFields(input);
 
         for (Field field : declaredFields) {
             Data data = field.getAnnotation(Data.class);
-            if (data == null) {
-                continue;
-            }
-
             DataEntry entry = constructDataEntry(input, field, data);
             builder.addData(entry);
         }
         return builder.build();
+    }
+
+    private Field[] getAnnotatedFields(Object input) {
+        List<Field> fields = getAnnotatedFielsOfType(input.getClass());
+
+        return fields.toArray(new Field[fields.size()]);
+    }
+
+
+    private List<Field> getAnnotatedFielsOfType(Class type) {
+        if(type.getName().equalsIgnoreCase(Object.class.getName())) {
+            return Collections.emptyList();
+        }
+        Field [] fields =  type.getDeclaredFields();
+        List<Field> result = new LinkedList<>();
+        for(Field field : fields) {
+            Data data = field.getAnnotation(Data.class);
+            if (data != null) {
+                result.add(field);
+            }
+        }
+
+        result.addAll(getAnnotatedFielsOfType(type.getSuperclass()));
+
+        return result;
     }
 
     private NullWriteStrategy extractNullWriteStrategy(Object input) {
@@ -66,7 +90,7 @@ public class AnnotationBasedTransformer implements WriteTransformer {
         NullWriteStrategy nullStrategy = extractNullWriteStrategy(input);
         switch(nullStrategy) {
             case AS_NULL:  return DataEntryFactory.createNull(name, prompt);
-            case AS_EMPTY: return DataEntryFactory.create(name,prompt);
+            case AS_EMPTY: return DataEntryFactory.createEmpty(name, prompt);
             case IGNORE:   return DataEntryFactory.createNone();
             default: throw new RuntimeException("Unrecognized NullWriteStrategy " + nullStrategy);
         }
@@ -111,6 +135,4 @@ public class AnnotationBasedTransformer implements WriteTransformer {
 
         return promot;
     }
-
-
 }

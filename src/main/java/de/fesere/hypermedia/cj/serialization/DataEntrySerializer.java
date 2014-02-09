@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import de.fesere.hypermedia.cj.exceptions.SerializationException;
-import de.fesere.hypermedia.cj.model.data.*;
+import de.fesere.hypermedia.cj.model.data.DataEntry;
+import de.fesere.hypermedia.cj.model.data.EmptyDataEntry;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -55,9 +55,6 @@ public class DataEntrySerializer extends StdSerializer<DataEntry> {
             jgen.writeBoolean((boolean) value);
         } else if (value == null) {
             jgen.writeNull();
-        }
-        else {
-            throw new SerializationException("Unspoorted value of type " + value.getClass().getCanonicalName() );
         }
     }
 

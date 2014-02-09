@@ -12,6 +12,10 @@ public class DataEntryFactory {
         return new NullDataEntry(name,prompt);
     }
 
+    public static DataEntry createEmpty(String name, String prompt) {
+        return new StringDataEntry(name, "", prompt);
+    }
+
     public static DataEntry create(String name) {
         return new StringDataEntry(name);
     }
