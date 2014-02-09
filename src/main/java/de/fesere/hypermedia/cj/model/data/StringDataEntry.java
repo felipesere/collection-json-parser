@@ -5,11 +5,11 @@ public class StringDataEntry extends DataEntry<String> {
     private String value;
 
     public StringDataEntry(String name) {
-        super(name);
+        this(name, "");
     }
 
     public StringDataEntry(String name, String value) {
-        this(name);
+        super(name);
         this.value = value;
     }
 

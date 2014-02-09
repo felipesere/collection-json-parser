@@ -42,22 +42,11 @@ public class DataEntrySerializer extends StdSerializer<DataEntry> {
 
     private void writeValue(DataEntry value, JsonGenerator jgen) throws IOException {
         jgen.writeFieldName("value");
-        if (hasRealValue(value)) {
-            writeRealValue(value, jgen);
-        } else {
-            writeEmptyValue(value, jgen);
-        }
+        writeContent(value, jgen);
     }
 
-    private void writeEmptyValue(DataEntry value, JsonGenerator jgen) throws IOException {
-        if (value instanceof NullDataEntry) {
-            jgen.writeString((String)null);
-        } else {
-            jgen.writeString("");
-        }
-    }
 
-    private void writeRealValue(DataEntry value, JsonGenerator jgen) throws IOException {
+    private void writeContent(DataEntry value, JsonGenerator jgen) throws IOException {
         if (value instanceof StringDataEntry) {
             StringDataEntry stringEntry = (StringDataEntry) value;
             jgen.writeString(stringEntry.getValue());
@@ -65,6 +54,8 @@ public class DataEntrySerializer extends StdSerializer<DataEntry> {
             writeNumber((NumberDataEntry) value, jgen);
         } else if (value instanceof BooleanDataEntry) {
             jgen.writeBoolean((boolean) value.getValue());
+        } else {
+            jgen.writeString((String) value.getValue());
         }
     }
 
@@ -75,9 +66,5 @@ public class DataEntrySerializer extends StdSerializer<DataEntry> {
         } else {
             jgen.writeNumber(number.intValue());
         }
-    }
-
-    private boolean hasRealValue(DataEntry value) {
-        return value.getValue() != null;
     }
 }

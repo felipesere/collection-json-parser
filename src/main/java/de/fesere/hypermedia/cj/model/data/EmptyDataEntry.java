@@ -12,6 +12,6 @@ public class EmptyDataEntry extends DataEntry {
 
     @Override
     public Object getValue() {
-        return null;
+        return "";
     }
 }
