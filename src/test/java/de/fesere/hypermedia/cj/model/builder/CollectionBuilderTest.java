@@ -2,14 +2,14 @@ package de.fesere.hypermedia.cj.model.builder;
 
 import de.fesere.hypermedia.cj.model.*;
 import de.fesere.hypermedia.cj.model.data.DataEntry;
-import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import de.fesere.hypermedia.cj.transformer.WriteTransformer;
 import org.junit.Test;
 
 import java.net.URI;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
+
+import static de.fesere.hypermedia.cj.model.builder.DataEntryFactory.create;
 
 public class CollectionBuilderTest extends SerializationTestBase {
 
@@ -24,20 +24,12 @@ public class CollectionBuilderTest extends SerializationTestBase {
     public void test_buildCollectionWithTemplate() {
         String expextedJSON = readFile("/examples/template-collection.json");
 
-        List<DataEntry> entries = new LinkedList<>();
-        List<StringDataEntry> strings = Arrays.asList(new StringDataEntry("full-name", "", "Full Name"),
-                new StringDataEntry("email", "", "Email"),
-                new StringDataEntry("blog", "", "Blog"),
-                new StringDataEntry("avatar", "", "Avatar"));
-
-        for(DataEntry entry : strings) {
-            entries.add(entry);
-        }
-
+        List<DataEntry> entries = Arrays.asList(create("full-name", "", "Full Name"),
+                create("email", "", "Email"),
+                create("blog", "", "Blog"),
+                create("avatar", "", "Avatar"));
 
         Template template = new Template(entries);
-
-
         Collection collection = new CollectionBuilder(href).addTemplate(template).build();
 
         assertCollectionSerialization(expextedJSON, collection);
@@ -49,7 +41,7 @@ public class CollectionBuilderTest extends SerializationTestBase {
 
 
         URI queryURI = URI.create("http://example.org/friends/search");
-        Query query = new Query(queryURI, "search", "Search", Arrays.<DataEntry>asList(new StringDataEntry("search", "")));
+        Query query = new Query(queryURI, "search", "Search", Arrays.asList(create("search")));
 
         Collection collection = new CollectionBuilder(href).addQuery(query).build();
 
@@ -60,7 +52,7 @@ public class CollectionBuilderTest extends SerializationTestBase {
     public void test_addQueryWithRelativeURL() {
         String expectedJSON = readFile("/examples/query-collection.json");
 
-        Query query = new Query("search", "Search", Arrays.<DataEntry>asList(new StringDataEntry("search", "")));
+        Query query = new Query("search", "Search", Arrays.asList(create("search")));
 
         Collection collection = new CollectionBuilder(href).addQuery(query, "/search").build();
 
@@ -145,8 +137,8 @@ public class CollectionBuilderTest extends SerializationTestBase {
         @Override
         public Item transform(Person input) {
             ItemBuilder builder = new ItemBuilder(constructor.buildAbsoluteHrefFromRelative("/friends/"+input.id));
-            builder.addData(new StringDataEntry("full-name", input.fullName , "Full Name"))
-                   .addData(new StringDataEntry("email", input.email, "Email"));
+            builder.addData(create("full-name", input.fullName , "Full Name"))
+                   .addData(create("email", input.email, "Email"));
 
             LinkBuilder linkBuilder = builder.getLinkBuilder();
             linkBuilder.addLink("blog",   constructor.buildAbsoluteHrefFromRelative("/blogs/"+input.id), "Blog")
@@ -166,8 +158,8 @@ public class CollectionBuilderTest extends SerializationTestBase {
         @Override
         public Item transform(Person input) {
             ItemBuilder builder = new ItemBuilder(constructor.buildAbsoluteHrefFromRelative("/friends/"+input.id));
-            builder.addData(new StringDataEntry("full-name", input.fullName , "Full Name"))
-                    .addData(new StringDataEntry("email", input.email, "Email"));
+            builder.addData(create("full-name", input.fullName , "Full Name"))
+                    .addData(create("email", input.email, "Email"));
 
             return builder.build();
         }

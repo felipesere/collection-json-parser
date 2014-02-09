@@ -1,7 +1,6 @@
 package de.fesere.hypermedia.cj.model.data;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.fesere.hypermedia.cj.serialization.DataEntryDeserializer;
@@ -12,9 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 @JsonDeserialize(using = DataEntryDeserializer.class)
 abstract public class DataEntry<T> {
 
-    @JsonProperty("name")
     private final String name;
-
     private String prompt;
 
     public DataEntry(String name) {
@@ -34,13 +31,12 @@ abstract public class DataEntry<T> {
         return prompt;
     }
 
-    public abstract void set(T value);
-
-    public void clear() {
-        set(null);
+    public void set(T value) {
     }
 
-    public abstract T getValue();
+    public T getValue() {
+        return null;
+    }
 
     public String buildQueryRepresentation() {
         T value = getValue();

@@ -7,9 +7,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
+import static de.fesere.hypermedia.cj.model.builder.DataEntryFactory.create;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
@@ -62,13 +62,10 @@ public class TemplateTest extends SerializationTestBase {
     }
 
     private Template emptyTemplate() {
-        List<DataEntry> entries = new LinkedList<>();
-        List<StringDataEntry> strings = Arrays.asList(new StringDataEntry("full-name", "", "Full Name"), new StringDataEntry("email", "", "Email"), new StringDataEntry("blog", "", "Blog"), new StringDataEntry("avatar", "", "Avatar"));
-
-        for(DataEntry entry : strings) {
-            entries.add(entry);
-        }
-
+        List<DataEntry> entries = Arrays.asList(create("full-name", "", "Full Name"),
+                                                create("email", "", "Email"),
+                                                create("blog", "", "Blog"),
+                                                create("avatar", "", "Avatar"));
         return new Template(entries);
     }
 }

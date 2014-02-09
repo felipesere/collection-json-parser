@@ -98,11 +98,23 @@ public class ItemSerializationTest extends SerializationTestBase {
         String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"age\", \"value\": \"24.abc\"}]}";
 
         Item item = serializer.deserialize(givenJSON, Item.class);
-
-        assertEquals(TEST_COM_ITEM, item.getHref());
-        assertThat(item.getData(), contains(name("age")));
-
         item.getInt("age");
+    }
+
+    @Test(expected = MalformedDataValueException.class)
+    public void testDeserializeItemWithSingleDataEntryContainingMalformedBoolean_exception() {
+        String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"age\", \"value\": \"24.abc\"}]}";
+
+        Item item = serializer.deserialize(givenJSON, Item.class);
+        item.getBoolean("age");
+    }
+
+    @Test(expected = MalformedDataValueException.class)
+    public void testDeserializeItemWithSingleDataEntryContainingMalformedString_exception() {
+        String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"age\", \"value\": 24}]}";
+
+        Item item = serializer.deserialize(givenJSON, Item.class);
+        item.getString("age");
     }
 
 

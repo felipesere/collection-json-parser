@@ -1,0 +1,39 @@
+{
+    "collection": {
+        "version": "1.0",
+        "href": "http://foobar.de",
+        "items": [
+            {
+                "href": "http://bla.blu",
+                "data": [
+                    {
+                        "name": "name",
+                        "value": "felipe",
+                        "prompt": "The persons name"
+                    },
+                    {
+                        "name": "age",
+                        "value": 24
+                    },
+                    {
+                        "name": "id",
+                        "value": 4711
+                    },
+                    {
+                        "name": "isAdmin",
+                        "value": true,
+                        "prompt": "Is the person a sys-admin"
+                    },
+                    {
+                        "name": "someDouble",
+                        "value": 1.234
+                    },
+                    {
+                        "name" : "foo",
+                        "value" : null
+                    }
+                ]
+            }
+        ]
+    }
+}

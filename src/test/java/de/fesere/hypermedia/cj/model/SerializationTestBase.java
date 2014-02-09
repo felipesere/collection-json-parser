@@ -43,7 +43,7 @@ public abstract class SerializationTestBase {
     }
 
     private void assertJson(String expected, String actualJson) {
-        System.out.println(actualJson);
+        System.out.println("Actual: \n" + actualJson);
         try {
             JSONAssert.assertEquals(expected, actualJson, false);
         } catch (JSONException e) {
