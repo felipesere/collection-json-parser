@@ -4,7 +4,6 @@ import de.fesere.hypermedia.cj.http.DummyHTTPClient;
 import de.fesere.hypermedia.cj.model.builder.ItemBuilder;
 import de.fesere.hypermedia.cj.model.builder.TemplateBuilder;
 import de.fesere.hypermedia.cj.model.data.DataEntry;
-import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +13,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import static de.fesere.hypermedia.cj.model.builder.DataEntryFactory.create;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
@@ -48,7 +48,7 @@ public class CjClientTest extends SerializationTestBase {
 
         httpClient.expectGetLinkWith(URI.create("http://writeToStringExample.com/search?name=Max")).returnStringOnGet(json);
 
-        Query query = new Query(URI.create("http://writeToStringExample.com/search"),"foo","Lorem ipsum", Arrays.<DataEntry>asList(new StringDataEntry("name", "Max")));
+        Query query = new Query(URI.create("http://writeToStringExample.com/search"),"foo","Lorem ipsum", Arrays.asList(create("name", "Max")));
         Collection result = classUnderTest.follow(query);
 
         assertThat(result, is(notNullValue()));
@@ -61,9 +61,9 @@ public class CjClientTest extends SerializationTestBase {
         Template template = new TemplateBuilder().emptyWithNames("foo", "bar", "batz").build();
 
         ItemBuilder builder = new ItemBuilder(URI.create(""));
-        builder.addData(new StringDataEntry("foo", "a"))
-               .addData(new StringDataEntry("bar", "b"))
-               .addData(new StringDataEntry("batz", "c"));
+        builder.addData(create("foo", "a"))
+               .addData(create("bar", "b"))
+               .addData(create("batz", "c"));
 
         Item content = builder.build();
         template.fill(content);
@@ -95,9 +95,9 @@ public class CjClientTest extends SerializationTestBase {
         Template template = new TemplateBuilder().emptyWithNames("foo", "bar", "batz").build();
 
         ItemBuilder builder = new ItemBuilder(URI.create(""));
-        builder.addData(new StringDataEntry("foo", "a"))
-                .addData(new StringDataEntry("bar", "b"))
-                .addData(new StringDataEntry("batz", "c"));
+        builder.addData(create("foo", "a"))
+                .addData(create("bar", "b"))
+                .addData(create("batz", "c"));
         Item content = builder.build();
 
         template.fill(content);
@@ -121,18 +121,15 @@ public class CjClientTest extends SerializationTestBase {
     private Collection collectionWithMaxPerson() {
         Item item = new Item(URI.create("http://writeToStringExample.com/people/1"), null);
 
-        item.addData(new StringDataEntry("name", "Max"));
-        item.addData(new StringDataEntry("surname", "Musterman"));
+        item.addData(create("name", "Max"));
+        item.addData(create("surname", "Musterman"));
 
         List<DataEntry> entries = new LinkedList<>();
-        entries.add(new StringDataEntry("name"));
-        entries.add(new StringDataEntry("surname"));
+        entries.add(create("name"));
+        entries.add(create("surname"));
         Query query = new Query(URI.create("http://writeToStringExample.com/search"), "search", "", entries);
 
-        List<DataEntry> input =  new LinkedList<>();
-        input.add(new StringDataEntry("foo"));
-        input.add(new StringDataEntry("bar"));
-        input.add(new StringDataEntry("batz"));
+        List<DataEntry> input =  Arrays.asList(create("foo"), create("bar"), create("batz"));
 
         Template template = new Template(input);
 

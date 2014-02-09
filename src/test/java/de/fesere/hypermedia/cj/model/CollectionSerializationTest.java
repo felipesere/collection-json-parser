@@ -1,11 +1,12 @@
 package de.fesere.hypermedia.cj.model;
 
-import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.net.URI;
 import java.util.Arrays;
+
+import static de.fesere.hypermedia.cj.model.builder.DataEntryFactory.create;
 
 public class CollectionSerializationTest extends SerializationTestBase {
 
@@ -40,7 +41,7 @@ public class CollectionSerializationTest extends SerializationTestBase {
     @Test
     public void serializeCollectionWithSingleItemWithData() {
         Item item = new Item(URI.create("http://writeToStringExample.com/items/1"));
-        item.addData(new StringDataEntry("foo", "bar"));
+        item.addData(create("foo", "bar"));
 
         Collection collection = new Collection(TEST_COM, Arrays.asList(item), null, null, null);
 

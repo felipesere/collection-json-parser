@@ -2,13 +2,11 @@ package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.model.builder.CollectionBuilder;
 import de.fesere.hypermedia.cj.model.builder.ItemBuilder;
-import de.fesere.hypermedia.cj.model.data.BooleanDataEntry;
-import de.fesere.hypermedia.cj.model.data.NumberDataEntry;
-import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.junit.Test;
 
 import java.net.URI;
 
+import static de.fesere.hypermedia.cj.model.builder.DataEntryFactory.create;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -22,10 +20,10 @@ public class CollectionWithTypedItemsTest extends SerializationTestBase {
         CollectionBuilder builder = new CollectionBuilder(URI.create("http://example.org/friends/"));
 
         ItemBuilder itemBuilder = new ItemBuilder(URI.create("http://example.org/friends/jdoe"));
-        itemBuilder.addData(new StringDataEntry("full-name", "J. Doe", "Full Name"))
-                   .addData(new NumberDataEntry("age", 24, "Persons Age"))
-                   .addData(new NumberDataEntry("pi",  3.14159265359, null))
-                   .addData(new BooleanDataEntry("male", true, null));
+        itemBuilder.addData(create("full-name", "J. Doe", "Full Name"))
+                   .addData(create("age", 24, "Persons Age"))
+                   .addData(create("pi", 3.14159265359))
+                   .addData(create("male", true));
         Item item = itemBuilder.build();
 
         Collection collection = builder.addItem(item).build();

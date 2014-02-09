@@ -1,9 +1,6 @@
 package de.fesere.hypermedia.cj.model.builder;
 
-import de.fesere.hypermedia.cj.model.data.BooleanDataEntry;
 import de.fesere.hypermedia.cj.model.data.DataEntry;
-import de.fesere.hypermedia.cj.model.data.NumberDataEntry;
-import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.apache.commons.lang3.StringUtils;
 
 public class DataEntryBuilder {
@@ -41,16 +38,16 @@ public class DataEntryBuilder {
 
     public DataEntry build() {
         if(StringUtils.isNotBlank(stringValue)) {
-            return new StringDataEntry(name, stringValue, prompt);
+            return DataEntryFactory.create(name, stringValue, prompt);
         }
         else if (numberValue != null) {
-            return new NumberDataEntry(name, numberValue, prompt);
+            return DataEntryFactory.create(name, numberValue, prompt);
         }
         else if (booleanValue != null) {
-            return new BooleanDataEntry(name, booleanValue, prompt);
+            return DataEntryFactory.create(name, booleanValue, prompt);
         }
         else {
-            return new StringDataEntry(name, "", prompt);
+            return DataEntryFactory.create(name, "", prompt);
         }
 
     }

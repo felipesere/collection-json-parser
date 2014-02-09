@@ -2,15 +2,14 @@ package de.fesere.hypermedia.cj;
 
 
 import de.fesere.hypermedia.cj.model.Collection;
-import de.fesere.hypermedia.cj.model.data.BooleanDataEntry;
-import de.fesere.hypermedia.cj.model.data.NumberDataEntry;
-import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import de.fesere.hypermedia.cj.model.builder.CollectionBuilder;
 import de.fesere.hypermedia.cj.model.builder.ItemBuilder;
 import de.fesere.hypermedia.cj.serialization.Serializer;
 import org.junit.Test;
 
 import java.net.URI;
+
+import static de.fesere.hypermedia.cj.model.builder.DataEntryFactory.create;
 
 public class CollectionBuilderExample {
 
@@ -21,10 +20,12 @@ public class CollectionBuilderExample {
                                 .addLink("questions", URI.create("http://stackoverflow.com")).build();
 
         ItemBuilder itemBuilder = new ItemBuilder(URI.create("http;//example.com/item/1"));
-        itemBuilder.addData(new StringDataEntry("name", "Bob", "Users first name"));
-        itemBuilder.addData(new NumberDataEntry("age", 24, "Users age"));
-        itemBuilder.addData(new NumberDataEntry("height", 0.00192, "Users height in km"));
-        itemBuilder.addData(new BooleanDataEntry("payed", false, "User payed fee"));
+        itemBuilder.addData(create("name", "Bob", "Users first name"));
+        itemBuilder.addData(create("surname-name", "Craftsman"));
+        itemBuilder.addData(create("age", 24, "Users age"));
+        itemBuilder.addData(create("id", 123808023));
+        itemBuilder.addData(create("quoteien", 0.0019234124));
+        itemBuilder.addData(create("married", true));
 
         Collection collection = collectionBuilder.addItem(itemBuilder.build()).build();
 

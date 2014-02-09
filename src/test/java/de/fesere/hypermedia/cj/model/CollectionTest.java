@@ -2,17 +2,14 @@ package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.exceptions.CollectionHasErrorsException;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
-import de.fesere.hypermedia.cj.model.builder.CollectionBuilder;
-import de.fesere.hypermedia.cj.model.builder.ErrorBuilder;
-import de.fesere.hypermedia.cj.model.builder.ItemBuilder;
-import de.fesere.hypermedia.cj.model.builder.LinkBuilder;
-import de.fesere.hypermedia.cj.model.data.StringDataEntry;
+import de.fesere.hypermedia.cj.model.builder.*;
 import de.fesere.hypermedia.cj.transformer.ReadTransformation;
 import org.junit.Test;
 
 import java.net.URI;
 import java.util.List;
 
+import static de.fesere.hypermedia.cj.model.builder.DataEntryFactory.create;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
@@ -35,7 +32,7 @@ public class CollectionTest {
     public void test_convertSingleItem() {
 
         ItemBuilder itemBuilder = new ItemBuilder(baseURI);
-        itemBuilder.addData(new StringDataEntry("foo", "Lorem ipsum"));
+        itemBuilder.addData(create("foo", "Lorem ipsum"));
 
         Collection collection = new CollectionBuilder(baseURI).addItem(itemBuilder.build()).build();
 
