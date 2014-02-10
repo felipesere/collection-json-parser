@@ -1,5 +1,6 @@
 package de.fesere.hypermedia.cj.annotations;
 
+import de.fesere.hypermedia.cj.exceptions.TransformationException;
 import de.fesere.hypermedia.cj.model.Item;
 import de.fesere.hypermedia.cj.model.builder.DataEntryFactory;
 import de.fesere.hypermedia.cj.model.builder.ItemBuilder;
@@ -93,7 +94,7 @@ public class AnnotationBasedTransformer implements WriteTransformer {
             case AS_NULL:  return DataEntryFactory.createNull(name, prompt);
             case AS_EMPTY: return DataEntryFactory.createEmpty(name, prompt);
             case IGNORE:   return DataEntryFactory.createNone();
-            default: throw new RuntimeException("Unrecognized NullWriteStrategy " + nullStrategy);
+            default: throw new TransformationException("Unrecognized NullWriteStrategy " + nullStrategy);
         }
     }
 
@@ -102,7 +103,7 @@ public class AnnotationBasedTransformer implements WriteTransformer {
             field.setAccessible(true);
             return field.get(input);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException("Was not able to access " + field.getName() + " from " + input);
+            throw new TransformationException("Was not able to access " + field.getName() + " from " + input, e);
         }
     }
 
