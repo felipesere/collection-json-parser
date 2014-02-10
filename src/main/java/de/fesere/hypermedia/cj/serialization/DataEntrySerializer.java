@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import de.fesere.hypermedia.cj.model.data.DataEntry;
-import de.fesere.hypermedia.cj.model.data.EmptyDataEntry;
+import de.fesere.hypermedia.cj.model.data.NoneDataEntry;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class DataEntrySerializer extends StdSerializer<DataEntry> {
 
     @Override
     public void serialize(DataEntry entry, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonGenerationException {
-        if (entry instanceof EmptyDataEntry) {
+        if (entry instanceof NoneDataEntry) {
             return;
         }
         this.jgen = jgen;

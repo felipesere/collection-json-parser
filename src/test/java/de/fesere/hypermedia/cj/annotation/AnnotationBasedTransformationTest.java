@@ -1,6 +1,5 @@
 package de.fesere.hypermedia.cj.annotation;
 
-import de.fesere.hypermedia.cj.annotations.AnnotationBasedTransformer;
 import de.fesere.hypermedia.cj.model.Collection;
 import de.fesere.hypermedia.cj.model.SerializationTestBase;
 import de.fesere.hypermedia.cj.model.builder.CollectionBuilder;
@@ -16,12 +15,7 @@ public class AnnotationBasedTransformationTest extends SerializationTestBase {
 
         NullPerson person = new NullPerson("felipe", 24, 4711, true, 1.234);
 
-        AnnotationBasedTransformer transformer = new AnnotationBasedTransformer();
-        CollectionBuilder personCollectionBuilder = new CollectionBuilder<>(URI.create("http://foobar.de"), transformer);
-        personCollectionBuilder.addObject(person);
-
-
-        Collection collection = personCollectionBuilder.build();
+        Collection collection = getCollectionWithPerson(person);
         assertCollectionSerialization(json, collection);
     }
 
@@ -31,12 +25,7 @@ public class AnnotationBasedTransformationTest extends SerializationTestBase {
 
         DefaultPerson person = new DefaultPerson("felipe", 24, 4711, true, 1.234);
 
-        AnnotationBasedTransformer transformer = new AnnotationBasedTransformer();
-        CollectionBuilder personCollectionBuilder = new CollectionBuilder<>(URI.create("http://foobar.de"), transformer);
-        personCollectionBuilder.addObject(person);
-
-
-        Collection collection = personCollectionBuilder.build();
+        Collection collection = getCollectionWithPerson(person);
         assertCollectionSerialization(json, collection);
     }
 
@@ -46,12 +35,7 @@ public class AnnotationBasedTransformationTest extends SerializationTestBase {
 
         EmptyPerson person = new EmptyPerson("felipe", 24, 4711, true, 1.234);
 
-        AnnotationBasedTransformer transformer = new AnnotationBasedTransformer();
-        CollectionBuilder personCollectionBuilder = new CollectionBuilder<>(URI.create("http://foobar.de"), transformer);
-        personCollectionBuilder.addObject(person);
-
-
-        Collection collection = personCollectionBuilder.build();
+        Collection collection = getCollectionWithPerson(person);
         assertCollectionSerialization(json, collection);
     }
 
@@ -62,12 +46,15 @@ public class AnnotationBasedTransformationTest extends SerializationTestBase {
 
         IgnorePerson person = new IgnorePerson("felipe", 24, 4711, true, 1.234);
 
-        AnnotationBasedTransformer transformer = new AnnotationBasedTransformer();
-        CollectionBuilder personCollectionBuilder = new CollectionBuilder<>(URI.create("http://foobar.de"), transformer);
+        Collection collection = getCollectionWithPerson(person);
+        assertCollectionSerialization(json, collection);
+    }
+
+
+    private Collection getCollectionWithPerson(BasePerson person) {
+        CollectionBuilder personCollectionBuilder = new CollectionBuilder<>(URI.create("http://foobar.de"));
         personCollectionBuilder.addObject(person);
 
-
-        Collection collection = personCollectionBuilder.build();
-        assertCollectionSerialization(json, collection);
+        return personCollectionBuilder.build();
     }
 }

@@ -6,6 +6,6 @@ import java.lang.annotation.*;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Data {
-   String value();
+   String name();
    String prompt() default "none";
 }

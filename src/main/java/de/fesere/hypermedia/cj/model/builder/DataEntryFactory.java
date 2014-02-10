@@ -5,7 +5,7 @@ import de.fesere.hypermedia.cj.model.data.*;
 public class DataEntryFactory {
 
     public static DataEntry createNone() {
-        return new EmptyDataEntry("none");
+        return new NoneDataEntry("none");
     }
 
     public static DataEntry createNull(String name, String prompt) {

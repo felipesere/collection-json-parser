@@ -5,23 +5,23 @@ import de.fesere.hypermedia.cj.annotations.Data;
 
 public abstract class BasePerson {
 
-    @Data(value = "name", prompt = "The persons name")
+    @Data(name = "name", prompt = "The persons name")
     private String name;
 
-    @Data(value = "age")
+    @Data(name = "age")
     private int age;
 
-    @Data(value = "id")
+    @Data(name = "id")
     private int id;
 
-    @Data(value="isAdmin", prompt = "Is the person a sys-admin")
+    @Data(name ="isAdmin", prompt = "Is the person a sys-admin")
     private boolean admin;
 
-    @Data(value="someDouble")
+    @Data(name ="someDouble")
     private double someValue;
 
-    @Data(value="foo")
-    Integer foo = null;
+    @Data(name ="foo", prompt = "Doo dough")
+    private Integer foo = null;
 
     public BasePerson(String name, int age, int id, boolean isAdmin, double someValue){
         this.name = name;

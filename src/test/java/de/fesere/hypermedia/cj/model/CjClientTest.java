@@ -48,7 +48,8 @@ public class CjClientTest extends SerializationTestBase {
 
         httpClient.expectGetLinkWith(URI.create("http://writeToStringExample.com/search?name=Max")).returnStringOnGet(json);
 
-        Query query = new Query(URI.create("http://writeToStringExample.com/search"),"foo","Lorem ipsum", Arrays.asList(create("name", "Max")));
+        Query query = new Query(URI.create("http://writeToStringExample.com/search"),"foo","Lorem ipsum", Arrays.asList(create("name")));
+        query.set("name", "Max");
         Collection result = classUnderTest.follow(query);
 
         assertThat(result, is(notNullValue()));

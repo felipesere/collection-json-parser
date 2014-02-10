@@ -1,8 +1,8 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
+import de.fesere.hypermedia.cj.model.builder.DataEntryFactory;
 import de.fesere.hypermedia.cj.model.data.DataEntry;
-import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.junit.Test;
 
 import java.net.URI;
@@ -34,18 +34,8 @@ public class QueryTest extends SerializationTestBase{
         assertThat(uri.toString(), is(BASE_URI));
     }
 
-    private Query createBaseQueryWith3Entries() {
-        List<DataEntry> entries = new LinkedList<>();
-        entries.add(new StringDataEntry("foo"));
-        entries.add(new StringDataEntry("bar"));
-        entries.add(new StringDataEntry("batz"));
-
-        return new Query(URI.create(BASE_URI),
-                 "search","",  entries);
-    }
-
     @Test
-    public void testBuildURI_singleElementInQueryIsSet() {
+    public void testBuildURI_singleElementInQueryIsSetToString() {
 
         Query theQuery = createBaseQueryWith3Entries();
         theQuery.set("foo", "a");
@@ -54,10 +44,40 @@ public class QueryTest extends SerializationTestBase{
         assertThat(uri.toString(), is(BASE_URI+"?foo=a"));
     }
 
+    @Test
+    public void testBuildURI_singleElementInQueryIsSetToInt() {
+
+        Query theQuery = createBaseQueryWith3Entries();
+        theQuery.set("foo", 12);
+
+        URI uri = theQuery.buildURI();
+        assertThat(uri.toString(), is(BASE_URI+"?foo=12"));
+    }
+
+    @Test
+    public void testBuildURI_singleElementInQueryIsSetToBoolean() {
+
+        Query theQuery = createBaseQueryWith3Entries();
+        theQuery.set("foo", true);
+
+        URI uri = theQuery.buildURI();
+        assertThat(uri.toString(), is(BASE_URI+"?foo=true"));
+    }
+
     @Test(expected = ElementNotFoundException.class)
     public void testBuildURI_settingNonExistingElementThrowsException() {
 
         Query theQuery = createBaseQueryWith3Entries();
         theQuery.set("doesNotExist", "a");
+    }
+
+    private Query createBaseQueryWith3Entries() {
+        List<DataEntry> entries = new LinkedList<>();
+        entries.add(DataEntryFactory.create("foo"));
+        entries.add(DataEntryFactory.create("bar"));
+        entries.add(DataEntryFactory.create("batz"));
+
+        return new Query(URI.create(BASE_URI),
+                "search","",  entries);
     }
 }

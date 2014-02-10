@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
+import de.fesere.hypermedia.cj.model.builder.DataEntryFactory;
 import de.fesere.hypermedia.cj.model.data.DataEntry;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URI;
@@ -24,7 +26,16 @@ public class Query extends Link {
                  @JsonProperty("prompt") String prompt,
                  @JsonProperty("data") List<DataEntry> data) {
         super(rel, href, prompt);
-        this.data = data;
+        this.data = convertToStirngDataEntry(data);
+    }
+
+    private List<DataEntry> convertToStirngDataEntry(List<DataEntry> input) {
+        List<DataEntry> result = new LinkedList<>();
+        for(DataEntry entry : input) {
+            result.add(DataEntryFactory.create(entry.getName()));
+        }
+
+        return result;
     }
 
     public Query(String rel, String prompt,  List<DataEntry> data) {
@@ -35,10 +46,12 @@ public class Query extends Link {
         return data;
     }
 
-    public Query set(String name, String value) {
-        DataEntry found = findDataEntry(name);
 
-        found.set(value);
+    public Query set(String name, Object o) {
+        StringDataEntry found = (StringDataEntry) findDataEntry(name);
+
+        found.set(o.toString());
+
         return this;
     }
 
