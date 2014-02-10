@@ -2,7 +2,7 @@ package de.fesere.hypermedia.cj.annotations;
 
 public final class TypeUtils {
 
-    private TypeUtils() {} //Never called
+    private TypeUtils() {}
 
     public static boolean isBoolean(Class type) {
         return Boolean.class.isAssignableFrom(type) || Boolean.TYPE.isAssignableFrom(type);

@@ -1,13 +1,9 @@
 package de.fesere.hypermedia.cj.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
-import de.fesere.hypermedia.cj.exceptions.MalformedDataValueException;
+import de.fesere.hypermedia.cj.exceptions.PropertyNotFoundException;
 import de.fesere.hypermedia.cj.model.data.BooleanDataEntry;
 import de.fesere.hypermedia.cj.model.data.DataEntry;
 import de.fesere.hypermedia.cj.model.data.NumberDataEntry;
@@ -76,7 +72,7 @@ public class Item {
         if (found instanceof StringDataEntry) {
             return ((StringDataEntry) found).getValue();
         }
-        throw new MalformedDataValueException("Did not find property '" + name + "' as String in " + href);
+        throw new PropertyNotFoundException(name, href, String.class);
     }
 
     public int getInt(String name) {
@@ -88,7 +84,7 @@ public class Item {
 
         }
 
-        throw new MalformedDataValueException("Did not find property '" + name + "' as Number in " + href);
+         throw new PropertyNotFoundException(name, href, Number.class);
     }
 
     public double getDouble(String name) {
@@ -99,7 +95,7 @@ public class Item {
             return Double.parseDouble(value.toString());
         }
 
-        throw new MalformedDataValueException("Did not find property '" + name + "' as Number in " + href);
+         throw new PropertyNotFoundException(name, href, Number.class);
     }
 
     public boolean getBoolean(String name) {
@@ -108,7 +104,7 @@ public class Item {
             return (boolean) entry.getValue();
         }
 
-        throw new MalformedDataValueException("Did not find property '" + name + "' as boolean in " + href);
+        throw new PropertyNotFoundException(name, href, Boolean.class);
     }
 
     private DataEntry findDataEntry(String name) {

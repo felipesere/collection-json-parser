@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @JsonSerialize(using = DataEntrySerializer.class)
 @JsonDeserialize(using = DataEntryDeserializer.class)
-abstract public class DataEntry<T> {
+public abstract class DataEntry<T> {
 
     private final String name;
     private String prompt;

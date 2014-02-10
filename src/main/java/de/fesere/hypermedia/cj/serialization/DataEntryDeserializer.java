@@ -1,12 +1,11 @@
 package de.fesere.hypermedia.cj.serialization;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import de.fesere.hypermedia.cj.model.data.DataEntry;
 import de.fesere.hypermedia.cj.model.builder.DataEntryBuilder;
+import de.fesere.hypermedia.cj.model.data.DataEntry;
 
 import java.io.IOException;
 
@@ -19,7 +18,7 @@ public class DataEntryDeserializer extends StdDeserializer<DataEntry> {
     }
 
     @Override
-    public DataEntry deserialize(JsonParser jParser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public DataEntry deserialize(JsonParser jParser, DeserializationContext ctxt) throws IOException {
         DataEntryBuilder builder = new DataEntryBuilder();
 
         while (jParser.nextToken() != END_OBJECT) {
