@@ -4,7 +4,7 @@ import de.fesere.hypermedia.cj.model.data.*;
 
 public final class DataEntryFactory {
 
-    public DataEntryFactory() {}
+    private DataEntryFactory() {}
 
     public static DataEntry createNone() {
         return new NoneDataEntry("none");
