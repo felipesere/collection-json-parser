@@ -15,7 +15,10 @@ public class AnnotationBasedTransformationTest extends SerializationTestBase {
 
         NullPerson person = new NullPerson("felipe", 24, 4711, true, 1.234);
 
-        Collection collection = getCollectionWithPerson(person);
+        CollectionBuilder personCollectionBuilder = new CollectionBuilder<>(URI.create("http://foobar.de"));
+        personCollectionBuilder.addObject(person);
+
+        Collection collection = personCollectionBuilder.build();
         assertCollectionSerialization(json, collection);
     }
 

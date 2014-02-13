@@ -1,7 +1,7 @@
 package de.fesere.hypermedia.cj.annotation;
 
-import de.fesere.hypermedia.cj.annotations.ItemConfig;
-import de.fesere.hypermedia.cj.annotations.NullWriteStrategy;
+import de.fesere.hypermedia.cj.transformer.annotations.ItemConfig;
+import de.fesere.hypermedia.cj.transformer.annotations.NullWriteStrategy;
 
 @ItemConfig(writeNull = NullWriteStrategy.AS_EMPTY)
 public class EmptyPerson extends BasePerson {

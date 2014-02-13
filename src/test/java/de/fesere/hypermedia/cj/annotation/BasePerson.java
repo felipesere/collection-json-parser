@@ -1,6 +1,6 @@
 package de.fesere.hypermedia.cj.annotation;
 
-import de.fesere.hypermedia.cj.annotations.Data;
+import de.fesere.hypermedia.cj.transformer.annotations.Data;
 
 
 public abstract class BasePerson {
@@ -23,7 +23,7 @@ public abstract class BasePerson {
     @Data(name ="foo", prompt = "Doo dough")
     private Integer foo = null;
 
-    public BasePerson(String name, int age, int id, boolean isAdmin, double someValue){
+    public BasePerson(@Data(name = "name") String name, int age, int id, boolean isAdmin, double someValue){
         this.name = name;
         this.age = age;
         this.id = id;

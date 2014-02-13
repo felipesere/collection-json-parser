@@ -1,4 +1,4 @@
-package de.fesere.hypermedia.cj.annotations;
+package de.fesere.hypermedia.cj.transformer.annotations;
 
 public final class TypeUtils {
 
