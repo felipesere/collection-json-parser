@@ -10,9 +10,7 @@ import de.fesere.hypermedia.cj.model.data.NumberDataEntry;
 import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @JsonSerialize
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -119,5 +117,14 @@ public class Item {
             throw new ElementNotFoundException("Did not find property '" + name + "' in '" + href + "'");
         }
         return found;
+    }
+
+    public Map<String, Object> extractDataMap() {
+        Map<String, Object> result = new HashMap<>();
+        for(DataEntry entry : data) {
+            result.put(entry.getName(), entry.getValue());
+        }
+
+        return result;
     }
 }

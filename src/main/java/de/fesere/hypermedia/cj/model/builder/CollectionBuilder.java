@@ -1,6 +1,5 @@
 package de.fesere.hypermedia.cj.model.builder;
 
-import de.fesere.hypermedia.cj.annotations.AnnotationBasedTransformer;
 import de.fesere.hypermedia.cj.model.Collection;
 import de.fesere.hypermedia.cj.model.Item;
 import de.fesere.hypermedia.cj.model.Query;
@@ -30,7 +29,7 @@ public class CollectionBuilder<T> {
     }
 
     public CollectionBuilder(URI href) {
-        this(href, new AnnotationBasedTransformer());
+        this(href, null);
     }
 
     public CollectionBuilder addTemplate(Template temaplte) {
