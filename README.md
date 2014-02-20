@@ -177,3 +177,8 @@ Build status:
 | ------ | ------ |
 |   Development | [![Build Status](https://travis-ci.org/felipesere/collection-json-parser.png?branch=develop)](https://travis-ci.org/felipesere/collection-json-parser) |
 | Master:     | [![Build Status](https://travis-ci.org/felipesere/collection-json-parser.png?branch=master)](https://travis-ci.org/felipesere/collection-json-parser)    |
+
+Code Coverage:
+--------------
+
+[![Coverage Status](https://coveralls.io/repos/felipesere/collection-json-parser/badge.png)](https://coveralls.io/r/felipesere/collection-json-parser)
