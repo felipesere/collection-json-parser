@@ -26,6 +26,7 @@ public class DataEntryBuilder {
         numberValue = value;
         return this;
     }
+
     public DataEntryBuilder setValue(boolean value) {
         booleanValue = value;
         return this;
@@ -37,16 +38,16 @@ public class DataEntryBuilder {
     }
 
     public DataEntry build() {
-        if(StringUtils.isNotBlank(stringValue)) {
+        if (StringUtils.isNotBlank(stringValue)) {
             return DataEntryFactory.create(name, stringValue, prompt);
-        }
-        else if (numberValue != null) {
+
+        } else if (numberValue != null) {
             return DataEntryFactory.create(name, numberValue, prompt);
-        }
-        else if (booleanValue != null) {
+
+        } else if (booleanValue != null) {
             return DataEntryFactory.create(name, booleanValue, prompt);
-        }
-        else {
+
+        } else {
             return DataEntryFactory.create(name, "", prompt);
         }
 

@@ -31,7 +31,7 @@ public class TemplateBuilder {
         List<DataEntry> itemEntries = item.getData();
         List<DataEntry> clearedDataEntreis = new LinkedList<>();
         for(DataEntry entry : itemEntries) {
-            clearedDataEntreis.add(DataEntryFactory.create(entry.getName()));
+            clearedDataEntreis.add(DataEntryFactory.createEmpty(entry.getName()));
         }
         return clearedDataEntreis;
     }
@@ -40,7 +40,7 @@ public class TemplateBuilder {
     public TemplateBuilder emptyWithNames(String ... names) {
         List<DataEntry> nameEntries = new LinkedList<>();
         for(String name : names) {
-            nameEntries.add(DataEntryFactory.create(name));
+            nameEntries.add(DataEntryFactory.createEmpty(name));
         }
         setEntries(nameEntries);
         return this;

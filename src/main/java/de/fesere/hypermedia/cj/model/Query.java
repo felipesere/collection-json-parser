@@ -32,7 +32,7 @@ public class Query extends Link {
     private List<DataEntry> convertToStirngDataEntry(List<DataEntry> input) {
         List<DataEntry> result = new LinkedList<>();
         for(DataEntry entry : input) {
-            result.add(DataEntryFactory.create(entry.getName()));
+            result.add(DataEntryFactory.createEmpty(entry.getName()));
         }
 
         return result;

@@ -9,8 +9,10 @@ import de.fesere.hypermedia.cj.serialization.Wrapped;
 import de.fesere.hypermedia.cj.transformer.DataEntryTransformer;
 import de.fesere.hypermedia.cj.transformer.ReadTransformation;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @JsonTypeName("template")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -37,5 +39,14 @@ public class Template implements Wrapped {
     public <T> T convert(ReadTransformation<T> transformation) {
         DataEntryTransformer<T> dataEntryTransformer = new DataEntryTransformer<>(transformation);
         return dataEntryTransformer.transform(data);
+    }
+
+    public Map<String, Object> getDataMap() {
+        Map<String, Object> dataEntries = new HashMap<>();
+        for(DataEntry entry : data) {
+            dataEntries.put(entry.getName(), entry.getValue());
+        }
+
+        return dataEntries;
     }
 }

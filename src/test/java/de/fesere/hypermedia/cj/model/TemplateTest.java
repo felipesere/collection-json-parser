@@ -24,6 +24,7 @@ public class TemplateTest extends SerializationTestBase {
 
         assertThat(result.getTemplate().getData(), hasSize(4));
         assertThat(result.getTemplate().getData(), hasItems(name("full-name"), name("email"), name("blog"), name("avatar")));
+        assertThat(result.getTemplate().getDataMap().keySet(), hasSize(4));
     }
 
     @Test

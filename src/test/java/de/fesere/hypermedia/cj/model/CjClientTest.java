@@ -1,6 +1,7 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.http.DummyHTTPClient;
+import de.fesere.hypermedia.cj.model.builder.DataEntryFactory;
 import de.fesere.hypermedia.cj.model.builder.ItemBuilder;
 import de.fesere.hypermedia.cj.model.builder.TemplateBuilder;
 import de.fesere.hypermedia.cj.model.data.DataEntry;
@@ -48,7 +49,7 @@ public class CjClientTest extends SerializationTestBase {
 
         httpClient.expectGetLinkWith(URI.create("http://writeToStringExample.com/search?name=Max")).returnStringOnGet(json);
 
-        Query query = new Query(URI.create("http://writeToStringExample.com/search"),"foo","Lorem ipsum", Arrays.asList(create("name")));
+        Query query = new Query(URI.create("http://writeToStringExample.com/search"),"foo","Lorem ipsum", Arrays.asList(DataEntryFactory.createEmpty("name")));
         query.set("name", "Max");
         Collection result = classUnderTest.follow(query);
 
@@ -126,11 +127,11 @@ public class CjClientTest extends SerializationTestBase {
         item.addData(create("surname", "Musterman"));
 
         List<DataEntry> entries = new LinkedList<>();
-        entries.add(create("name"));
-        entries.add(create("surname"));
+        entries.add(DataEntryFactory.createEmpty("name"));
+        entries.add(DataEntryFactory.createEmpty("surname"));
         Query query = new Query(URI.create("http://writeToStringExample.com/search"), "search", "", entries);
 
-        List<DataEntry> input =  Arrays.asList(create("foo"), create("bar"), create("batz"));
+        List<DataEntry> input =  Arrays.asList(DataEntryFactory.createEmpty("foo"), DataEntryFactory.createEmpty("bar"), DataEntryFactory.createEmpty("batz"));
 
         Template template = new Template(input);
 

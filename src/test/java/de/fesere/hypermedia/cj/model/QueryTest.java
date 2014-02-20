@@ -73,9 +73,9 @@ public class QueryTest extends SerializationTestBase{
 
     private Query createBaseQueryWith3Entries() {
         List<DataEntry> entries = new LinkedList<>();
-        entries.add(DataEntryFactory.create("foo"));
-        entries.add(DataEntryFactory.create("bar"));
-        entries.add(DataEntryFactory.create("batz"));
+        entries.add(DataEntryFactory.createEmpty("foo"));
+        entries.add(DataEntryFactory.createEmpty("bar"));
+        entries.add(DataEntryFactory.createEmpty("batz"));
 
         return new Query(URI.create(BASE_URI),
                 "search","",  entries);
