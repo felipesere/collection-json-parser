@@ -1,8 +1,8 @@
 package de.fesere.hypermedia.cj.model;
 
 
+import de.fesere.hypermedia.cj.model.builder.DataEntryFactory;
 import de.fesere.hypermedia.cj.model.data.DataEntry;
-import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -29,19 +29,22 @@ public class TemplateTest extends SerializationTestBase {
 
     @Test
     public void test_fill() throws IOException {
-        Template template = emptyTemplate();
+        Template template = new Template(Arrays.asList(create("full-name", "", "Full Name"),
+                create("age", ""),
+                create("pi", ""),
+                create("admin", "")));
 
-        Item item = new Item(Arrays.<DataEntry>asList(new StringDataEntry("full-name", "Felipe Sere"), new StringDataEntry("email", "felipe@foo.com"), new StringDataEntry("blog", "Splash Of Color"), new StringDataEntry("avatar", "psycho.png")));
+
+        Item item = new Item(Arrays.asList(DataEntryFactory.create("full-name", "Felipe Sere"), create("age", 46), create("pi", 3.14), create("admin", false)));
 
         template.fill(item);
-
 
         assertTemplateSerialization("{ \"template\" : {\n" +
                 "      \"data\" : [\n" +
                 "        {\"name\" : \"full-name\", \"value\" : \"Felipe Sere\", \"prompt\" : \"Full Name\"},\n" +
-                "        {\"name\" : \"email\", \"value\" : \"felipe@foo.com\", \"prompt\" : \"Email\"},\n" +
-                "        {\"name\" : \"blog\", \"value\" : \"Splash Of Color\", \"prompt\" : \"Blog\"},\n" +
-                "        {\"name\" : \"avatar\", \"value\" : \"psycho.png\", \"prompt\" : \"Avatar\"}\n" +
+                "        {\"name\" : \"age\", \"value\" : 46},\n" +
+                "        {\"name\" : \"pi\", \"value\" : 3.14},\n" +
+                "        {\"name\" : \"admin\", \"value\" : false}\n" +
                 "      ]\n" +
                 "    } }", template);
     }

@@ -4,6 +4,7 @@ import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import de.fesere.hypermedia.cj.exceptions.MalformedDataValueException;
 import de.fesere.hypermedia.cj.model.data.DataEntry;
 import de.fesere.hypermedia.cj.model.data.StringDataEntry;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.net.URI;
@@ -116,6 +117,24 @@ public class ItemSerializationTest extends SerializationTestBase {
         Item item = serializer.deserialize(givenJSON, Item.class);
         item.getString("age");
     }
+
+    @Test
+    public void testDeserializeItemWithSingleDataEntryContainingNullElement_exception() {
+        String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"isNull\", \"value\": null}]}";
+
+        Item item = serializer.deserialize(givenJSON, Item.class);
+        Assert.assertThat(item.isNullValue("isNull"), is(true));
+    }
+
+    @Test
+    public void testDeserializeItemWithSingleDataEntryContainingStringElementReadAsNullData_exception() {
+        String givenJSON = "{\"href\":\"http://writeToStringExample.com/item/1\", \"data\":[{\"name\":\"isNotNull\", \"value\": \"foo\"}]}";
+
+        Item item = serializer.deserialize(givenJSON, Item.class);
+        Assert.assertThat(item.isNullValue("isNotNull"), is(false));
+    }
+
+
 
 
     @Test

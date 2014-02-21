@@ -1,21 +1,23 @@
 package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
-import de.fesere.hypermedia.cj.model.builder.DataEntryFactory;
 import de.fesere.hypermedia.cj.model.data.DataEntry;
 import org.junit.Test;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import static de.fesere.hypermedia.cj.model.builder.DataEntryFactory.createEmpty;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 
 public class QueryTest extends SerializationTestBase{
 
-    private String BASE_URI = "http://base.com";
+    private URI BASE_URI = URI.create("http://base.com");
 
     @Test
     public void testCollectionWithOnlyQuery() {
@@ -31,7 +33,7 @@ public class QueryTest extends SerializationTestBase{
         Query classUnderTest = createBaseQueryWith3Entries();
 
         URI uri = classUnderTest.buildURI();
-        assertThat(uri.toString(), is(BASE_URI));
+        assertThat(uri, is(equalTo(BASE_URI)));
     }
 
     @Test
@@ -71,13 +73,24 @@ public class QueryTest extends SerializationTestBase{
         theQuery.set("doesNotExist", "a");
     }
 
+    @Test
+    public void testBuildUri_settingBooleanAndNumber_success() {
+       Query theQury = new Query(BASE_URI, "foo", null, Arrays.asList(createEmpty("admin"), createEmpty("age")));
+
+       theQury.set("admin", true);
+       theQury.set("age", 12);
+
+       URI result = theQury.buildURI();
+       assertThat(result.toString(), is(equalTo(BASE_URI + "?admin=true&age=12")));
+    }
+
     private Query createBaseQueryWith3Entries() {
         List<DataEntry> entries = new LinkedList<>();
-        entries.add(DataEntryFactory.createEmpty("foo"));
-        entries.add(DataEntryFactory.createEmpty("bar"));
-        entries.add(DataEntryFactory.createEmpty("batz"));
+        entries.add(createEmpty("foo"));
+        entries.add(createEmpty("bar"));
+        entries.add(createEmpty("batz"));
 
-        return new Query(URI.create(BASE_URI),
+        return new Query(BASE_URI,
                 "search","",  entries);
     }
 }

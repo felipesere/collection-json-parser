@@ -25,7 +25,8 @@ public class CollectionWithTypedItemsTest extends SerializationTestBase {
                    .addData(create("age", 24, "Persons Age"))
                    .addData(create("pi", 3.14159265359))
                    .addData(create("male", true))
-                   .addData(createEmpty("empty", "some empty value"));
+                   .addData(createEmpty("empty", "some empty value"))
+                   .addData(createNull("isNull"));
         Item item = itemBuilder.build();
 
         Collection collection = builder.addItem(item).build();
@@ -44,10 +45,10 @@ public class CollectionWithTypedItemsTest extends SerializationTestBase {
                .addData(create("age", 24, "Persons Age"))
                .addData(create("pi", 3.14159265359))
                .addData(create("male", true))
-               .addData(createEmpty("empty", "some empty value"));
+               .addData(createEmpty("empty", "some empty value"))
+               .addData(createNull("isNull"));
 
-
-       DataEntry isNeverAddedToOutput = createNone();
+       DataEntry isNeverAddedToOutput = create(null, null);
        itemBuilder.addData(isNeverAddedToOutput);
 
        Item item = itemBuilder.build();
@@ -62,15 +63,20 @@ public class CollectionWithTypedItemsTest extends SerializationTestBase {
 
     @Test
     public void testReadJsonWithMultipleTypes() {
-
         Collection collection = readCollection("/examples/read-collection-with-typed-data.json");
 
         assertThat(collection.getItems(), hasSize(1));
-        assertThat(collection.getItems().get(0).getString("full-name"), is("J. Doe"));
-        assertThat(collection.getItems().get(0).getInt("age"), is(24));
-        assertThat(collection.getItems().get(0).getDouble("pi"), is(closeTo(3.15, 0.1)));
-        assertThat(collection.getItems().get(0).getBoolean("male"), is(true));
-        assertThat(collection.getItems().get(0).getString("empty"), is(""));
+
+        Item resutl = collection.getItems().get(0);
+
+        assertThat(resutl.getString("full-name"), is("J. Doe"));
+        assertThat(resutl.getInt("age"), is(24));
+        assertThat(resutl.getDouble("pi"), is(closeTo(3.15, 0.1)));
+        assertThat(resutl.getBoolean("male"), is(true));
+        assertThat(resutl.getString("empty"), is(""));
+        assertThat(resutl.isNullValue("isNull"), is(true));
+
+        assertThat(resutl.extractDataMap().keySet(), hasSize(6));
     }
 
 

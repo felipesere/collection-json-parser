@@ -19,11 +19,6 @@ public class StringDataEntry extends DataEntry<String> {
     }
 
     @Override
-    public void set(String value) {
-        this.value = value;
-    }
-
-    @Override
     public String getValue() {
         return value;
     }

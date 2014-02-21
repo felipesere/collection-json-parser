@@ -10,11 +10,6 @@ public class NumberDataEntry extends DataEntry<Number> {
     }
 
     @Override
-    public void set(Number value) {
-        this.value = value;
-    }
-
-    @Override
     public Number getValue() {
         return value;
     }

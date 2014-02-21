@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import de.fesere.hypermedia.cj.exceptions.PropertyNotFoundException;
-import de.fesere.hypermedia.cj.model.data.BooleanDataEntry;
-import de.fesere.hypermedia.cj.model.data.DataEntry;
-import de.fesere.hypermedia.cj.model.data.NumberDataEntry;
-import de.fesere.hypermedia.cj.model.data.StringDataEntry;
+import de.fesere.hypermedia.cj.model.data.*;
 
 import java.net.URI;
 import java.util.*;
@@ -73,6 +70,12 @@ public class Item {
         throw new PropertyNotFoundException(name, href, String.class);
     }
 
+    public boolean isNullValue(String name) {
+       DataEntry found = findDataEntry(name);
+
+       return found instanceof NullDataEntry;
+    }
+
     public int getInt(String name) {
         DataEntry found = findDataEntry(name);
 
@@ -82,7 +85,7 @@ public class Item {
 
         }
 
-         throw new PropertyNotFoundException(name, href, Number.class);
+        throw new PropertyNotFoundException(name, href, Number.class);
     }
 
     public double getDouble(String name) {
@@ -93,12 +96,12 @@ public class Item {
             return Double.parseDouble(value.toString());
         }
 
-         throw new PropertyNotFoundException(name, href, Number.class);
+        throw new PropertyNotFoundException(name, href, Number.class);
     }
 
     public boolean getBoolean(String name) {
         DataEntry entry = findDataEntry(name);
-        if(entry instanceof BooleanDataEntry) {
+        if (entry instanceof BooleanDataEntry) {
             return (boolean) entry.getValue();
         }
 
@@ -121,10 +124,16 @@ public class Item {
 
     public Map<String, Object> extractDataMap() {
         Map<String, Object> result = new HashMap<>();
-        for(DataEntry entry : data) {
+        for (DataEntry entry : data) {
             result.put(entry.getName(), entry.getValue());
         }
 
         return result;
+    }
+
+    public Object getObject(String entryName) {
+        DataEntry entry = findDataEntry(entryName);
+
+        return entry.getValue();
     }
 }

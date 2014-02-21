@@ -10,6 +10,7 @@ public class DataEntryBuilder {
     private Number numberValue = null;
     private String prompt = null;
     private Boolean booleanValue = null;
+    private boolean writeNullValue = false;
 
 
     public DataEntryBuilder setName(String name) {
@@ -32,6 +33,11 @@ public class DataEntryBuilder {
         return this;
     }
 
+    public DataEntryBuilder setNullValue() {
+        writeNullValue = true;
+        return this;
+    }
+
     public DataEntryBuilder setPrompt(String prompt) {
         this.prompt = prompt;
         return this;
@@ -46,7 +52,8 @@ public class DataEntryBuilder {
 
         } else if (booleanValue != null) {
             return DataEntryFactory.create(name, booleanValue, prompt);
-
+        } else if(writeNullValue) {
+            return DataEntryFactory.createNull(name, prompt);
         } else {
             return DataEntryFactory.create(name, "", prompt);
         }

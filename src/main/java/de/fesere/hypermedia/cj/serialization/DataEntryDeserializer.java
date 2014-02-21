@@ -49,6 +49,8 @@ public class DataEntryDeserializer extends StdDeserializer<DataEntry> {
             builder.setValue(token.equals(VALUE_TRUE));
         } else if (token.isNumeric()) {
             builder.setValue(jParser.getNumberValue());
+        } else if(token.equals(VALUE_NULL)) {
+            builder.setNullValue();
         } else {
             builder.setValue(jParser.getText());
         }

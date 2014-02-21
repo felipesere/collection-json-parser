@@ -4,6 +4,7 @@ package de.fesere.hypermedia.cj.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import de.fesere.hypermedia.cj.model.builder.DataEntryFactory;
 import de.fesere.hypermedia.cj.model.data.DataEntry;
 import de.fesere.hypermedia.cj.serialization.Wrapped;
 import de.fesere.hypermedia.cj.transformer.DataEntryTransformer;
@@ -18,7 +19,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Template implements Wrapped {
 
-    private final List<DataEntry> data;
+    private List<DataEntry> data;
 
     public Template(@JsonProperty("data") List<DataEntry> data) {
         this.data = data;
@@ -29,11 +30,18 @@ public class Template implements Wrapped {
     }
 
     public void fill(Item item) {
+        List<DataEntry> filledDataEntries = new LinkedList<>();
+
         for(DataEntry entry : data) {
-            String entryName = entry.getName();
-            String value = item.getString(entryName);
-            entry.set(value);
+            String name = entry.getName();
+            String prompt = entry.getPrompt();
+            Object value = item.getObject(name);
+
+            DataEntry filled = DataEntryFactory.create(name, value, prompt);
+            filledDataEntries.add(filled);
         }
+
+        this.data = filledDataEntries;
     }
 
     public <T> T convert(ReadTransformation<T> transformation) {

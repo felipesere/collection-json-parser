@@ -31,9 +31,6 @@ public abstract class DataEntry<T> {
         return prompt;
     }
 
-    public void set(T value) {
-    }
-
     public T getValue() {
         return null;
     }

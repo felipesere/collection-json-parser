@@ -28,6 +28,10 @@
                         "name" : "empty",
                         "value" : "",
                         "prompt" : "some empty value"
+                    },
+                    {
+                        "name" : "isNull",
+                        "value": null
                     }
 
                 ]
