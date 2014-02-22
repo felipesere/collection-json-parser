@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>de.fesere.hypermedia</groupId>
+  <artifactId>collection-json-parser</artifactId>
+  <versioning>
+    <versions>
+      <version>0.0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20140222202416</lastUpdated>
+  </versioning>
+</metadata>
