@@ -1,6 +1,7 @@
 package de.fesere.hypermedia.cj.model.builder;
 
 import de.fesere.hypermedia.cj.exceptions.MalformedDataValueException;
+import de.fesere.hypermedia.cj.exceptions.SerializationException;
 import de.fesere.hypermedia.cj.model.data.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,7 +26,7 @@ public final class DataEntryFactory {
         } else if (TypeUtils.isBoolean(type)) {
             return DataEntryFactory.create(name, (Boolean) value, prompt);
         } else {
-            return DataEntryFactory.create(name, value.toString(), prompt);
+           throw new SerializationException("'"+name+"' of type " + type + " can not be converted to DataEntry");
         }
     }
 
