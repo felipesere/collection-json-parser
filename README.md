@@ -4,14 +4,20 @@ collection-json-parser
 Collection-JSON-parser is a small library for reading and writing JSON in [collection+json](https://github.com/mamund/collection-json) (from @mamund) format.
 It was born because I wanted to build a prototype for the office and was in need of pet-project.
 
-The library provides a Java model for `Collections`, `Queries`, `Tempaltes`, `Items` and Data from Cj.
+The library provides a Java model for `Collections`, `Queries`, `Tempaltes`, `Items` and `Data from Cj.
 Futhermore it provives a `Serializer` which converts any of the above mentioned classes to and from JSON.
 
 For people building a client that uses Cj, the library provides a `CjClient` which takes care of building requests
 and parsing responses. Users will need to implement a small `HTTPClient` which is used by the `CjClient` to handle
 communication.
 
-To make building of `Collections` easier, a set of builders are provided.
+To make building of `Collections` easier, a set of builders are provided, such as
+* `CollectionBuilder`
+* `DataEntryBuilder` and `DataEntryFactory`
+* `ErrorBuilder`
+* `ItemBuilder`
+* `LinkBuilder`
+* `TemplateBuilde`
 
 Finally, to convert between `Items` in a `Collection` and your domain model, the library makes use of `Transformers`.
 
@@ -19,7 +25,9 @@ Finally, to convert between `Items` in a `Collection` and your domain model, the
 Getting started
 -----------------
 
-To use the library in your project you need to clone it
+There are two ways of getting the library:
+
+Simply clone the repository
 
 `git clone https://github.com/felipesere/collection-json-parser.git`
 
@@ -28,7 +36,24 @@ and then build it with Maven
 `maven clean install`
 
 
-then add it as a dependency to your Maven project using the following coordinates
+Or add the following as a repositry to your pom:
+
+```
+<repositories>
+  <repository>
+    <id>github-mvn-repo</id>
+    <url>https://raw.github.com/felipesere/collection-json-parser/mvn-repo/</url>
+    <snapshots>
+      <enabled>true</enabled>
+      <updatePolicy>always</updatePolicy>
+    </snapshots>
+  </repository>
+</repositories>
+```
+
+
+
+Finally, you need to add it as a dependency to your Maven project using the following coordinates
 
 ```
 <dependency>
@@ -38,7 +63,7 @@ then add it as a dependency to your Maven project using the following coordinate
 </dependency>
 ```
 
-Then you can proceed to create your own collections of read them from Strings.
+Then you can proceed to create your own Collections or read them from Strings.
 
 
 Using `collection-json-parser` to read
@@ -50,7 +75,7 @@ In a gist, the usage pattern is the following:
 If you receive a `String` containing a `Collection` in JSON, you can serialize it as such:
 
 ```Java
-String json = "...";
+String json = "{...}";
 Serializer serializer = new Serializer();
 
 Collection collection = serializer.deserialize(json, Collection.class);
@@ -69,9 +94,12 @@ It should use the methods on `Item` to extract values.
 The methods are:
 
 *  `getString(String name)` to get a `String` value
-*  `getInt(Stirng name)`to get an `int`
+*  `getInt(Stirng name)` to get an `int`
 *  `getDouble(String name)` to get a `double`
-*  `getBoolean(String name)`to get a `boolean`
+*  `getBoolean(String name)` to get a `boolean`
+*  `getObject(String name)` to get the value independent of its type
+*  `isNullValue(String name)` to check whether a value is `null` (the JSON type)
+
 
 These methods throw an `ElementNotFoundException` if no element named `name` is found
 and both `getInt` and `getDouble` throw a `MalformedDataValueException` if the value
@@ -92,10 +120,10 @@ collectionBuilder.getLinkBuilder().addLink("documentation","/documentation/v1")
                                   .addLink("questions", URI.create("http://stackoverflow.com")).build();
 
 ItemBuilder itemBuilder = new ItemBuilder(URI.create("http;//example.com/item/1"));
-itemBuilder.addData(new StringDataEntry("name", "Bob", "Users first name"));
-itemBuilder.addData(new NumberDataEntry("age", 24, "Users age"));
-itemBuilder.addData(new NumberDataEntry("height", 0.00192, "Users height in km"));
-itemBuilder.addData(new BooleanDataEntry("payed", false, "User payed fee"));
+itemBuilder.addData(DataEntryFactory.create("name", "Bob", "Users first name"));
+itemBuilder.addData(DataEntryFactory.create("age", 24, "Users age"));
+itemBuilder.addData(DataEntryFactory.create("height", 0.00192, "Users height in km"));
+itemBuilder.addData(DataEntryFactory.create("payed", false, "User payed fee"));
 
 Collection collection = collectionBuilder.addItem(itemBuilder.build()).build();
 
@@ -108,9 +136,14 @@ The `DataEntry` can be any of
 * `StringDataEntry` to add `String` to the data of an entity/template
 * `NumberDataEntry` to add anything that implements the Java `Number`interface, such as `int` and `double`
 * `BooleanDataEntry` to add a `boolean` to the item/template
+* `NullDataEntry` to add an explicit `null` value to the item/temaplate
+
+You should use the `DataEntryFactory` method for simplicty.
+It offers methods for creating regular `DataEntry` objects, as well as `NullDataEntries` and `EmptyDataEntries`.
+The `EmptyDataEntry` has a name and possibly a prompt, but no value. It is especially usefull for `Templates`.
 
 
-which would result in
+The Java code from above results in
 
 ```JSON
 {
