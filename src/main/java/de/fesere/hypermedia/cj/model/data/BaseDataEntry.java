@@ -9,16 +9,16 @@ import org.apache.commons.lang3.StringUtils;
 
 @JsonSerialize(using = DataEntrySerializer.class)
 @JsonDeserialize(using = DataEntryDeserializer.class)
-public abstract class DataEntry<T> {
+public abstract class BaseDataEntry<T> implements de.fesere.hypermedia.cj.model.DataEntry{
 
     private final String name;
     private String prompt;
 
-    public DataEntry(String name) {
+    public BaseDataEntry(String name) {
         this(name, null);
     }
 
-    public DataEntry(String name, String prompt) {
+    public BaseDataEntry(String name, String prompt) {
         this.name = name;
         this.prompt = prompt;
     }
@@ -38,9 +38,13 @@ public abstract class DataEntry<T> {
     public String buildQueryRepresentation() {
         T value = getValue();
 
-        if (value != null && StringUtils.isNotBlank(value.toString())) {
+        if (hasRealValue(value)) {
             return getName() + "=" + value.toString();
         }
         return "";
+    }
+
+    private boolean hasRealValue(T value) {
+        return value != null && StringUtils.isNotBlank(value.toString());
     }
 }

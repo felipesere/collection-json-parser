@@ -3,7 +3,7 @@ package de.fesere.hypermedia.cj.serialization;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import de.fesere.hypermedia.cj.model.data.DataEntry;
+import de.fesere.hypermedia.cj.model.DataEntry;
 import de.fesere.hypermedia.cj.model.data.NoneDataEntry;
 import org.apache.commons.lang3.StringUtils;
 

@@ -1,7 +1,7 @@
 package de.fesere.hypermedia.cj.transformer;
 
+import de.fesere.hypermedia.cj.model.DataEntry;
 import de.fesere.hypermedia.cj.model.Item;
-import de.fesere.hypermedia.cj.model.data.DataEntry;
 
 import java.util.List;
 

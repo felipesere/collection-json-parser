@@ -1,6 +1,6 @@
 package de.fesere.hypermedia.cj.model.data;
 
-public class StringDataEntry extends DataEntry<String> {
+public class StringDataEntry extends BaseDataEntry<String> {
 
     private String value;
 

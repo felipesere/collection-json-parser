@@ -2,12 +2,10 @@ package de.fesere.hypermedia.cj.model;
 
 
 import de.fesere.hypermedia.cj.model.builder.DataEntryFactory;
-import de.fesere.hypermedia.cj.model.data.DataEntry;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import static de.fesere.hypermedia.cj.model.builder.DataEntryFactory.create;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -63,13 +61,5 @@ public class TemplateTest extends SerializationTestBase {
         Template template = serializer.deserialize(json, Template.class);
         assertNotNull(template);
 
-    }
-
-    private Template emptyTemplate() {
-        List<DataEntry> entries = Arrays.asList(create("full-name", "", "Full Name"),
-                                                create("email", "", "Email"),
-                                                create("blog", "", "Blog"),
-                                                create("avatar", "", "Avatar"));
-        return new Template(entries);
     }
 }

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import de.fesere.hypermedia.cj.model.DataEntry;
 import de.fesere.hypermedia.cj.model.builder.DataEntryBuilder;
-import de.fesere.hypermedia.cj.model.data.DataEntry;
 
 import java.io.IOException;
 

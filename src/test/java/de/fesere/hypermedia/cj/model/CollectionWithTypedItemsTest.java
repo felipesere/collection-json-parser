@@ -2,7 +2,7 @@ package de.fesere.hypermedia.cj.model;
 
 import de.fesere.hypermedia.cj.model.builder.CollectionBuilder;
 import de.fesere.hypermedia.cj.model.builder.ItemBuilder;
-import de.fesere.hypermedia.cj.model.data.DataEntry;
+import de.fesere.hypermedia.cj.model.data.BaseDataEntry;
 import org.junit.Test;
 
 import java.net.URI;

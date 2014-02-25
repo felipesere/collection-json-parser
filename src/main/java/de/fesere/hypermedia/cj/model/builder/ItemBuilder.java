@@ -1,6 +1,6 @@
 package de.fesere.hypermedia.cj.model.builder;
 
-import de.fesere.hypermedia.cj.model.data.DataEntry;
+import de.fesere.hypermedia.cj.model.DataEntry;
 import de.fesere.hypermedia.cj.model.Item;
 
 import java.net.URI;

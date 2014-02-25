@@ -1,8 +1,8 @@
 package de.fesere.hypermedia.cj.model.builder;
 
+import de.fesere.hypermedia.cj.model.DataEntry;
 import de.fesere.hypermedia.cj.model.Item;
 import de.fesere.hypermedia.cj.model.Template;
-import de.fesere.hypermedia.cj.model.data.DataEntry;
 
 import java.util.LinkedList;
 import java.util.List;

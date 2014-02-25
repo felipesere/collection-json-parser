@@ -4,7 +4,6 @@ import de.fesere.hypermedia.cj.http.DummyHTTPClient;
 import de.fesere.hypermedia.cj.model.builder.DataEntryFactory;
 import de.fesere.hypermedia.cj.model.builder.ItemBuilder;
 import de.fesere.hypermedia.cj.model.builder.TemplateBuilder;
-import de.fesere.hypermedia.cj.model.data.DataEntry;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
