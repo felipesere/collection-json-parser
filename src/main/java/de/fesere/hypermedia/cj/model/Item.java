@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.fesere.hypermedia.cj.exceptions.ElementNotFoundException;
 import de.fesere.hypermedia.cj.exceptions.PropertyNotFoundException;
-import de.fesere.hypermedia.cj.model.data.*;
+import de.fesere.hypermedia.cj.model.data.BooleanDataEntry;
+import de.fesere.hypermedia.cj.model.data.NullDataEntry;
+import de.fesere.hypermedia.cj.model.data.NumberDataEntry;
+import de.fesere.hypermedia.cj.model.data.StringDataEntry;
 
 import java.net.URI;
 import java.util.*;
