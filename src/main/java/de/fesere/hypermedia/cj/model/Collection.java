@@ -33,7 +33,7 @@ public class Collection implements Wrapped{
     private final List<Link>  links   = new ArrayList<>();
 
     @JsonProperty("queries")
-    private List<Query> queries = new ArrayList<>();
+    private final  List<Query> queries = new ArrayList<>();
 
     @JsonProperty("template")
     private Template template;

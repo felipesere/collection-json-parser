@@ -21,7 +21,7 @@ import static org.hamcrest.core.Is.is;
 
 public class CjClientTest extends SerializationTestBase {
 
-    public static final String BASE_URL = "http://writeToStringExample.com";
+    private static final String BASE_URL = "http://writeToStringExample.com";
     private static final String POST = "POST";
     private static final String PUT = "PUT";
     private DummyHTTPClient httpClient = new DummyHTTPClient();

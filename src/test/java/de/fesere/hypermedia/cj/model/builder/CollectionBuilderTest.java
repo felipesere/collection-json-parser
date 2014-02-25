@@ -12,7 +12,7 @@ import static de.fesere.hypermedia.cj.model.builder.DataEntryFactory.create;
 
 public class CollectionBuilderTest extends SerializationTestBase {
 
-    URI href = URI.create("http://example.org/friends/");
+    private URI href = URI.create("http://example.org/friends/");
 
     @Test(expected = IllegalArgumentException.class)
     public void test_nullURIthrowsException() {

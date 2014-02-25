@@ -19,7 +19,6 @@ public class TemplateTest extends SerializationTestBase {
     public void testCollectionWithTemplate() {
         Collection result = readCollection("examples/template-collection.json");
 
-
         assertThat(result.getTemplate().getData(), hasSize(4));
         assertThat(result.getTemplate().getData(), hasItems(name("full-name"), name("email"), name("blog"), name("avatar")));
         assertThat(result.getTemplate().getDataMap().keySet(), hasSize(4));

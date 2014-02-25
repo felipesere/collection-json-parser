@@ -1,7 +1,7 @@
 package de.fesere.hypermedia.cj.model.data;
 
 public class BooleanDataEntry extends BaseDataEntry<Boolean> {
-    private Boolean value;
+    private final boolean value;
 
     public BooleanDataEntry(String name, boolean booleanValue, String prompt) {
         super(name, prompt);

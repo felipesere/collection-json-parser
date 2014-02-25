@@ -1,35 +1,22 @@
 package de.fesere.hypermedia.cj.model.builder;
 
 import de.fesere.hypermedia.cj.model.DataEntry;
-import org.apache.commons.lang3.StringUtils;
 
 public class DataEntryBuilder {
 
     private String name;
-    private String stringValue = null;
-    private Number numberValue = null;
     private String prompt = null;
-    private Boolean booleanValue = null;
     private boolean writeNullValue = false;
 
+    private Object value;
 
     public DataEntryBuilder setName(String name) {
         this.name = name;
         return this;
     }
 
-    public DataEntryBuilder setValue(String value) {
-        stringValue = value;
-        return this;
-    }
-
-    public DataEntryBuilder setValue(Number value) {
-        numberValue = value;
-        return this;
-    }
-
-    public DataEntryBuilder setValue(boolean value) {
-        booleanValue = value;
+    public DataEntryBuilder setValue(Object value) {
+        this.value = value;
         return this;
     }
 
@@ -44,19 +31,15 @@ public class DataEntryBuilder {
     }
 
     public DataEntry build() {
-        if (StringUtils.isNotBlank(stringValue)) {
-            return DataEntryFactory.create(name, stringValue, prompt);
-
-        } else if (numberValue != null) {
-            return DataEntryFactory.create(name, numberValue, prompt);
-
-        } else if (booleanValue != null) {
-            return DataEntryFactory.create(name, booleanValue, prompt);
-        } else if(writeNullValue) {
+        if(writeNullValue) {
             return DataEntryFactory.createNull(name, prompt);
-        } else {
+        }
+
+        if(value == null) {
             return DataEntryFactory.create(name, "", prompt);
         }
+
+        return DataEntryFactory.create(name, value, prompt);
 
     }
 }

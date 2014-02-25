@@ -20,7 +20,14 @@ public class Serializer {
 
     public <T> T deserialize(String input, Class<T> responseClass) {
         if(Wrapped.class.isAssignableFrom(responseClass)) {
-            return (T) deserializeWrapped(input);
+            Object deserializedObject = deserializeWrapped(input);
+
+            if(deserializedObject.getClass().isAssignableFrom(responseClass)) {
+                return responseClass.cast(deserializedObject);
+            }
+            else {
+                throw new SerializationException("input could not be serialized to " + responseClass.getCanonicalName());
+            }
         }
 
         return defaultDeserialisation(input, responseClass);

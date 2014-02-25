@@ -21,11 +21,11 @@ public final class DataEntryFactory {
         Class type = value.getClass();
 
         if (TypeUtils.isString(type)) {
-            return DataEntryFactory.create(name, (String) value, prompt);
+            return new StringDataEntry(name, (String) value, prompt);
         } else if (TypeUtils.isNumber(type)) {
-            return DataEntryFactory.create(name, (Number) value, prompt);
+            return new NumberDataEntry(name, (Number) value, prompt);
         } else if (TypeUtils.isBoolean(type)) {
-            return DataEntryFactory.create(name, (Boolean) value, prompt);
+            return new BooleanDataEntry(name, (Boolean) value, prompt);
         } else {
            throw new SerializationException("'"+name+"' of type " + type + " can not be converted to DataEntry");
         }
@@ -53,17 +53,5 @@ public final class DataEntryFactory {
 
     public static DataEntry createEmpty(String name) {
         return new StringDataEntry(name);
-    }
-
-    private static DataEntry create(String name, String value, String prompt) {
-        return new StringDataEntry(name,value,prompt);
-    }
-
-    private static DataEntry create(String name, Number number, String prompt ) {
-        return new NumberDataEntry(name, number, prompt);
-    }
-
-    private static DataEntry create(String name, Boolean value, String prompt) {
-        return new BooleanDataEntry(name, value, prompt);
     }
 }

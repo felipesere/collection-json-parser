@@ -12,13 +12,13 @@ import org.apache.commons.lang3.StringUtils;
 public abstract class BaseDataEntry<T> implements de.fesere.hypermedia.cj.model.DataEntry{
 
     private final String name;
-    private String prompt;
+    private final String prompt;
 
-    public BaseDataEntry(String name) {
+    BaseDataEntry(String name) {
         this(name, null);
     }
 
-    public BaseDataEntry(String name, String prompt) {
+    BaseDataEntry(String name, String prompt) {
         this.name = name;
         this.prompt = prompt;
     }
