@@ -21,7 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 @JsonPropertyOrder({"version", "href", "links", "error", "items", "queries", "template"})
 public class Collection implements Wrapped{
 
-    private static final String VERSION = "1.0";
+    @JsonProperty("version")
+    private final String version = "1.0";
 
     @JsonProperty("href")
     private final URI href;
@@ -148,8 +149,7 @@ public class Collection implements Wrapped{
         return template;
     }
 
-    @JsonProperty("version")
     public String getVersion() {
-        return VERSION;
+        return version;
     }
 }

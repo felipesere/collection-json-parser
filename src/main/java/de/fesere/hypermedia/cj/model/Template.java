@@ -1,9 +1,7 @@
 package de.fesere.hypermedia.cj.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.*;
 import de.fesere.hypermedia.cj.model.builder.DataEntryFactory;
 import de.fesere.hypermedia.cj.serialization.Wrapped;
 import de.fesere.hypermedia.cj.transformer.DataEntryTransformer;
