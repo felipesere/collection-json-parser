@@ -45,7 +45,7 @@ public class ExampleFilesTest extends SerializationTestBase {
 
 
         assertThat(result.getLinks(), hasSize(3));
-        assertThat(result.getLink("feed").getRel(), is("feed"));
+        assertNotNull(result.getLink("feed"));
         assertThat(result.getLink("feed").getHref(), is(URI.create("http://example.org/friends/rss")));
 
         assertThat(result.getQueries(), hasSize(1));

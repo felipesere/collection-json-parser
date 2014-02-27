@@ -11,8 +11,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.*;
 
 @JsonTypeName("collection")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -41,8 +40,6 @@ public class Collection implements Wrapped{
 
     @JsonProperty("error")
     private Error error;
-
-
 
     @JsonCreator()
     public Collection(@JsonProperty("href") URI href) {
@@ -97,13 +94,13 @@ public class Collection implements Wrapped{
     }
 
 
-    public <T> List<T> transform(ReadTransformation<T> transformer) {
+    public <T> List<T> transform(ReadTransformation<T> itemTransformer) {
         throwExceptionOnError();
 
         List<T> result = new ArrayList<>(items.size());
 
         for(Item item : items) {
-            T convertedItem = transformer.transform(item);
+            T convertedItem = itemTransformer.transform(item);
             if(convertedItem != null) {
                 result.add(convertedItem);
             }
@@ -130,7 +127,7 @@ public class Collection implements Wrapped{
 
     private <T extends Link> T findByRel(List<T> elements, String rel) {
         for(T linkable : elements ) {
-            if(linkable.getRel().equalsIgnoreCase(rel)) {
+            if(linkable.hasRel(rel)) {
                 return linkable;
             }
         }

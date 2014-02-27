@@ -51,7 +51,7 @@ public class Query extends Link {
                 return dataEntry;
             }
         }
-        throw new ElementNotFoundException("Did not find element '"+name+"' in query '"+getRel()+"'");
+        throw new ElementNotFoundException("Did not find element '"+name+"' in query '"+rel+"'");
     }
 
     public URI buildURI() {

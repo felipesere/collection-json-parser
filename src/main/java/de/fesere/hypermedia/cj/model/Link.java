@@ -12,7 +12,7 @@ public class Link {
 
     private final URI href;
     private final String prompt;
-    private String rel;
+    protected String rel;
 
     @JsonCreator
     public Link(@JsonProperty("rel") String rel, @JsonProperty("href") URI href, @JsonProperty("prompt") String prompt){
@@ -23,6 +23,10 @@ public class Link {
 
     public String getRel() {
         return this.rel;
+    }
+
+    public boolean hasRel(String otherRel){
+        return rel.equalsIgnoreCase(otherRel);
     }
 
     public URI getHref() {
